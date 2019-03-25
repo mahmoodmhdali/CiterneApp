@@ -1,6 +1,5 @@
 package com.citerneApp.project.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.Date;
@@ -41,7 +40,6 @@ public class EventClassSchedule implements Serializable {
     @Column(name = "TIME")
     private Date time;
 
-    @JsonIgnore
     @JoinColumn(name = "EVENT_CLASS", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private EventClass eventClass;

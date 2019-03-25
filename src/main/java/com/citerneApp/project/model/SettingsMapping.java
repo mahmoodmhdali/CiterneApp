@@ -5,8 +5,8 @@
  */
 package com.citerneApp.project.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.citerneApp.project.helpermodel.DropDown;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;

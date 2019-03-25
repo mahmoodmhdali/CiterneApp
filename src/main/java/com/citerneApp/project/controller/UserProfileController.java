@@ -1,6 +1,5 @@
 package com.citerneApp.project.controller;
 
-import com.citerneApp.api.commons.Logger;
 import com.citerneApp.project.helpermodel.ResponseBodyEntity;
 import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
@@ -10,8 +9,6 @@ import com.citerneApp.project.model.UserProfileNotificationEvent;
 import com.citerneApp.project.service.NotificationEventsService;
 import com.citerneApp.project.service.UserProfileNotificationEventService;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.mail.internet.AddressException;

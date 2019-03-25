@@ -1,10 +1,10 @@
 package com.citerneApp.project.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
 import com.citerneApp.project.model.UserProfile;
 import com.citerneApp.project.service.SettingsService;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.Locale;

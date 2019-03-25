@@ -5,7 +5,6 @@
  */
 package com.citerneApp.api.configuration.security;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.citerneApp.api.configuration.security.service.TokenAuthenticationService;
 import com.citerneApp.api.engine.SettingsEngine;
 import com.citerneApp.project.helpermodel.ResponseBuilder;
@@ -13,6 +12,7 @@ import com.citerneApp.project.helpermodel.ResponseCode;
 import com.citerneApp.project.helpermodel.UserProfileCredentials;
 import com.citerneApp.project.service.UserAttemptService;
 import com.citerneApp.project.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;

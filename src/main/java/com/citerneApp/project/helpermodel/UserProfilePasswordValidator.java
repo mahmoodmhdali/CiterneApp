@@ -1,7 +1,7 @@
 package com.citerneApp.project.helpermodel;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.citerneApp.project.model.validation.ValidPassword;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class UserProfilePasswordValidator {

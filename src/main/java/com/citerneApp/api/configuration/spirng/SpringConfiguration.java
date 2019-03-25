@@ -1,8 +1,5 @@
 package com.citerneApp.api.configuration.spirng;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.citerneApp.api.commons.ContextHolder;
 import com.citerneApp.api.configuration.converter.GroupConverter;
 import com.citerneApp.api.configuration.converter.LanguageConverter;
@@ -11,6 +8,9 @@ import com.citerneApp.api.configuration.converter.ReportStyleConverter;
 import com.citerneApp.api.configuration.converter.RoleConverter;
 import com.citerneApp.api.configuration.converter.UserConverter;
 import com.citerneApp.api.configuration.converter.UserProfileNotificationEventConverter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
