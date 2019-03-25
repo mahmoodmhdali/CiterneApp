@@ -4,8 +4,6 @@ import com.citerneApp.project.helpermodel.ResponseBodyEntity;
 import com.citerneApp.project.helpermodel.UserProfilePasswordValidator;
 import com.citerneApp.project.helpermodel.UsersPagination;
 import com.citerneApp.project.model.UserAttempt;
-import com.citerneApp.project.model.UserCompanyInfo;
-import com.citerneApp.project.model.UserOutletInfo;
 import com.citerneApp.project.model.UserProfile;
 import com.citerneApp.project.model.WebNotifications;
 import java.util.List;
@@ -26,23 +24,23 @@ public interface UserService {
     ResponseBodyEntity getUser(String email);
 
     ResponseBodyEntity getUserByToken(String token);
-    
+
     void sendEmailAndUpdateToken(String email) throws AddressException;
 
     List<UserProfile> filterUsersByGroup(Long groupId);
 
-    UserProfile toUser (Long id);
-    
-    UserProfile toUser (String email);
-    
-    ResponseBodyEntity addUser(UserProfile user, UserCompanyInfo userCompanyInfo, UserOutletInfo userOutletInfo) throws AddressException;
-    
-    ResponseBodyEntity updateUser(UserProfile user, UserCompanyInfo userCompanyInfo, UserOutletInfo userOutletInfo);
-    
+    UserProfile toUser(Long id);
+
+    UserProfile toUser(String email);
+
+    ResponseBodyEntity addUser(UserProfile user) throws AddressException;
+
+    ResponseBodyEntity updateUser(UserProfile user);
+
     ResponseBodyEntity updateUserSettings(UserProfile user);
-    
+
     ResponseBodyEntity changeUserPassword(UserProfile user, UserProfilePasswordValidator userProfilePasswordValidator);
-    
+
     ResponseBodyEntity changeUserPasswordByToken(String token, UserProfilePasswordValidator userProfilePasswordValidator);
 
     ResponseBodyEntity deleteUser(Long id);
@@ -54,13 +52,13 @@ public interface UserService {
     UserAttempt getUserAttemptCollection(String email);
 
     ResponseBodyEntity updateUserLanguage(Long languageId);
-    
+
     void addNotification(WebNotifications webNotifcation);
 
     ResponseBodyEntity getWebNotifications(long userID, boolean all);
 
     void updateNotSeen(long userID);
-    
+
     ResponseBodyEntity getCountWebNotifications(long userID);
-    
+
 }

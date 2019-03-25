@@ -15,8 +15,6 @@ import com.citerneApp.project.helpermodel.UsersPagination;
 import com.citerneApp.project.model.Group;
 import com.citerneApp.project.model.Language;
 import com.citerneApp.project.model.UserAttempt;
-import com.citerneApp.project.model.UserCompanyInfo;
-import com.citerneApp.project.model.UserOutletInfo;
 import com.citerneApp.project.model.UserProfile;
 import com.citerneApp.project.model.WebNotifications;
 import java.util.ArrayList;
@@ -67,9 +65,6 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     @Autowired
     QRCodeGenerator qRCodeGenerator;
-
-    @Autowired
-    UserPassPurchasedService userPassPurchasedService;
 
     @Override
     public List<UserProfile> getUsers(Long excludeLoggedInUserID, Integer type, Long headID) {
@@ -152,7 +147,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     @Override
-    public ResponseBodyEntity addUser(UserProfile user, UserCompanyInfo userCompanyInfo, UserOutletInfo userOutletInfo) throws AddressException {
+    public ResponseBodyEntity addUser(UserProfile user) throws AddressException {
         user.setCountry(1);
         user.setEnabled(true);
         user.setCreatedDate(new Date());
@@ -209,66 +204,36 @@ public class UserServiceImpl extends AbstractService implements UserService {
                     Group group = groupService.toGroupForAdd(8L);
                     groupCollection.add(group);
                     user.setJobTitle("System User");
-                    user.setUserOutletInfo(null);
-                    user.setUserCompanyInfo(null);
                     break;
                 }
                 case 1: {
                     Group group = groupService.toGroupForAdd(4L);
                     groupCollection.add(group);
                     user.setJobTitle("Company Admin");
-                    if (userCompanyInfo.getInfo() == null) {
-                        return ResponseBuilder.getInstance()
-                                .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                                .addHttpResponseEntityData("info", "Info is required")
-                                .getResponse();
-                    }
-                    userCompanyInfo.setId(null);
-                    userCompanyInfo.setCountry(1);
-                    userCompanyInfo.setUserProfileId(user);
-                    user.setUserCompanyInfo(userCompanyInfo);
-                    user.setUserOutletInfo(null);
                     break;
                 }
                 case 2: {
                     Group group = groupService.toGroupForAdd(5L);
                     groupCollection.add(group);
                     user.setJobTitle("Outlet Admin");
-                    if (userOutletInfo.getInfo() == null) {
-                        return ResponseBuilder.getInstance()
-                                .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                                .addHttpResponseEntityData("info", "Info is required")
-                                .getResponse();
-                    }
-                    userOutletInfo.setId(null);
-                    userOutletInfo.setCountry(1);
-                    userOutletInfo.setUserProfileId(user);
-                    user.setUserOutletInfo(userOutletInfo);
-                    user.setUserCompanyInfo(null);
                     break;
                 }
                 case 3: {
                     Group group = groupService.toGroupForAdd(6L);
                     groupCollection.add(group);
                     user.setJobTitle("Company User");
-                    user.setUserOutletInfo(null);
-                    user.setUserCompanyInfo(null);
                     break;
                 }
                 case 4: {
                     Group group = groupService.toGroupForAdd(7L);
                     groupCollection.add(group);
                     user.setJobTitle("User");
-                    user.setUserOutletInfo(null);
-                    user.setUserCompanyInfo(null);
                     break;
                 }
                 case 99: {
                     Group group = groupService.toGroupForAdd(3L);
                     groupCollection.add(group);
                     user.setJobTitle("Our System User");
-                    user.setUserOutletInfo(null);
-                    user.setUserCompanyInfo(null);
                     break;
                 }
                 default:
@@ -329,7 +294,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     @Override
-    public ResponseBodyEntity updateUser(UserProfile user, UserCompanyInfo userCompanyInfo, UserOutletInfo userOutletInfo) {
+    public ResponseBodyEntity updateUser(UserProfile user) {
         UserProfile persistantUser = userDao.getUser(user.getId());
 
         if (persistantUser == null) {
@@ -378,25 +343,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
                     break;
                 }
                 case 1: {
-                    if (userCompanyInfo.getInfo() == null) {
-                        return ResponseBuilder.getInstance()
-                                .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                                .addHttpResponseEntityData("info", "Info is required")
-                                .getResponse();
-                    }
-                    persistantUser.getUserCompanyInfo().setInfo(userCompanyInfo.getInfo());
-                    persistantUser.setUserOutletInfo(null);
                     break;
                 }
                 case 2: {
-                    if (userOutletInfo.getInfo() == null) {
-                        return ResponseBuilder.getInstance()
-                                .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                                .addHttpResponseEntityData("info", "Info is required")
-                                .getResponse();
-                    }
-                    persistantUser.getUserOutletInfo().setInfo(userOutletInfo.getInfo());
-                    persistantUser.setUserCompanyInfo(null);
                     break;
                 }
                 case 3: {

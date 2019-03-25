@@ -154,18 +154,6 @@ public class UserProfile implements Serializable, UserDetails {
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "userProfileId", cascade = CascadeType.ALL)
     private UserAttempt userAttempt;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userProfileId", cascade = CascadeType.ALL)
-    private UserCompanyInfo userCompanyInfo;
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userProfileId", cascade = CascadeType.ALL)
-    private UserOutletInfo userOutletInfo;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userProfileId", cascade = CascadeType.ALL)
-    private Collection<UserPassPurchased> userPassPurchased;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userProfileId", cascade = CascadeType.ALL)
-    private Collection<UserOutletOfferPurchased> userOutletOfferPurchased;
-
     private transient Collection<GrantedAuthority> authorities;
 
     @JoinColumn(name = "language_id", referencedColumnName = "ID")
@@ -189,22 +177,6 @@ public class UserProfile implements Serializable, UserDetails {
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
-    }
-
-    public Collection<UserPassPurchased> getUserPassPurchased() {
-        return userPassPurchased;
-    }
-
-    public void setUserPassPurchased(Collection<UserPassPurchased> userPassPurchased) {
-        this.userPassPurchased = userPassPurchased;
-    }
-
-    public Collection<UserOutletOfferPurchased> getUserOutletOfferPurchased() {
-        return userOutletOfferPurchased;
-    }
-
-    public void setUserOutletOfferPurchased(Collection<UserOutletOfferPurchased> userOutletOfferPurchased) {
-        this.userOutletOfferPurchased = userOutletOfferPurchased;
     }
 
     public String getName() {
@@ -336,24 +308,6 @@ public class UserProfile implements Serializable, UserDetails {
 
     public void setUserAttempt(UserAttempt userAttemptsCollection) {
         this.userAttempt = userAttemptsCollection;
-    }
-
-    @XmlTransient
-    public UserCompanyInfo getUserCompanyInfo() {
-        return userCompanyInfo;
-    }
-
-    public void setUserCompanyInfo(UserCompanyInfo userCompanyInfo) {
-        this.userCompanyInfo = userCompanyInfo;
-    }
-
-    @XmlTransient
-    public UserOutletInfo getUserOutletInfo() {
-        return userOutletInfo;
-    }
-
-    public void setUserOutletInfo(UserOutletInfo userOutletInfo) {
-        this.userOutletInfo = userOutletInfo;
     }
 
     @Override

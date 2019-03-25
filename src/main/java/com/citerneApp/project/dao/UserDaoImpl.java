@@ -3,7 +3,6 @@ package com.citerneApp.project.dao;
 import com.citerneApp.api.commons.Logger;
 import com.citerneApp.project.helpermodel.UsersPagination;
 import com.citerneApp.project.model.Group;
-import com.citerneApp.project.model.UserPassPurchased;
 import com.citerneApp.project.model.UserProfile;
 import java.util.Date;
 import java.util.List;
@@ -54,10 +53,6 @@ public class UserDaoImpl extends AbstractDao<Long, UserProfile> implements UserD
             List<UserProfile> users = (List<UserProfile>) criteria.list();
             for (UserProfile user : users) {
                 Hibernate.initialize(user.getGroupCollection());
-                Hibernate.initialize(user.getUserOutletInfo());
-                Hibernate.initialize(user.getUserOutletInfo().getOutletCategoryCollection());
-                Hibernate.initialize(user.getUserOutletInfo().getUserOutletInfoImagesCollection());
-                Hibernate.initialize(user.getUserOutletInfo().getUserOutletInfoLocationsCollection());
             }
             return users;
         } catch (Exception ex) {
@@ -77,9 +72,6 @@ public class UserDaoImpl extends AbstractDao<Long, UserProfile> implements UserD
             List<UserProfile> users = (List<UserProfile>) criteria.list();
             for (UserProfile user : users) {
                 Hibernate.initialize(user.getGroupCollection());
-                Hibernate.initialize(user.getUserCompanyInfo());
-                Hibernate.initialize(user.getUserCompanyInfo().getUserCompanyInfoImagesCollection());
-                Hibernate.initialize(user.getUserCompanyInfo().getUserCompanyInfoLocationsCollection());
             }
             return users;
         } catch (Exception ex) {
@@ -136,17 +128,6 @@ public class UserDaoImpl extends AbstractDao<Long, UserProfile> implements UserD
             for (Group group : user.getGroupCollection()) {
                 Hibernate.initialize(group.getRoleCollection());
             }
-            Hibernate.initialize(user.getUserCompanyInfo());
-            Hibernate.initialize(user.getUserOutletInfo());
-            if (user.getUserCompanyInfo() != null) {
-                Hibernate.initialize(user.getUserCompanyInfo().getUserCompanyInfoImagesCollection());
-                Hibernate.initialize(user.getUserCompanyInfo().getUserCompanyInfoLocationsCollection());
-            } else if (user.getUserOutletInfo() != null) {
-                Hibernate.initialize(user.getUserOutletInfo().getUserOutletInfoImagesCollection());
-                Hibernate.initialize(user.getUserOutletInfo().getUserOutletInfoLocationsCollection());
-            } else {
-                Hibernate.initialize(user.getUserPassPurchased());
-            }
             return user;
         } catch (Exception ex) {
             Logger.ERROR("1- Error UserDao 5 on API [" + ex.getMessage() + "]", id, "");
@@ -165,10 +146,6 @@ public class UserDaoImpl extends AbstractDao<Long, UserProfile> implements UserD
                 Hibernate.initialize(user.getAuthorities());
                 Hibernate.initialize(user.getGroupCollection());
                 Hibernate.initialize(user.getLanguage());
-                Hibernate.initialize(user.getUserPassPurchased());
-                for (UserPassPurchased userPassPurchased : user.getUserPassPurchased()) {
-                    Hibernate.initialize(userPassPurchased.getAdminPasses().getUserOutletOfferCollection());
-                }
                 for (Group group : user.getGroupCollection()) {
                     Hibernate.initialize(group.getRoleCollection());
                 }
