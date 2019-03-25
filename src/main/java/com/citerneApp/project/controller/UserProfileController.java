@@ -49,7 +49,7 @@ public class UserProfileController extends AbstractController {
         return ResponseBuilder.getInstance()
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("users", userService.getUsers(excludeLoggedInUserID, user.getType(), user.getParentId()))
+                .addHttpResponseEntityData("users", userService.getUsers(excludeLoggedInUserID, user.getType()))
                 .returnClientResponse();
     }
 
@@ -134,7 +134,6 @@ public class UserProfileController extends AbstractController {
             }
             if (loggedInUser.getType() == 1) {
                 userProfile.setType(3);
-                userProfile.setParentId(loggedInUser.getId());
             }
             if ((loggedInUser.getType() == 0 || loggedInUser.getType() == 99) && userProfile.getType() == null) {
                 responseBodyEntity = ResponseBuilder.getInstance()

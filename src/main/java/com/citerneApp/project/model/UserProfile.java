@@ -62,21 +62,6 @@ public class UserProfile implements Serializable, UserDetails {
     @ValidName
     private String name;
 
-    @Transient
-    private Long packageId;
-    
-    @Basic(optional = false)
-    @Column(name = "QR_CODE_PATH")
-    private String qrCodePath;
-
-    @Basic(optional = false)
-    @Column(name = "COUNTRY")
-    private Integer country;
-
-    @Basic(optional = false)
-    @Column(name = "PARENT_ID")
-    private Long parentId;
-
     @Basic(optional = false)
     @Column(name = "TYPE")
     private Integer type;
@@ -92,10 +77,6 @@ public class UserProfile implements Serializable, UserDetails {
     @Column(name = "PASSWORD")
     @JsonIgnore
     private String password;
-
-    @Basic(optional = false)
-    @Column(name = "MOBILE_NUMBER")
-    private String mobileNumber;
 
     @Basic(optional = false)
     @Column(name = "JOB_TITLE")
@@ -171,14 +152,6 @@ public class UserProfile implements Serializable, UserDetails {
         this.id = id;
     }
 
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
     public String getName() {
         return name;
     }
@@ -195,22 +168,6 @@ public class UserProfile implements Serializable, UserDetails {
         this.type = type;
     }
 
-    public Integer getCountry() {
-        return country;
-    }
-
-    public void setCountry(Integer country) {
-        this.country = country;
-    }
-
-    public String getQrCodePath() {
-        return qrCodePath;
-    }
-
-    public void setQrCodePath(String qrCodePath) {
-        this.qrCodePath = qrCodePath;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -225,14 +182,6 @@ public class UserProfile implements Serializable, UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
-
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
     }
 
     public String getJobTitle() {
@@ -367,7 +316,6 @@ public class UserProfile implements Serializable, UserDetails {
 
     public void setUserAuthorities(Collection<Role> roles) {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
         for (Group group : this.getGroupCollection()) {
             for (Role role : group.getRoleCollection()) {
                 authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRole()));
@@ -414,7 +362,6 @@ public class UserProfile implements Serializable, UserDetails {
                 + "\"name\" : \"" + name + "\","
                 + "\"email\" : \"" + email + "\","
                 + "\"jobTitle\" : \"" + jobTitle + "\","
-                + "\"mobileNumber\" : \"" + mobileNumber + "\","
                 + "\"enabled\" : \"" + enabled + "\","
                 + "\"language\" : \"" + languageString + "\","
                 + "\"userProfileNotificationEventCollection\" : \"" + userProfileNotificationEventCollectionString + "\","

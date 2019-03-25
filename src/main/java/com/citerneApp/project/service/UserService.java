@@ -11,7 +11,7 @@ import javax.mail.internet.AddressException;
 
 public interface UserService {
 
-    List<UserProfile> getUsers(Long excludeLoggedInUserID, Integer type, Long headID);
+    List<UserProfile> getUsers(Long excludeLoggedInUserID, Integer type);
 
     List<UserProfile> getOutletUsers();
 

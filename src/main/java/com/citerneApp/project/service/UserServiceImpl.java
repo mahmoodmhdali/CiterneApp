@@ -67,8 +67,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
     QRCodeGenerator qRCodeGenerator;
 
     @Override
-    public List<UserProfile> getUsers(Long excludeLoggedInUserID, Integer type, Long headID) {
-        return userDao.getUsers(excludeLoggedInUserID, type, headID);
+    public List<UserProfile> getUsers(Long excludeLoggedInUserID, Integer type) {
+        return userDao.getUsers(excludeLoggedInUserID, type);
     }
 
     @Override
@@ -148,12 +148,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     @Override
     public ResponseBodyEntity addUser(UserProfile user) throws AddressException {
-        user.setCountry(1);
         user.setEnabled(true);
         user.setCreatedDate(new Date());
-
         UserProfile persistantUser = userDao.getUser(user.getEmail());
-
         if (persistantUser != null) {
             if (user.getType() == 3 && (persistantUser.getType() == 3 || persistantUser.getType() == 4)) {
                 return ResponseBuilder.getInstance().
@@ -166,22 +163,6 @@ public class UserServiceImpl extends AbstractService implements UserService {
                         .addHttpResponseEntityData("email", "Email already taken")
                         .getResponse();
             }
-        }
-
-        Long msisdnLength = (Long) settingsEngine.getFirstLevelSetting("MSISDN_LENGTH");
-        if (user.getMobileNumber().length() != msisdnLength) {
-            return ResponseBuilder.getInstance()
-                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                    .addHttpResponseEntityData("mobileNumber", this.getMessageBasedOnLanguage("user.msisdnLength", new Object[]{msisdnLength}))
-                    .getResponse();
-        }
-
-        // Check if mobile number is unique
-        if (userDao.filterByMobileNumber(user.getMobileNumber()) != null) {
-            return ResponseBuilder.getInstance()
-                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                    .addHttpResponseEntityData("mobileNumber", this.getMessageBasedOnLanguage("user.msisdnTaken", null))
-                    .getResponse();
         }
 
         user.setEmail(user.getEmail().trim().toLowerCase());
@@ -261,12 +242,6 @@ public class UserServiceImpl extends AbstractService implements UserService {
         } catch (Exception ex) {
             Logger.ERROR("1- Error addUser 2 on API [" + ex.getMessage() + "]", user.getEmail(), "");
         }
-        try {
-            qRCodeGenerator.generateQRCodeImage(user.getId().toString(), 350, 350);
-            user.setQrCodePath("/QRCodes/" + user.getId().toString() + ".png");
-        } catch (Exception ex) {
-            Logger.ERROR("1- Error addUser 3 on API [" + ex.getMessage() + "]", user.getId(), "");
-        }
         return ResponseBuilder.getInstance().
                 setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                 .addHttpResponseEntityData("user", user)
@@ -314,27 +289,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
             }
         }
 
-        Long msisdnLength = (Long) settingsEngine.getFirstLevelSetting("MSISDN_LENGTH");
-        if (user.getMobileNumber().length() != msisdnLength) {
-            return ResponseBuilder.getInstance()
-                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                    .addHttpResponseEntityData("mobileNumber", this.getMessageBasedOnLanguage("user.msisdnLength", new Object[]{msisdnLength}))
-                    .getResponse();
-        }
-
-        // Check if mobile number is unique
-        if (persistantUser.getMobileNumber() != null && !persistantUser.getMobileNumber().equals(user.getMobileNumber())) {
-            if (userDao.filterByMobileNumber(user.getMobileNumber()) != null) {
-                return ResponseBuilder.getInstance()
-                        .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                        .addHttpResponseEntityData("mobileNumber", this.getMessageBasedOnLanguage("user.msisdnTaken", null))
-                        .getResponse();
-            }
-        }
-
         persistantUser.setName(user.getName());
         persistantUser.setEmail(user.getEmail().toLowerCase());
-        persistantUser.setMobileNumber(user.getMobileNumber());
         persistantUser.setLanguage(languageService.getLanguage(Long.parseLong("1")));
 
         if (null != persistantUser.getType()) {
@@ -459,28 +415,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
                     .setHttpResponseEntityResultDescription(this.getMessageBasedOnLanguage("user.unknownOrDeleted", null))
                     .getResponse();
         }
-
-        Long msisdnLength = (Long) settingsEngine.getFirstLevelSetting("MSISDN_LENGTH");
-        if (user.getMobileNumber().length() != msisdnLength) {
-            return ResponseBuilder.getInstance()
-                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                    .addHttpResponseEntityData("mobileNumber", this.getMessageBasedOnLanguage("user.msisdnLength", new Object[]{msisdnLength}))
-                    .getResponse();
-        }
-
-        // Check if mobile number is unique
-        if (persistantUser.getMobileNumber() != null && !persistantUser.getMobileNumber().equals(user.getMobileNumber())) {
-            if (userDao.filterByMobileNumber(user.getMobileNumber()) != null) {
-                return ResponseBuilder.getInstance()
-                        .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                        .addHttpResponseEntityData("mobileNumber", this.getMessageBasedOnLanguage("user.msisdnTaken", null))
-                        .getResponse();
-            }
-        }
-
         persistantUser.setName(user.getName());
-        persistantUser.setMobileNumber(user.getMobileNumber());
-
         return ResponseBuilder.getInstance()
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                 .addHttpResponseEntityData("user", persistantUser)

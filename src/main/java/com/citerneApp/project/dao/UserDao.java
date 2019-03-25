@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface UserDao {
 
-    List<UserProfile> getUsers(Long excludeLoggedInUserID, Integer type, Long headID);
+    List<UserProfile> getUsers(Long excludeLoggedInUserID, Integer type);
 
     List<UserProfile> getOutletUsers();
 

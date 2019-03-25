@@ -17,15 +17,9 @@ import org.springframework.stereotype.Repository;
 public class UserDaoImpl extends AbstractDao<Long, UserProfile> implements UserDao {
 
     @Override
-    public List<UserProfile> getUsers(Long excludeLoggedInUserID, Integer type, Long headID) {
+    public List<UserProfile> getUsers(Long excludeLoggedInUserID, Integer type) {
         try {
             Criteria criteria = createEntityCriteria();
-            if (type == 1) {
-                criteria.add(Restrictions.eq("parentId", headID));
-            }
-            if (type == 2 || type == 3 || type == 4) {
-                return null;
-            }
             criteria.addOrder(Order.asc("name"));
             criteria.add(Restrictions.ne("id", excludeLoggedInUserID)); // To avoid including logged in user
             criteria.add(Restrictions.ne("type", 99));
