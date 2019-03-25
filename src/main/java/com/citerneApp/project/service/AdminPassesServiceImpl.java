@@ -1,0 +1,171 @@
+package com.citerneApp.project.service;
+
+import com.citerneApp.api.commons.ContextHolder;
+import com.citerneApp.api.commons.Logger;
+import com.citerneApp.project.dao.AdminPassesDao;
+import com.citerneApp.project.helpermodel.AdminPassesPagination;
+import com.citerneApp.project.helpermodel.ResponseBodyEntity;
+import com.citerneApp.project.helpermodel.ResponseBuilder;
+import com.citerneApp.project.helpermodel.ResponseCode;
+import com.citerneApp.project.model.AdminPasses;
+import com.citerneApp.project.model.UserOutletOffer;
+import com.citerneApp.project.model.UserProfile;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+@Service("adminPassesService")
+@Transactional
+public class AdminPassesServiceImpl extends AbstractService implements AdminPassesService {
+
+    @Autowired
+    AdminPassesDao adminPassesDao;
+
+    @Autowired
+    ContextHolder context;
+
+    @Autowired
+    UserOutletOfferService userOutletOfferService;
+
+    @Override
+    public List<AdminPasses> getAdminPasses() {
+        return adminPassesDao.getAdminPasses();
+    }
+
+    @Override
+    public AdminPassesPagination getAdminPassesPagination(int pageNumber, int maxRes) {
+        return adminPassesDao.getAdminPassesPagination(pageNumber, maxRes);
+    }
+
+    @Override
+    public AdminPasses getAdminPasse(Long id) {
+        return adminPassesDao.getAdminPasse(id);
+    }
+
+    @Override
+    public ResponseBodyEntity addPass(AdminPasses adminPass, MultipartFile image1) throws IOException {
+//        if (userOutletOfferDao.getUserOutletOfferByName(userOutletOffer.getName()) != null) {
+//            return ResponseBuilder.getInstance()
+//                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
+//                    .addHttpResponseEntityData("name", "Offer Name already taken")
+//                    .getResponse();
+//        }
+        UserProfile loggedInUser = getAuthenticatedUser();
+        if (image1 != null) {
+            String extension = FilenameUtils.getExtension(image1.getOriginalFilename()).toLowerCase();
+            if (!extension.equals("jpg") && !extension.equals("jpeg") && !extension.equals("png")) {
+                return ResponseBuilder.getInstance()
+                        .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
+                        .addHttpResponseEntityData("imageName1", "Please upload .jpg .jpeg or png images only.")
+                        .getResponse();
+            }
+        }
+        String locationfile = context.getCatalina().getCatalinaWorkInstanceDir() + "/PackagesImages";
+        Path dir = Paths.get(locationfile);
+        if (image1 != null) {
+            String imageExtension = FilenameUtils.getExtension(image1.getOriginalFilename());
+            if (imageExtension.toLowerCase().equals("jpg") || imageExtension.toLowerCase().equals("jpeg") || imageExtension.toLowerCase().equals("png")) {
+                try {
+                    String fileName = loggedInUser.getId() + "-" + System.currentTimeMillis() + "-1." + imageExtension;
+                    Path originalFile = dir.resolve(fileName);
+                    Files.copy(image1.getInputStream(), originalFile, StandardCopyOption.REPLACE_EXISTING);
+                    adminPass.setFileName(image1.getOriginalFilename().replace("." + FilenameUtils.getExtension(image1.getOriginalFilename()), ""));
+                    adminPass.setImagePath("/PackagesImages/" + fileName);
+                } catch (Exception ex) {
+                    Logger.ERROR("1- Error addPass 1 on API [" + ex.getMessage() + "]", "", "");
+                }
+            } else {
+                return ResponseBuilder.getInstance()
+                        .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
+                        .addHttpResponseEntityData("imageName1", "Please upload .jpg .jpeg or png images only.")
+                        .getResponse();
+            }
+        }
+
+        Collection<UserOutletOffer> userOutletOffers = new ArrayList<>();
+        for (UserOutletOffer userOutletOffer : adminPass.getUserOutletOfferCollection()) {
+            userOutletOffers.add(userOutletOfferService.getUserOutletOffer(userOutletOffer.getId()));
+        }
+        adminPass.setUserOutletOfferCollection(userOutletOffers);
+
+        adminPassesDao.addAdminPasse(adminPass);
+        return ResponseBuilder.getInstance().
+                setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                .addHttpResponseEntityData("package", "Success adding package")
+                .getResponse();
+    }
+
+    @Override
+    public ResponseBodyEntity editPass(AdminPasses adminPass, MultipartFile image1) throws IOException {
+        AdminPasses persistantAdminPasse = adminPassesDao.getAdminPasse(adminPass.getId());
+        if (persistantAdminPasse != null) {
+            UserProfile loggedInUser = getAuthenticatedUser();
+            persistantAdminPasse.setName(adminPass.getName());
+            persistantAdminPasse.setDescription(adminPass.getDescription());
+            if (image1 != null) {
+                String extension = FilenameUtils.getExtension(image1.getOriginalFilename()).toLowerCase();
+                if (!extension.equals("jpg") && !extension.equals("jpeg") && !extension.equals("png")) {
+                    return ResponseBuilder.getInstance()
+                            .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
+                            .addHttpResponseEntityData("imageName1", "Please upload .jpg .jpeg or png images only.")
+                            .getResponse();
+                }
+            }
+
+            Collection<UserOutletOffer> userOutletOffers = new ArrayList<>();
+            for (UserOutletOffer userOutletOffer : adminPass.getUserOutletOfferCollection()) {
+                userOutletOffers.add(userOutletOfferService.getUserOutletOffer(userOutletOffer.getId()));
+            }
+
+            persistantAdminPasse.setUserOutletOfferCollection(userOutletOffers);
+
+            String locationfile = context.getCatalina().getCatalinaWorkInstanceDir() + "/PackagesImages";
+            Path dir = Paths.get(locationfile);
+            if (image1 != null) {
+                String toRemoveImage = persistantAdminPasse.getImagePath();
+                String imageExtension = FilenameUtils.getExtension(image1.getOriginalFilename());
+                String fileName = loggedInUser.getId() + "-" + System.currentTimeMillis() + "-1." + imageExtension;
+                Path originalFile = dir.resolve(fileName);
+                Files.copy(image1.getInputStream(), originalFile, StandardCopyOption.REPLACE_EXISTING);
+                persistantAdminPasse.setFileName(image1.getOriginalFilename().replace("." + FilenameUtils.getExtension(image1.getOriginalFilename()), ""));
+                persistantAdminPasse.setImagePath("/PackagesImages/" + fileName);
+                if (toRemoveImage != null) {
+                    Path oldFile = dir.resolve(toRemoveImage.replace("/PackagesImages/", ""));
+                    Files.delete(oldFile);
+                }
+            } else if (image1 == null && adminPass.getImageName1().equals("")) {
+                String toRemoveImage = persistantAdminPasse.getImagePath();
+                persistantAdminPasse.setFileName(null);
+                persistantAdminPasse.setImagePath(null);
+                if (toRemoveImage != null) {
+                        Path oldFile = dir.resolve(toRemoveImage.replace("/PackagesImages/", ""));
+                    try {
+                        Files.delete(oldFile);
+                    } catch (Exception ex) {
+                        Logger.ERROR("1- Error editPass 1 on API [" + ex.getMessage() + "]", oldFile, "");
+                    }
+                }
+            }
+            return ResponseBuilder.getInstance().
+                    setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                    .addHttpResponseEntityData("Package", "Success editing package")
+                    .getResponse();
+        } else {
+            return ResponseBuilder.getInstance().
+                    setHttpResponseEntityResultCode(ResponseCode.SOURCE_NOT_FOUND)
+                    .addHttpResponseEntityData("Message", "Package not found")
+                    .getResponse();
+        }
+    }
+
+}
