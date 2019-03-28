@@ -1,11 +1,13 @@
 package com.citerneApp.project.dao;
 
+import com.citerneApp.project.helpermodel.EventClassPagination;
 import com.citerneApp.project.helpermodel.HomePageEvents;
 import com.citerneApp.project.model.EventClass;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.DateType;
@@ -31,10 +33,10 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
 //                + "INNER JOIN tbl_event_class_category c ON T.category=c.id\n"
 //                + "WHERE row_number<=3")
 //                .setResultTransformer(Transformers.aliasToBean(EventClass.class));
-        Query query = createSqlQuery("SELECT a.id as id, a.title as title, a.categoryName as categoryName,a.duration as duration, p.name as profileName, t.name as typeName, i.path as mainImage, c.name as countryName,\n"
+        Query query = createSqlQuery("SELECT a.id as id, a.title as title, a.ticketingURL as ticketingURL, a.categoryName as categoryName,a.duration as duration, p.name as profileName, t.name as typeName, i.path as mainImage, c.name as countryName,\n"
                 + "s.CLASS_DAY_INDEX as classDayIndex, s.TIME as time, s.SHOW_DATETIME as showDateTime\n"
                 + "from (\n"
-                + "SELECT T.ID as id, T.TITLE as title, c.name as categoryName,T.DURATION as duration, T.AUTHOR as author, T.TYPE as type, T.COUNTRY as country\n"
+                + "SELECT T.ID as id, T.TITLE as title, T.TICKETING_URL as ticketingURL, c.name as categoryName,T.DURATION as duration, T.AUTHOR as author, T.TYPE as type, T.COUNTRY as country\n"
                 + "FROM ( SELECT * ,\n"
                 + "@num \\:= IF(@category= p.category, @num + 1, 1) AS row_number,\n"
                 + "@category \\:= p.category AS dummy\n"
@@ -52,6 +54,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                 + "order by categoryName,title")
                 .addScalar("id", new LongType())
                 .addScalar("title", new StringType())
+                .addScalar("ticketingURL", new StringType())
                 .addScalar("categoryName", new StringType())
                 .addScalar("duration", new IntegerType())
                 .addScalar("profileName", new StringType())
@@ -70,7 +73,33 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.isNull("deletedDate"));
         List<EventClass> eventClasses = (List<EventClass>) criteria.list();
+        for (EventClass eventClass : eventClasses) {
+            Hibernate.initialize(eventClass.getEventClassImages());
+            Hibernate.initialize(eventClass.getEventClassSchedules());
+        }
         return eventClasses;
+    }
+
+    @Override
+    public EventClassPagination getEventClassesPagination(int pageNumber, int maxRes) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.isNull("deletedDate"));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.setProjection(Projections.rowCount());
+        Number totalResults = (Number) criteria.uniqueResult();
+        criteria.setProjection(null);
+        criteria.setResultTransformer(Criteria.ROOT_ENTITY);
+        criteria.setFirstResult((pageNumber - 1) * maxRes);
+        criteria.setMaxResults(maxRes);
+        List<EventClass> eventClasses = (List<EventClass>) criteria.list();
+        for (EventClass eventClass : eventClasses) {
+            Hibernate.initialize(eventClass.getEventClassImages());
+            Hibernate.initialize(eventClass.getEventClassSchedules());
+        }
+        int currentPage = pageNumber;
+        int maxPages = (int) Math.ceil((double) ((double) totalResults.intValue() / (double) maxRes));
+        EventClassPagination eventClassPagination = new EventClassPagination(maxPages, currentPage, totalResults.intValue(), eventClasses);
+        return eventClassPagination;
     }
 
     @Override
@@ -80,7 +109,35 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         criteria.createAlias("eventClassCategory", "category");
         criteria.add(Restrictions.eq("category.id", categoryID));
         List<EventClass> eventClasses = (List<EventClass>) criteria.list();
+        for (EventClass eventClass : eventClasses) {
+            Hibernate.initialize(eventClass.getEventClassImages());
+            Hibernate.initialize(eventClass.getEventClassSchedules());
+        }
         return eventClasses;
+    }
+
+    @Override
+    public EventClassPagination getEventClassesPaginationByCategory(Long categoryID, int pageNumber, int maxRes) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.isNull("deletedDate"));
+        criteria.createAlias("eventClassCategory", "category");
+        criteria.add(Restrictions.eq("category.id", categoryID));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);  // To avoid duplicates.
+        criteria.setProjection(Projections.rowCount());
+        Number totalResults = (Number) criteria.uniqueResult();
+        criteria.setProjection(null);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.setFirstResult((pageNumber - 1) * maxRes);
+        criteria.setMaxResults(maxRes);
+        List<EventClass> eventClasses = (List<EventClass>) criteria.list();
+        for (EventClass eventClass : eventClasses) {
+            Hibernate.initialize(eventClass.getEventClassImages());
+            Hibernate.initialize(eventClass.getEventClassSchedules());
+        }
+        int currentPage = pageNumber;
+        int maxPages = (int) Math.ceil((double) ((double) totalResults.intValue() / (double) maxRes));
+        EventClassPagination eventClassPagination = new EventClassPagination(maxPages, currentPage, totalResults.intValue(), eventClasses);
+        return eventClassPagination;
     }
 
     @Override
@@ -90,7 +147,35 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         criteria.createAlias("profile", "profile");
         criteria.add(Restrictions.eq("profile.id", profileID));
         List<EventClass> eventClasses = (List<EventClass>) criteria.list();
+        for (EventClass eventClass : eventClasses) {
+            Hibernate.initialize(eventClass.getEventClassImages());
+            Hibernate.initialize(eventClass.getEventClassSchedules());
+        }
         return eventClasses;
+    }
+
+    @Override
+    public EventClassPagination getEventClassesPaginationByProfile(Long profileID, int pageNumber, int maxRes) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.isNull("deletedDate"));
+        criteria.createAlias("profile", "profile");
+        criteria.add(Restrictions.eq("profile.id", profileID));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);  // To avoid duplicates.
+        criteria.setProjection(Projections.rowCount());
+        Number totalResults = (Number) criteria.uniqueResult();
+        criteria.setProjection(null);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.setFirstResult((pageNumber - 1) * maxRes);
+        criteria.setMaxResults(maxRes);
+        List<EventClass> eventClasses = (List<EventClass>) criteria.list();
+        for (EventClass eventClass : eventClasses) {
+            Hibernate.initialize(eventClass.getEventClassImages());
+            Hibernate.initialize(eventClass.getEventClassSchedules());
+        }
+        int currentPage = pageNumber;
+        int maxPages = (int) Math.ceil((double) ((double) totalResults.intValue() / (double) maxRes));
+        EventClassPagination eventClassPagination = new EventClassPagination(maxPages, currentPage, totalResults.intValue(), eventClasses);
+        return eventClassPagination;
     }
 
     @Override
@@ -100,7 +185,35 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         criteria.createAlias("eventClassType", "type");
         criteria.add(Restrictions.eq("type.id", typeID));
         List<EventClass> eventClasses = (List<EventClass>) criteria.list();
+        for (EventClass eventClass : eventClasses) {
+            Hibernate.initialize(eventClass.getEventClassImages());
+            Hibernate.initialize(eventClass.getEventClassSchedules());
+        }
         return eventClasses;
+    }
+
+    @Override
+    public EventClassPagination getEventClassesPaginationByType(Long typeID, int pageNumber, int maxRes) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.isNull("deletedDate"));
+        criteria.createAlias("eventClassType", "type");
+        criteria.add(Restrictions.eq("type.id", typeID));
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);  // To avoid duplicates.
+        criteria.setProjection(Projections.rowCount());
+        Number totalResults = (Number) criteria.uniqueResult();
+        criteria.setProjection(null);
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.setFirstResult((pageNumber - 1) * maxRes);
+        criteria.setMaxResults(maxRes);
+        List<EventClass> eventClasses = (List<EventClass>) criteria.list();
+        for (EventClass eventClass : eventClasses) {
+            Hibernate.initialize(eventClass.getEventClassImages());
+            Hibernate.initialize(eventClass.getEventClassSchedules());
+        }
+        int currentPage = pageNumber;
+        int maxPages = (int) Math.ceil((double) ((double) totalResults.intValue() / (double) maxRes));
+        EventClassPagination eventClassPagination = new EventClassPagination(maxPages, currentPage, totalResults.intValue(), eventClasses);
+        return eventClassPagination;
     }
 
     @Override
@@ -109,6 +222,8 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         criteria.add(Restrictions.isNull("deletedDate"));
         criteria.add(Restrictions.eq("id", id));
         EventClass eventClass = (EventClass) criteria.uniqueResult();
+        Hibernate.initialize(eventClass.getEventClassImages());
+        Hibernate.initialize(eventClass.getEventClassSchedules());
         Hibernate.initialize(eventClass.getEventClassCastAndCredits());
         Hibernate.initialize(eventClass.getEventClassMedias());
         return eventClass;

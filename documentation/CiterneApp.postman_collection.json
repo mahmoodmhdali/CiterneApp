@@ -37,6 +37,159 @@
 					"response": []
 				},
 				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/eventClasses",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"eventClasses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All (Paging)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/CiterneApp/eventClasses/paging/1/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"CiterneApp",
+								"eventClasses",
+								"paging",
+								"1",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Category (Paging)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/CiterneApp/eventClasses/paging/category/1/1/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"CiterneApp",
+								"eventClasses",
+								"paging",
+								"category",
+								"1",
+								"1",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Profile (Paging)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/CiterneApp/eventClasses/paging/profile/1/1/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"CiterneApp",
+								"eventClasses",
+								"paging",
+								"profile",
+								"1",
+								"1",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Type (Paging)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/CiterneApp/eventClasses/paging/type/1/1/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"CiterneApp",
+								"eventClasses",
+								"paging",
+								"type",
+								"1",
+								"1",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get For Home",
 					"request": {
 						"method": "GET",
@@ -150,6 +303,39 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "Subscription",
+			"item": [
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/eventClasses/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"eventClasses",
+								"1"
+							]
+						}
+					},
+					"response": []
 				},
 				{
 					"name": "Get All",
@@ -177,23 +363,29 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "Subscription",
-			"item": [
+				},
 				{
-					"name": "Get By ID",
+					"name": "Add subscription",
 					"request": {
-						"method": "GET",
-						"header": [],
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
 						"body": {
-							"mode": "raw",
-							"raw": ""
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "mahmoudmhdali@gmail.com1",
+									"type": "text"
+								}
+							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8084/CiterneApp/subscriptions/1",
+							"raw": "http://127.0.0.1:8080/CiterneApp/subscriptions/add",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -201,59 +393,38 @@
 								"0",
 								"1"
 							],
-							"port": "8084",
+							"port": "8080",
 							"path": [
 								"CiterneApp",
 								"subscriptions",
-								"1"
+								"add"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get All",
+					"name": "Delete Subscription",
 					"request": {
-						"method": "GET",
-						"header": [],
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
 						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8084/CiterneApp/subscriptions",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8084",
-							"path": [
-								"CiterneApp",
-								"subscriptions"
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "mahmoudmhdali@gmail.com1",
+									"type": "text"
+								}
 							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Profiles",
-			"item": [
-				{
-					"name": "Get By ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8084/CiterneApp/profiles/1",
+							"raw": "http://127.0.0.1:8080/CiterneApp/subscriptions/delete",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -261,98 +432,11 @@
 								"0",
 								"1"
 							],
-							"port": "8084",
+							"port": "8080",
 							"path": [
 								"CiterneApp",
-								"profiles",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get All",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8084/CiterneApp/profiles",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8084",
-							"path": [
-								"CiterneApp",
-								"profiles"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Favorites",
-			"item": [
-				{
-					"name": "Get By ID",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8084/CiterneApp/favorites/1",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8084",
-							"path": [
-								"CiterneApp",
-								"favorites",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get All",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8084/CiterneApp/favorites",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8084",
-							"path": [
-								"CiterneApp",
-								"favorites"
+								"subscriptions",
+								"delete"
 							]
 						}
 					},
@@ -1101,6 +1185,186 @@
 			]
 		},
 		{
+			"name": "Subscription",
+			"item": [
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/subscriptions/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"subscriptions",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/subscriptions",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profiles",
+			"item": [
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/profiles/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"profiles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/profiles",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"profiles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Favorites",
+			"item": [
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/favorites/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"favorites",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/favorites",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"favorites"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "LOGIN",
 			"request": {
 				"method": "POST",
@@ -1112,7 +1376,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\"email\": \"admin@CiterneApp.com\", \"password\": \"Admin123\"}"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:8084/CiterneApp/login",

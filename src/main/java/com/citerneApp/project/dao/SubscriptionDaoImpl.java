@@ -26,4 +26,18 @@ public class SubscriptionDaoImpl extends AbstractDao<Long, Subscription> impleme
         return subscription;
     }
 
+    @Override
+    public Subscription getSubscriptionByEmail(String email) {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.eq("email", email));
+        Subscription subscription = (Subscription) criteria.uniqueResult();
+        return subscription;
+    }
+
+    @Override
+    public Subscription addSubscription(Subscription subscription) {
+        persist(subscription);
+        return subscription;
+    }
+
 }

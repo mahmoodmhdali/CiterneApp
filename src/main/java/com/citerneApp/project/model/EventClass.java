@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -49,6 +48,11 @@ public class EventClass implements Serializable {
     @NotBlank(message = "validation.userProfile.titleRequired")
     @ValidName
     private String title;
+
+    @Basic(optional = false)
+    @Column(name = "TICKETING_URL")
+    @Size(max = 200, message = "validation.userProfile.ticketingURLRange")
+    private String ticketingURL;
 
     @JoinColumn(name = "CATEGORY", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -99,8 +103,8 @@ public class EventClass implements Serializable {
     @Column(name = "DURATION")
     private Integer duration;
 
-    @OneToMany(mappedBy = "eventClass", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<EventClassImage> eventClassImages;
+    @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
+    private Collection<EventClassImage> eventClassImages;
 
     @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
     private Collection<EventClassCastAndCredit> eventClassCastAndCredits;
@@ -108,8 +112,8 @@ public class EventClass implements Serializable {
     @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
     private Collection<EventClassMedia> eventClassMedias;
 
-    @OneToMany(mappedBy = "eventClass", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<EventClassSchedule> eventClassSchedules;
+    @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
+    private Collection<EventClassSchedule> eventClassSchedules;
 
     @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
     private Collection<Favorite> favorites;
@@ -217,7 +221,7 @@ public class EventClass implements Serializable {
         return eventClassImages;
     }
 
-    public void setEventClassImages(Set<EventClassImage> eventClassImages) {
+    public void setEventClassImages(Collection<EventClassImage> eventClassImages) {
         this.eventClassImages = eventClassImages;
     }
 
@@ -241,7 +245,7 @@ public class EventClass implements Serializable {
         return eventClassSchedules;
     }
 
-    public void setEventClassSchedules(Set<EventClassSchedule> eventClassSchedules) {
+    public void setEventClassSchedules(Collection<EventClassSchedule> eventClassSchedules) {
         this.eventClassSchedules = eventClassSchedules;
     }
 
@@ -251,6 +255,14 @@ public class EventClass implements Serializable {
 
     public void setFavorites(Collection<Favorite> favorites) {
         this.favorites = favorites;
+    }
+
+    public String getTicketingURL() {
+        return ticketingURL;
+    }
+
+    public void setTicketingURL(String ticketingURL) {
+        this.ticketingURL = ticketingURL;
     }
 
     @Override

@@ -45,6 +45,15 @@ public class EventClassController extends AbstractController {
                 .returnClientResponse();
     }
 
+    @GetMapping("/paging/{pageNumber}/{maxResult}")
+    public ResponseEntity getEventClassesPagination(@PathVariable Integer pageNumber, @PathVariable Integer maxResult) {
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                .addHttpResponseEntityData("passes", eventClassService.getEventClassesPagination(pageNumber, maxResult))
+                .returnClientResponse();
+    }
+
     @GetMapping("/home")
     public ResponseEntity getHomePageEventClasses() {
         List<HomePageEvents> formatedHomePageEvents = new ArrayList<>();
@@ -107,6 +116,15 @@ public class EventClassController extends AbstractController {
                 .returnClientResponse();
     }
 
+    @GetMapping("/paging/category/{id}/{pageNumber}/{maxResult}")
+    public ResponseEntity getEventClassesPaginationByCategory(@PathVariable Long id, @PathVariable Integer pageNumber, @PathVariable Integer maxResult) {
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                .addHttpResponseEntityData("passes", eventClassService.getEventClassesPaginationByCategory(id, pageNumber, maxResult))
+                .returnClientResponse();
+    }
+
     @GetMapping("/profile/{id}")
     public ResponseEntity getEventClassesByProfile(@PathVariable Long id) {
         List<EventClass> eventClasses = eventClassService.getEventClassesByProfile(id);
@@ -126,6 +144,15 @@ public class EventClassController extends AbstractController {
                 .returnClientResponse();
     }
 
+    @GetMapping("/paging/profile/{id}/{pageNumber}/{maxResult}")
+    public ResponseEntity getEventClassesPaginationByProfile(@PathVariable Long id, @PathVariable Integer pageNumber, @PathVariable Integer maxResult) {
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                .addHttpResponseEntityData("passes", eventClassService.getEventClassesPaginationByProfile(id, pageNumber, maxResult))
+                .returnClientResponse();
+    }
+
     @GetMapping("/type/{id}")
     public ResponseEntity getEventClassesByType(@PathVariable Long id) {
         List<EventClass> eventClasses = eventClassService.getEventClassesByType(id);
@@ -142,6 +169,15 @@ public class EventClassController extends AbstractController {
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                 .addHttpResponseEntityData("EventClass", eventClasses)
+                .returnClientResponse();
+    }
+
+    @GetMapping("/paging/type/{id}/{pageNumber}/{maxResult}")
+    public ResponseEntity getEventClassesPaginationByType(@PathVariable Long id, @PathVariable Integer pageNumber, @PathVariable Integer maxResult) {
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                .addHttpResponseEntityData("passes", eventClassService.getEventClassesPaginationByType(id, pageNumber, maxResult))
                 .returnClientResponse();
     }
 

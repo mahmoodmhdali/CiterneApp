@@ -9,4 +9,8 @@ public interface SubscriptionDao {
 
     Subscription getSubscription(Long id);
 
+    Subscription getSubscriptionByEmail(String email);
+
+    Subscription addSubscription(Subscription subscription);
+
 }

@@ -11,28 +11,30 @@ public class HomePageEvents {
     private Long id;
 
     private String title;
-    
+
     private String categoryName;
-    
+
+    private String ticketingURL;
+
     private Integer duration;
-    
+
     private String profileName;
-    
+
     private String typeName;
-    
+
     private String mainImage;
-    
+
     private String countryName;
-    
+
     @JsonIgnore
     private Integer classDayIndex;
-    
+
     @JsonIgnore
     private Date time;
-    
+
     @JsonIgnore
     private Date showDateTime;
-    
+
     private List<HomePageEventSchedule> eventSchedule;
 
     public Long getId() {
@@ -130,5 +132,13 @@ public class HomePageEvents {
     public void setEventSchedule(List<HomePageEventSchedule> eventSchedule) {
         this.eventSchedule = eventSchedule;
     }
-    
+
+    public String getTicketingURL() {
+        return ticketingURL;
+    }
+
+    public void setTicketingURL(String ticketingURL) {
+        this.ticketingURL = ticketingURL;
+    }
+
 }

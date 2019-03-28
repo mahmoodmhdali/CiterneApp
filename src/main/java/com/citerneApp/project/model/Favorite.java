@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -25,7 +24,6 @@ public class Favorite implements Serializable {
 
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID")
     @GenericGenerator(name = "SEQ_GEN", strategy = "com.citerneApp.project.model.SequenceIdGenerator")
     @GeneratedValue(generator = "SEQ_GEN")

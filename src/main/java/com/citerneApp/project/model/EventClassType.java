@@ -12,7 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -26,7 +25,6 @@ public class EventClassType implements Serializable {
 
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ID")
     @GenericGenerator(name = "SEQ_GEN", strategy = "com.citerneApp.project.model.SequenceIdGenerator")
     @GeneratedValue(generator = "SEQ_GEN")

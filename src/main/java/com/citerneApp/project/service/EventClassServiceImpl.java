@@ -1,6 +1,7 @@
 package com.citerneApp.project.service;
 
 import com.citerneApp.project.dao.EventClassDao;
+import com.citerneApp.project.helpermodel.EventClassPagination;
 import com.citerneApp.project.helpermodel.HomePageEvents;
 import com.citerneApp.project.model.EventClass;
 import java.util.List;
@@ -25,8 +26,18 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
     }
 
     @Override
+    public EventClassPagination getEventClassesPagination(int pageNumber, int maxRes) {
+        return eventClassDao.getEventClassesPagination(pageNumber, maxRes);
+    }
+
+    @Override
     public List<EventClass> getEventClassesByCategory(Long categoryID) {
         return eventClassDao.getEventClassesByCategory(categoryID);
+    }
+
+    @Override
+    public EventClassPagination getEventClassesPaginationByCategory(Long categoryID, int pageNumber, int maxRes) {
+        return eventClassDao.getEventClassesPaginationByCategory(categoryID, pageNumber, maxRes);
     }
 
     @Override
@@ -35,8 +46,18 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
     }
 
     @Override
+    public EventClassPagination getEventClassesPaginationByProfile(Long profileID, int pageNumber, int maxRes) {
+        return eventClassDao.getEventClassesPaginationByProfile(profileID, pageNumber, maxRes);
+    }
+
+    @Override
     public List<EventClass> getEventClassesByType(Long typeID) {
         return eventClassDao.getEventClassesByType(typeID);
+    }
+
+    @Override
+    public EventClassPagination getEventClassesPaginationByType(Long typeID, int pageNumber, int maxRes) {
+        return eventClassDao.getEventClassesPaginationByType(typeID, pageNumber, maxRes);
     }
 
     @Override
