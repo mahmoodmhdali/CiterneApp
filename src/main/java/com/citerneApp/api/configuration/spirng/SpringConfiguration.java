@@ -7,7 +7,6 @@ import com.citerneApp.api.configuration.converter.ReportConverter;
 import com.citerneApp.api.configuration.converter.ReportStyleConverter;
 import com.citerneApp.api.configuration.converter.RoleConverter;
 import com.citerneApp.api.configuration.converter.UserConverter;
-import com.citerneApp.api.configuration.converter.UserProfileNotificationEventConverter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
@@ -94,10 +93,6 @@ public class SpringConfiguration extends WebMvcConfigurerAdapter {
     LanguageConverter languageConverter;
 
     @Autowired
-    @Lazy
-    UserProfileNotificationEventConverter userProfileNotificationEventConverter;
-
-    @Autowired
     private ContextHolder context;
 
     /**
@@ -129,7 +124,6 @@ public class SpringConfiguration extends WebMvcConfigurerAdapter {
         registry.addConverter(reportStyleConverter);
         registry.addConverter(reportConverter);
         registry.addConverter(languageConverter);
-        registry.addConverter(userProfileNotificationEventConverter);
     }
 
     /**

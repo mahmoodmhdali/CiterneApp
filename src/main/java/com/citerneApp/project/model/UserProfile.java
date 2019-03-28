@@ -108,16 +108,19 @@ public class UserProfile implements Serializable, UserDetails {
     @Temporal(TemporalType.TIMESTAMP)
     private Date resetPasswordTokenValidity;
 
+    @JsonIgnore
     @CreationTimestamp
     @Column(name = "CREATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
+    @JsonIgnore
     @UpdateTimestamp
     @Column(name = "UPDATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
 
+    @JsonIgnore
     @Column(name = "DELETED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
@@ -128,9 +131,6 @@ public class UserProfile implements Serializable, UserDetails {
     @ManyToMany(fetch = FetchType.LAZY)
     private Collection<Group> groupCollection;
 
-    @OneToMany(mappedBy = "notificationEvents", cascade = CascadeType.ALL)
-    private List<UserProfileNotificationEvent> userProfileNotificationEventCollection;
-
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "userProfileId", cascade = CascadeType.ALL)
     private UserAttempt userAttempt;
 
@@ -139,6 +139,9 @@ public class UserProfile implements Serializable, UserDetails {
     @JoinColumn(name = "language_id", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Language language;
+
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL)
+    private Collection<Favorite> favorites;
 
     public UserProfile() {
     }
@@ -241,15 +244,6 @@ public class UserProfile implements Serializable, UserDetails {
     }
 
     @XmlTransient
-    public List<UserProfileNotificationEvent> getUserProfileNotificationEventCollection() {
-        return userProfileNotificationEventCollection;
-    }
-
-    public void setUserProfileNotificationEventCollection(List<UserProfileNotificationEvent> userProfileNotificationEventCollection) {
-        this.userProfileNotificationEventCollection = userProfileNotificationEventCollection;
-    }
-
-    @XmlTransient
     public UserAttempt getUserAttempt() {
         return userAttempt;
     }
@@ -313,6 +307,14 @@ public class UserProfile implements Serializable, UserDetails {
         this.language = language;
     }
 
+    public Collection<Favorite> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(Collection<Favorite> favorites) {
+        this.favorites = favorites;
+    }
+
     public void setUserAuthorities(Collection<Role> roles) {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         for (Group group : this.getGroupCollection()) {
@@ -349,10 +351,6 @@ public class UserProfile implements Serializable, UserDetails {
         if (Hibernate.isInitialized(language)) {
             languageString = Objects.toString(language);
         }
-        String userProfileNotificationEventCollectionString = "";
-        if (Hibernate.isInitialized(userProfileNotificationEventCollection)) {
-            userProfileNotificationEventCollectionString = Objects.toString(userProfileNotificationEventCollection);
-        }
         String groupCollectionString = "";
         if (Hibernate.isInitialized(groupCollection)) {
             groupCollectionString = Objects.toString(groupCollection);
@@ -363,7 +361,6 @@ public class UserProfile implements Serializable, UserDetails {
                 + "\"jobTitle\" : \"" + jobTitle + "\","
                 + "\"enabled\" : \"" + enabled + "\","
                 + "\"language\" : \"" + languageString + "\","
-                + "\"userProfileNotificationEventCollection\" : \"" + userProfileNotificationEventCollectionString + "\","
                 + "\"groupCollection\" : " + groupCollectionString + "}";
     }
 }

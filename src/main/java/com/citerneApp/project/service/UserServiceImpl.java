@@ -6,7 +6,6 @@ import com.citerneApp.api.commons.utils.SessionUtils;
 import com.citerneApp.api.commons.utils.Utils;
 import com.citerneApp.api.engine.SettingsEngine;
 import com.citerneApp.project.dao.UserDao;
-import com.citerneApp.project.dao.WebNotificationsDao;
 import com.citerneApp.project.helpermodel.ResponseBodyEntity;
 import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
@@ -16,7 +15,6 @@ import com.citerneApp.project.model.Group;
 import com.citerneApp.project.model.Language;
 import com.citerneApp.project.model.UserAttempt;
 import com.citerneApp.project.model.UserProfile;
-import com.citerneApp.project.model.WebNotifications;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -56,12 +54,6 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     @Autowired
     SettingsEngine settingsEngine;
-
-    @Autowired
-    UserProfileNotificationEventService userProfileNotificationEventService;
-
-    @Autowired
-    private WebNotificationsDao webNotificationsDao;
 
     @Autowired
     QRCodeGenerator qRCodeGenerator;
@@ -175,7 +167,6 @@ public class UserServiceImpl extends AbstractService implements UserService {
         user.setUserAttempt(userAttempt);
         userAttempt.setUserProfileId(user);
 
-        user.setUserProfileNotificationEventCollection(null);
         user.setLanguage(languageService.getLanguage(Long.parseLong("1")));
 
         Collection<Group> groupCollection = new ArrayList<>();
@@ -463,30 +454,5 @@ public class UserServiceImpl extends AbstractService implements UserService {
                 .addHttpResponseEntityData("user", persistantUser)
                 .getResponse();
     }
-
-    @Override
-    public void addNotification(WebNotifications webNotifcation) {
-        webNotificationsDao.add(webNotifcation);
-    }
-
-    @Override
-    public ResponseBodyEntity getWebNotifications(long userID, boolean all) {
-        return ResponseBuilder.getInstance().
-                setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("notifications", webNotificationsDao.getAll(userID, all))
-                .getResponse();
-    }
-
-    @Override
-    public ResponseBodyEntity getCountWebNotifications(long userID) {
-        return ResponseBuilder.getInstance().
-                setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("notifications", webNotificationsDao.getCountAll(userID))
-                .getResponse();
-    }
-
-    @Override
-    public void updateNotSeen(long userID) {
-        webNotificationsDao.updateNotSeen(userID);
-    }
+    
 }

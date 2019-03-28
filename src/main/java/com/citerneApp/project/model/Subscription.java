@@ -1,5 +1,6 @@
 package com.citerneApp.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.Date;
@@ -40,11 +41,13 @@ public class Subscription implements Serializable {
     @Email(message = "validation.Subscription.emailFormat")
     private String email;
 
+    @JsonIgnore
     @CreationTimestamp
     @Column(name = "CREATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
+    @JsonIgnore
     @Column(name = "DELETED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;

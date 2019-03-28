@@ -1,14 +1,22 @@
 package com.citerneApp.project.model;
 
 import com.citerneApp.project.model.validation.ValidName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,7 +29,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
-@Table(name = "TBL_EVENT_CLASSE")
+@Table(name = "TBL_EVENT_CLASS")
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class EventClass implements Serializable {
@@ -42,20 +50,21 @@ public class EventClass implements Serializable {
     @ValidName
     private String title;
 
-    @Basic(optional = false)
-    @Column(name = "CATEGORY")
-    @NotNull(message = "validation.userProfile.categoryRequired")
-    private Long category;
+    @JoinColumn(name = "CATEGORY", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    private EventClassCategory eventClassCategory;
 
-    @Basic(optional = false)
-    @Column(name = "TYPE")
-    @NotNull(message = "validation.userProfile.typeRequired")
-    private Long type;
+    @JoinColumn(name = "TYPE", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    private EventClassType eventClassType;
 
-    @Basic(optional = false)
-    @Column(name = "AUTHOR")
-    @NotNull(message = "validation.userProfile.authorRequired")
-    private Long author;
+    @JoinColumn(name = "COUNTRY", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    private EventClassType eventClassCountry;
+
+    @JoinColumn(name = "AUTHOR", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    private Profile profile;
 
     @Basic(optional = false)
     @Column(name = "ABOUT")
@@ -63,42 +72,48 @@ public class EventClass implements Serializable {
     @NotBlank(message = "validation.userProfile.aboutRequired")
     private String about;
 
+    @JsonIgnore
     @CreationTimestamp
     @Column(name = "CREATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
+    @JsonIgnore
     @UpdateTimestamp
     @Column(name = "UPDATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
 
+    @JsonIgnore
     @Column(name = "DELETED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
 
+    @JsonIgnore
     @Basic(optional = false)
     @NotNull
     @Column(name = "PUBLISHED")
     private boolean published = true;
 
-//    @JoinTable(name = "TBL_USER_PROFILE_GROUPS", inverseJoinColumns = {
-//        @JoinColumn(name = "GROUP_ID", referencedColumnName = "ID")}, joinColumns = {
-//        @JoinColumn(name = "USER_PROFILE_ID", referencedColumnName = "ID")})
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    private Collection<Group> groupCollection;
-//
-//    @OneToMany(mappedBy = "notificationEvents", cascade = CascadeType.ALL)
-//    private List<UserProfileNotificationEvent> userProfileNotificationEventCollection;
-//
-//    @OneToOne(fetch = FetchType.LAZY, mappedBy = "userProfileId", cascade = CascadeType.ALL)
-//    private UserAttempt userAttempt;
-//
-//    private transient Collection<GrantedAuthority> authorities;
-//
-//    @JoinColumn(name = "language_id", referencedColumnName = "ID")
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    private Language language;
+    @Basic(optional = false)
+    @Column(name = "DURATION")
+    private Integer duration;
+
+    @OneToMany(mappedBy = "eventClass", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<EventClassImage> eventClassImages;
+
+    @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
+    private Collection<EventClassCastAndCredit> eventClassCastAndCredits;
+
+    @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
+    private Collection<EventClassMedia> eventClassMedias;
+
+    @OneToMany(mappedBy = "eventClass", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<EventClassSchedule> eventClassSchedules;
+
+    @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
+    private Collection<Favorite> favorites;
+    
     public EventClass() {
     }
 
@@ -118,28 +133,36 @@ public class EventClass implements Serializable {
         this.title = title;
     }
 
-    public Long getCategory() {
-        return category;
+    public EventClassCategory getEventClassCategory() {
+        return eventClassCategory;
     }
 
-    public void setCategory(Long category) {
-        this.category = category;
+    public void setEventClassCategory(EventClassCategory eventClassCategory) {
+        this.eventClassCategory = eventClassCategory;
     }
 
-    public Long getType() {
-        return type;
+    public EventClassType getEventClassType() {
+        return eventClassType;
     }
 
-    public void setType(Long type) {
-        this.type = type;
+    public void setEventClassType(EventClassType eventClassType) {
+        this.eventClassType = eventClassType;
     }
 
-    public Long getAuthor() {
-        return author;
+    public EventClassType getEventClassCountry() {
+        return eventClassCountry;
     }
 
-    public void setAuthor(Long author) {
-        this.author = author;
+    public void setEventClassCountry(EventClassType eventClassCountry) {
+        this.eventClassCountry = eventClassCountry;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 
     public String getAbout() {
@@ -180,6 +203,54 @@ public class EventClass implements Serializable {
 
     public void setPublished(boolean published) {
         this.published = published;
+    }
+
+    public Integer getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
+    public Collection<EventClassImage> getEventClassImages() {
+        return eventClassImages;
+    }
+
+    public void setEventClassImages(Set<EventClassImage> eventClassImages) {
+        this.eventClassImages = eventClassImages;
+    }
+
+    public Collection<EventClassCastAndCredit> getEventClassCastAndCredits() {
+        return eventClassCastAndCredits;
+    }
+
+    public void setEventClassCastAndCredits(Collection<EventClassCastAndCredit> eventClassCastAndCredits) {
+        this.eventClassCastAndCredits = eventClassCastAndCredits;
+    }
+
+    public Collection<EventClassMedia> getEventClassMedias() {
+        return eventClassMedias;
+    }
+
+    public void setEventClassMedias(Collection<EventClassMedia> eventClassMedias) {
+        this.eventClassMedias = eventClassMedias;
+    }
+
+    public Collection<EventClassSchedule> getEventClassSchedules() {
+        return eventClassSchedules;
+    }
+
+    public void setEventClassSchedules(Set<EventClassSchedule> eventClassSchedules) {
+        this.eventClassSchedules = eventClassSchedules;
+    }
+
+    public Collection<Favorite> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(Collection<Favorite> favorites) {
+        this.favorites = favorites;
     }
 
     @Override

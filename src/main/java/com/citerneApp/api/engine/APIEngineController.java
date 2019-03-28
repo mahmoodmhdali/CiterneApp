@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class APIEngineController extends AbstractController {
 
     @Autowired
-    NotificationEngine notificationEngine;
-
-    @Autowired
     SettingsEngine settingsEngine;
 
     @Autowired
@@ -47,25 +44,6 @@ public class APIEngineController extends AbstractController {
         return ResponseBuilder.getInstance()
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .returnClientResponse();
-    }
-
-    @GetMapping("/refreshNotifications")
-    public ResponseEntity refreshNotifications() {
-        notificationEngine.loadNotifications();
-        return ResponseBuilder.getInstance()
-                .setHttpStatus(HttpStatus.OK)
-                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("success", "Notifications refreshed successfully")
-                .returnClientResponse();
-    }
-
-    @GetMapping("/testNotifications")
-    public ResponseEntity testNotifications() {
-        return ResponseBuilder.getInstance()
-                .setHttpStatus(HttpStatus.OK)
-                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("success", notificationEngine.getNotificationsMapping())
                 .returnClientResponse();
     }
 

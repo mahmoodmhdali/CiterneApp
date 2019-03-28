@@ -3,24 +3,26 @@ package com.citerneApp.project.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
-@Table(name = "TBL_EVENT_CLASS_TYPE")
+@Table(name = "TBL_EVENT_CLASS_CAST_AND_CREDIT")
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.ALWAYS)
-public class EventClassType implements Serializable {
+public class EventClassCastAndCredit implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,12 +35,21 @@ public class EventClassType implements Serializable {
     private Long id;
 
     @Basic(optional = false)
-    @Column(name = "NAME")
-    private String name;
+    @Column(name = "TITLE")
+    @Size(max = 20, message = "validation.CastAndCredit.titleRange")
+    @NotBlank(message = "validation.CastAndCredit.titleRequired")
+    private String title;
+
+    @Basic(optional = false)
+    @Column(name = "DESCRIPTION")
+    @Size(max = 1000, message = "validation.CastAndCredit.descriptionRange")
+    @NotBlank(message = "validation.CastAndCredit.descriptionRequired")
+    private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "eventClassType", cascade = CascadeType.ALL)
-    private Collection<EventClass> eventClasses;
+    @JoinColumn(name = "EVENT_CLASS", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private EventClass eventClass;
 
     public Long getId() {
         return id;
@@ -48,20 +59,28 @@ public class EventClassType implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public Collection<EventClass> getEventClasses() {
-        return eventClasses;
+    public String getDescription() {
+        return description;
     }
 
-    public void setEventClasses(Collection<EventClass> eventClasses) {
-        this.eventClasses = eventClasses;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public EventClass getEventClass() {
+        return eventClass;
+    }
+
+    public void setEventClass(EventClass eventClass) {
+        this.eventClass = eventClass;
     }
 
     @Override
@@ -74,10 +93,10 @@ public class EventClassType implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EventClassType)) {
+        if (!(object instanceof EventClassCastAndCredit)) {
             return false;
         }
-        EventClassType other = (EventClassType) object;
+        EventClassCastAndCredit other = (EventClassCastAndCredit) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

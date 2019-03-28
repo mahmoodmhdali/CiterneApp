@@ -5,7 +5,6 @@ import com.citerneApp.project.helpermodel.UserProfilePasswordValidator;
 import com.citerneApp.project.helpermodel.UsersPagination;
 import com.citerneApp.project.model.UserAttempt;
 import com.citerneApp.project.model.UserProfile;
-import com.citerneApp.project.model.WebNotifications;
 import java.util.List;
 import javax.mail.internet.AddressException;
 
@@ -52,13 +51,5 @@ public interface UserService {
     UserAttempt getUserAttemptCollection(String email);
 
     ResponseBodyEntity updateUserLanguage(Long languageId);
-
-    void addNotification(WebNotifications webNotifcation);
-
-    ResponseBodyEntity getWebNotifications(long userID, boolean all);
-
-    void updateNotSeen(long userID);
-
-    ResponseBodyEntity getCountWebNotifications(long userID);
 
 }

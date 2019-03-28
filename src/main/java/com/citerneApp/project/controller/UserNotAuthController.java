@@ -5,8 +5,6 @@ import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
 import com.citerneApp.project.helpermodel.UserProfilePasswordValidator;
 import com.citerneApp.project.model.UserProfile;
-import com.citerneApp.project.service.NotificationEventsService;
-import com.citerneApp.project.service.UserProfileNotificationEventService;
 import com.citerneApp.project.service.UserService;
 import javax.mail.internet.AddressException;
 import javax.validation.Valid;
@@ -24,12 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/guest")
 public class UserNotAuthController extends AbstractController {
-
-    @Autowired
-    UserProfileNotificationEventService userProfileNotificationEventService;
-
-    @Autowired
-    NotificationEventsService notificationEventsService;
 
     @Autowired
     UserService userService;

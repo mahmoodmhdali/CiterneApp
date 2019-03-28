@@ -3,24 +3,26 @@ package com.citerneApp.project.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
-@Table(name = "TBL_EVENT_CLASS_TYPE")
+@Table(name = "tbl_event_class_media")
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.ALWAYS)
-public class EventClassType implements Serializable {
+public class EventClassMedia implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,11 +36,20 @@ public class EventClassType implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "NAME")
+    @Size(max = 20, message = "validation.EventClassMedia.nameRange")
+    @NotBlank(message = "validation.EventClassMedia.nameRequired")
     private String name;
 
+    @Basic(optional = false)
+    @Column(name = "PATH")
+    @Size(max = 1000, message = "validation.EventClassMedia.pathRange")
+    @NotBlank(message = "validation.EventClassMedia.pathRequired")
+    private String path;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "eventClassType", cascade = CascadeType.ALL)
-    private Collection<EventClass> eventClasses;
+    @JoinColumn(name = "EVENT_CLASS", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private EventClass eventClass;
 
     public Long getId() {
         return id;
@@ -56,12 +67,20 @@ public class EventClassType implements Serializable {
         this.name = name;
     }
 
-    public Collection<EventClass> getEventClasses() {
-        return eventClasses;
+    public String getPath() {
+        return path;
     }
 
-    public void setEventClasses(Collection<EventClass> eventClasses) {
-        this.eventClasses = eventClasses;
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public EventClass getEventClass() {
+        return eventClass;
+    }
+
+    public void setEventClass(EventClass eventClass) {
+        this.eventClass = eventClass;
     }
 
     @Override
@@ -74,10 +93,10 @@ public class EventClassType implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EventClassType)) {
+        if (!(object instanceof EventClassMedia)) {
             return false;
         }
-        EventClassType other = (EventClassType) object;
+        EventClassMedia other = (EventClassMedia) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

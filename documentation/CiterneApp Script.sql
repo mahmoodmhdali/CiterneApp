@@ -18,33 +18,6 @@ USE `db_citerne_app`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tbl_cast_and_credit`
---
-
-DROP TABLE IF EXISTS `tbl_cast_and_credit`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `tbl_cast_and_credit` (
-  `ID` bigint(20) NOT NULL,
-  `TITLE` varchar(21) NOT NULL,
-  `DESCRIPTION` varchar(1001) NOT NULL,
-  `EVENT_CLASS` bigint(20) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `FK_43564352347567235_idx` (`EVENT_CLASS`),
-  CONSTRAINT `FK_43564352347567235` FOREIGN KEY (`EVENT_CLASS`) REFERENCES `tbl_event_class` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `tbl_cast_and_credit`
---
-
-LOCK TABLES `tbl_cast_and_credit` WRITE;
-/*!40000 ALTER TABLE `tbl_cast_and_credit` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tbl_cast_and_credit` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `tbl_event_class`
 --
 
@@ -62,13 +35,17 @@ CREATE TABLE `tbl_event_class` (
   `UPDATED_DATE` timestamp NULL DEFAULT NULL,
   `DELETED_DATE` timestamp NULL DEFAULT NULL,
   `PUBLISHED` tinyint(4) NOT NULL DEFAULT '1',
+  `DURATION` int(10) DEFAULT NULL,
+  `COUNTRY` bigint(20) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `FK_7256738265782384787_idx` (`CATEGORY`),
   KEY `FK_78572893572785236453_idx` (`TYPE`),
   KEY `FK_7864875628376487237658723_idx` (`AUTHOR`),
-  CONSTRAINT `FK_7864875628376487237658723` FOREIGN KEY (`AUTHOR`) REFERENCES `tbl_profile` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  KEY `FK_847568276378546123764_idx` (`COUNTRY`),
+  CONSTRAINT `FK_7365427623747236742` FOREIGN KEY (`COUNTRY`) REFERENCES `tbl_event_class_country` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_7256738265782384787` FOREIGN KEY (`CATEGORY`) REFERENCES `tbl_event_class_category` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_78572893572785236453` FOREIGN KEY (`TYPE`) REFERENCES `tbl_event_class_type` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_78572893572785236453` FOREIGN KEY (`TYPE`) REFERENCES `tbl_event_class_type` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_7864875628376487237658723` FOREIGN KEY (`AUTHOR`) REFERENCES `tbl_profile` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -78,7 +55,36 @@ CREATE TABLE `tbl_event_class` (
 
 LOCK TABLES `tbl_event_class` WRITE;
 /*!40000 ALTER TABLE `tbl_event_class` DISABLE KEYS */;
+INSERT INTO `tbl_event_class` VALUES (1,'Event 1',1,1,1,'About Description 1','2019-03-20 19:45:52',NULL,NULL,1,61,1),(2,'Event 2',2,1,2,'About Description 2','2019-03-21 19:45:52',NULL,NULL,1,62,2),(3,'Event 3',1,1,3,'About Description 3','2019-03-22 19:45:52',NULL,NULL,1,63,1),(4,'Event 4',2,1,4,'About Description 4','2019-03-23 19:45:52',NULL,NULL,1,64,1),(5,'Event 5',1,1,5,'About Description 5','2019-03-24 19:45:52',NULL,NULL,1,65,1),(6,'Event 6',2,1,6,'About Description 6','2019-03-25 19:45:52',NULL,NULL,1,67,1),(7,'Event 7',1,1,7,'About Description 7','2019-03-26 19:45:52',NULL,NULL,1,68,1),(8,'Event 8',2,1,8,'About Description 8','2019-03-27 19:45:52',NULL,NULL,1,69,1),(9,'Event 9',3,1,9,'About Description 9','2019-03-28 19:45:52',NULL,NULL,1,70,2),(10,'Event 10',4,1,10,'About Description 10','2019-03-29 19:45:52',NULL,NULL,1,71,2),(11,'Event 11',5,1,11,'About Description 11','2019-03-30 19:45:52',NULL,NULL,1,72,2),(12,'Event 12',6,1,12,'About Description 12','2019-04-01 18:45:52',NULL,NULL,1,73,1);
 /*!40000 ALTER TABLE `tbl_event_class` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_event_class_cast_and_credit`
+--
+
+DROP TABLE IF EXISTS `tbl_event_class_cast_and_credit`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `tbl_event_class_cast_and_credit` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `TITLE` varchar(21) NOT NULL,
+  `DESCRIPTION` varchar(1001) NOT NULL,
+  `EVENT_CLASS` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_43564352347567235_idx` (`EVENT_CLASS`),
+  CONSTRAINT `FK_43564352347567235` FOREIGN KEY (`EVENT_CLASS`) REFERENCES `tbl_event_class` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_event_class_cast_and_credit`
+--
+
+LOCK TABLES `tbl_event_class_cast_and_credit` WRITE;
+/*!40000 ALTER TABLE `tbl_event_class_cast_and_credit` DISABLE KEYS */;
+INSERT INTO `tbl_event_class_cast_and_credit` VALUES (1,'Title 1','Description 1',1),(2,'Title 2','Description 2',1),(3,'Title 3','Description 3',1),(4,'Title 1','Description 1',2),(5,'Title 2','Description 2',2),(6,'Title 3','Description 3',2),(7,'Title 1','Description 1',3),(8,'Title 1','Description 1',4),(9,'Title 1','Description 1',5),(10,'Title 1','Description 1',6),(11,'Title 1','Description 1',7),(12,'Title 1','Description 1',8),(13,'Title 1','Description 1',9),(14,'Title 1','Description 1',10),(15,'Title 1','Description 1',11),(16,'Title 1','Description 1',12),(17,'Title 4','Description 4',1);
+/*!40000 ALTER TABLE `tbl_event_class_cast_and_credit` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -95,7 +101,7 @@ CREATE TABLE `tbl_event_class_category` (
   `UPDATED_DATE` timestamp NULL DEFAULT NULL,
   `DELETED_DATE` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,7 +110,32 @@ CREATE TABLE `tbl_event_class_category` (
 
 LOCK TABLES `tbl_event_class_category` WRITE;
 /*!40000 ALTER TABLE `tbl_event_class_category` DISABLE KEYS */;
+INSERT INTO `tbl_event_class_category` VALUES (1,'Dance','2019-03-24 19:45:52',NULL,NULL),(2,'Music','2019-03-24 19:45:52',NULL,NULL),(3,'Theater','2019-03-24 19:45:52',NULL,NULL),(4,'Lecture','2019-03-24 19:45:52',NULL,NULL),(5,'Class','2019-03-24 19:45:52',NULL,NULL),(6,'Film','2019-03-24 19:45:52',NULL,NULL);
 /*!40000 ALTER TABLE `tbl_event_class_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_event_class_country`
+--
+
+DROP TABLE IF EXISTS `tbl_event_class_country`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `tbl_event_class_country` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(21) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_event_class_country`
+--
+
+LOCK TABLES `tbl_event_class_country` WRITE;
+/*!40000 ALTER TABLE `tbl_event_class_country` DISABLE KEYS */;
+INSERT INTO `tbl_event_class_country` VALUES (1,'Spain'),(2,'Mexico');
+/*!40000 ALTER TABLE `tbl_event_class_country` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -115,7 +146,7 @@ DROP TABLE IF EXISTS `tbl_event_class_image`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_event_class_image` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(230) DEFAULT NULL,
   `PATH` varchar(200) DEFAULT NULL,
   `IMAGE_INDEX` int(4) DEFAULT NULL,
@@ -123,7 +154,7 @@ CREATE TABLE `tbl_event_class_image` (
   PRIMARY KEY (`ID`),
   KEY `FK_875468756287364872_idx` (`EVENT_CLASS`),
   CONSTRAINT `FK_875468756287364872` FOREIGN KEY (`EVENT_CLASS`) REFERENCES `tbl_event_class` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -132,7 +163,36 @@ CREATE TABLE `tbl_event_class_image` (
 
 LOCK TABLES `tbl_event_class_image` WRITE;
 /*!40000 ALTER TABLE `tbl_event_class_image` DISABLE KEYS */;
+INSERT INTO `tbl_event_class_image` VALUES (1,'Image 1','Path 1',1,1),(2,'Image 2','Path 2',2,1),(3,'Image 1','Path 1',1,2),(4,'Image 1','Path 1',1,3),(5,'Image 2','Path 2',2,3),(6,'Image 1','Path 1',1,4),(7,'Image 2','Path 2',2,4),(8,'Image 1','Path 1',1,5),(9,'Image 2','Path 2',2,5),(10,'Image 1','Path 1',1,6),(11,'Image 2','Path 2',2,6),(12,'Image 1','Path 1',1,7),(13,'Image 2','Path 2',2,7),(14,'Image 1','Path 1',1,8),(15,'Image 2','Path 2',2,8),(16,'Image 1','Path 1',1,9),(17,'Image 2','Path 2',2,9),(18,'Image 1','Path 1',1,10),(19,'Image 1','Path 1',1,11),(20,'Image 1','Path 1',1,12);
 /*!40000 ALTER TABLE `tbl_event_class_image` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_event_class_media`
+--
+
+DROP TABLE IF EXISTS `tbl_event_class_media`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `tbl_event_class_media` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(21) NOT NULL,
+  `PATH` varchar(1001) NOT NULL,
+  `EVENT_CLASS` bigint(20) NOT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_143564352347567235_idx` (`EVENT_CLASS`),
+  CONSTRAINT `FK_143564352347567235` FOREIGN KEY (`EVENT_CLASS`) REFERENCES `tbl_event_class` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_event_class_media`
+--
+
+LOCK TABLES `tbl_event_class_media` WRITE;
+/*!40000 ALTER TABLE `tbl_event_class_media` DISABLE KEYS */;
+INSERT INTO `tbl_event_class_media` VALUES (1,'Media 1','www.media1.com',1),(2,'Media 2','www.media2.com',1),(3,'Media 1','www.media1.com',2),(4,'Media 1','www.media1.com',3),(5,'Media 1','www.media1.com',4),(6,'Media 1','www.media1.com',5),(7,'Media 1','www.media1.com',6),(8,'Media 1','www.media1.com',7),(9,'Media 1','www.media1.com',8),(10,'Media 1','www.media1.com',9),(11,'Media 1','www.media1.com',10),(12,'Media 1','www.media1.com',11),(13,'Media 1','www.media1.com',12);
+/*!40000 ALTER TABLE `tbl_event_class_media` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -143,7 +203,7 @@ DROP TABLE IF EXISTS `tbl_event_class_schedule`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_event_class_schedule` (
-  `ID` bigint(20) NOT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `CLASS_DAY_INDEX` tinyint(1) DEFAULT NULL,
   `TIME` time DEFAULT NULL,
   `EVENT_CLASS` bigint(20) NOT NULL,
@@ -151,7 +211,7 @@ CREATE TABLE `tbl_event_class_schedule` (
   PRIMARY KEY (`ID`),
   KEY `FK_432542343534241_idx` (`EVENT_CLASS`),
   CONSTRAINT `FK_432542343534241` FOREIGN KEY (`EVENT_CLASS`) REFERENCES `tbl_event_class` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,6 +220,7 @@ CREATE TABLE `tbl_event_class_schedule` (
 
 LOCK TABLES `tbl_event_class_schedule` WRITE;
 /*!40000 ALTER TABLE `tbl_event_class_schedule` DISABLE KEYS */;
+INSERT INTO `tbl_event_class_schedule` VALUES (1,NULL,NULL,1,'2019-03-24 19:45:52'),(2,NULL,NULL,2,'2020-03-24 19:45:52'),(3,NULL,NULL,3,'2020-03-24 19:45:52'),(4,NULL,NULL,4,'2020-03-24 19:45:52'),(5,NULL,NULL,5,'2020-03-24 19:45:52'),(6,NULL,NULL,6,'2020-03-24 19:45:52'),(7,NULL,NULL,7,'2020-03-24 19:45:52'),(8,NULL,NULL,8,'2020-03-24 19:45:52'),(9,NULL,NULL,9,'2020-03-24 19:45:52'),(10,NULL,NULL,10,'2020-03-24 19:45:52'),(11,NULL,NULL,11,'2020-03-24 19:45:52'),(12,NULL,NULL,12,'2020-03-24 19:45:52'),(13,NULL,NULL,3,'2019-03-24 19:45:54');
 /*!40000 ALTER TABLE `tbl_event_class_schedule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,7 +235,7 @@ CREATE TABLE `tbl_event_class_type` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(21) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,6 +244,7 @@ CREATE TABLE `tbl_event_class_type` (
 
 LOCK TABLES `tbl_event_class_type` WRITE;
 /*!40000 ALTER TABLE `tbl_event_class_type` DISABLE KEYS */;
+INSERT INTO `tbl_event_class_type` VALUES (1,'Event'),(2,'Class');
 /*!40000 ALTER TABLE `tbl_event_class_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -200,8 +262,8 @@ CREATE TABLE `tbl_favorite` (
   PRIMARY KEY (`ID`),
   KEY `FK_87258723687562783587_idx` (`USER`),
   KEY `FK_8978745726374627635_idx` (`EVENT_CLASS`),
-  CONSTRAINT `FK_8978745726374627635` FOREIGN KEY (`EVENT_CLASS`) REFERENCES `tbl_event_class` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `FK_87258723687562783587` FOREIGN KEY (`USER`) REFERENCES `tbl_user_profiles` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_87258723687562783587` FOREIGN KEY (`USER`) REFERENCES `tbl_user_profiles` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_8978745726374627635` FOREIGN KEY (`EVENT_CLASS`) REFERENCES `tbl_event_class` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -500,7 +562,7 @@ CREATE TABLE `tbl_profile` (
   `UPDATED_DATE` timestamp NULL DEFAULT NULL,
   `DELETED_DATE` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -509,6 +571,7 @@ CREATE TABLE `tbl_profile` (
 
 LOCK TABLES `tbl_profile` WRITE;
 /*!40000 ALTER TABLE `tbl_profile` DISABLE KEYS */;
+INSERT INTO `tbl_profile` VALUES (1,'Profile 1','2019-03-24 19:45:52',NULL,NULL),(2,'Profile 2','2019-03-24 19:45:52',NULL,NULL),(3,'Profile 3','2019-03-24 19:45:52',NULL,NULL),(4,'Profile 4','2019-03-24 19:45:52',NULL,NULL),(5,'Profile 5','2019-03-24 19:45:52',NULL,NULL),(6,'Profile 6','2019-03-24 19:45:52',NULL,NULL),(7,'Profile 7','2019-03-24 19:45:52',NULL,NULL),(8,'Profile 8','2019-03-24 19:45:52',NULL,NULL),(9,'Profile 9','2019-03-24 19:45:52',NULL,NULL),(10,'Profile 10','2019-03-24 19:45:52',NULL,NULL),(11,'Profile 11','2019-03-24 19:45:52',NULL,NULL),(12,'Profile 12','2019-03-24 19:45:52',NULL,NULL);
 /*!40000 ALTER TABLE `tbl_profile` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -754,7 +817,7 @@ CREATE TABLE `tbl_subscription` (
   `CREATED_DATE` timestamp NULL DEFAULT NULL,
   `DELETED_DATE` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -763,6 +826,7 @@ CREATE TABLE `tbl_subscription` (
 
 LOCK TABLES `tbl_subscription` WRITE;
 /*!40000 ALTER TABLE `tbl_subscription` DISABLE KEYS */;
+INSERT INTO `tbl_subscription` VALUES (1,'mahmoudmhdali@gmail.com','2019-03-24 19:45:52',NULL),(2,'rawad2k@gmail.com','2019-03-24 19:45:52',NULL),(3,'alaa@apliman.com','2019-03-24 19:45:52',NULL);
 /*!40000 ALTER TABLE `tbl_subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1306,4 +1370,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-26  1:19:39
+-- Dump completed on 2019-03-28  2:02:35

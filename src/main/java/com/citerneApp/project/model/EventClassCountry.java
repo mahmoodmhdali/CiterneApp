@@ -17,10 +17,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "TBL_EVENT_CLASS_TYPE")
+@Table(name = "TBL_EVENT_CLASS_COUNTRY")
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.ALWAYS)
-public class EventClassType implements Serializable {
+public class EventClassCountry implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -74,10 +74,10 @@ public class EventClassType implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof EventClassType)) {
+        if (!(object instanceof EventClassCountry)) {
             return false;
         }
-        EventClassType other = (EventClassType) object;
+        EventClassCountry other = (EventClassCountry) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

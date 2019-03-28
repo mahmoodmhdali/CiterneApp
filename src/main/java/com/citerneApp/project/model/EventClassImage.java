@@ -1,5 +1,6 @@
 package com.citerneApp.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -44,6 +45,7 @@ public class EventClassImage implements Serializable {
     @Column(name = "NAME")
     private String fileName;
 
+    @JsonIgnore
     @JoinColumn(name = "EVENT_CLASS", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private EventClass eventClass;

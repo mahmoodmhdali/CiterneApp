@@ -1,14 +1,8 @@
 package com.citerneApp.project.service;
 
-import com.citerneApp.api.engine.NotificationEngine;
 import com.citerneApp.api.io.NetworkFileManager;
-import com.citerneApp.project.helpermodel.NotificationEngineClass;
 import com.citerneApp.project.model.UserProfile;
-import com.citerneApp.project.model.WebNotifications;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
 import javax.mail.internet.AddressException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -29,9 +23,6 @@ public abstract class AbstractService {
 
     @Autowired
     EmailService emailService;
-
-    @Autowired
-    NotificationEngine notificationEngine;
 
     @Autowired
     MessageSource messageSource;
@@ -56,50 +47,50 @@ public abstract class AbstractService {
         return null;
     }
 
-    public void addNotification(String notificationKey, HashMap<String, String> valuesToReplace, String href) {
-        NotificationEngineClass notification = notificationEngine.getNotificationsMapping().get(notificationKey.toLowerCase());
-        if (notification != null) {
-            HashMap<Long, Long> userLanguageMap = notification.getUserLanguageMap();
-            for (Map.Entry<Long, Long> userLanguageEntry : userLanguageMap.entrySet()) {
-                String notificationText = notification.getLanguageTextMap().get(userLanguageEntry.getValue());
-                if (valuesToReplace != null) {
-                    for (Map.Entry<String, String> entry : valuesToReplace.entrySet()) {
-                        notificationText = notificationText.replace(entry.getKey(), entry.getValue());
-                    }
-                }
-                UserProfile loggedInUser = getAuthenticatedUser();
-                notificationText = notificationText.replace("$USERNAME$", loggedInUser.getName());
-                if (notification.getWebNotification()) {
-                    UserProfile user = userService.toUser(userLanguageEntry.getKey());
-                    if (!Objects.equals(loggedInUser.getId(), user.getId())) {
-                        this.addWebNotification(user, notificationText, href);
-                    }
-                }
-                if (notification.getSmsNotification()) {
-                    this.addSMSNotification(userService.toUser(userLanguageEntry.getKey()), notificationText);
-                }
-                if (notification.getEmailNotification()) {
-                    this.addEmailNotification(userService.toUser(userLanguageEntry.getKey()), notificationText);
-                }
-            }
-        }
-    }
-
-    private void addWebNotification(UserProfile user, String notificationText, String href) {
-        WebNotifications webNotification = new WebNotifications();
-        webNotification.setUser(user);
-        webNotification.setText(notificationText);
-        webNotification.setHref(href);
-        userService.addNotification(webNotification);
-    }
-
-    private void addSMSNotification(UserProfile user, String notificationText) {
-
-    }
-
-    private void addEmailNotification(UserProfile user, String notificationText) {
-
-    }
+//    public void addNotification(String notificationKey, HashMap<String, String> valuesToReplace, String href) {
+//        NotificationEngineClass notification = notificationEngine.getNotificationsMapping().get(notificationKey.toLowerCase());
+//        if (notification != null) {
+//            HashMap<Long, Long> userLanguageMap = notification.getUserLanguageMap();
+//            for (Map.Entry<Long, Long> userLanguageEntry : userLanguageMap.entrySet()) {
+//                String notificationText = notification.getLanguageTextMap().get(userLanguageEntry.getValue());
+//                if (valuesToReplace != null) {
+//                    for (Map.Entry<String, String> entry : valuesToReplace.entrySet()) {
+//                        notificationText = notificationText.replace(entry.getKey(), entry.getValue());
+//                    }
+//                }
+//                UserProfile loggedInUser = getAuthenticatedUser();
+//                notificationText = notificationText.replace("$USERNAME$", loggedInUser.getName());
+//                if (notification.getWebNotification()) {
+//                    UserProfile user = userService.toUser(userLanguageEntry.getKey());
+//                    if (!Objects.equals(loggedInUser.getId(), user.getId())) {
+//                        this.addWebNotification(user, notificationText, href);
+//                    }
+//                }
+//                if (notification.getSmsNotification()) {
+//                    this.addSMSNotification(userService.toUser(userLanguageEntry.getKey()), notificationText);
+//                }
+//                if (notification.getEmailNotification()) {
+//                    this.addEmailNotification(userService.toUser(userLanguageEntry.getKey()), notificationText);
+//                }
+//            }
+//        }
+//    }
+//
+//    private void addWebNotification(UserProfile user, String notificationText, String href) {
+//        WebNotifications webNotification = new WebNotifications();
+//        webNotification.setUser(user);
+//        webNotification.setText(notificationText);
+//        webNotification.setHref(href);
+//        userService.addNotification(webNotification);
+//    }
+//
+//    private void addSMSNotification(UserProfile user, String notificationText) {
+//
+//    }
+//
+//    private void addEmailNotification(UserProfile user, String notificationText) {
+//
+//    }
 
     public String getMessageBasedOnLanguage(String key, Object[] additionalData) {
         UserProfile user = getAuthenticatedUser();

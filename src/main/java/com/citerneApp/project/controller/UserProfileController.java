@@ -3,17 +3,9 @@ package com.citerneApp.project.controller;
 import com.citerneApp.project.helpermodel.ResponseBodyEntity;
 import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
-import com.citerneApp.project.model.NotificationEvents;
 import com.citerneApp.project.model.UserProfile;
-import com.citerneApp.project.model.UserProfileNotificationEvent;
-import com.citerneApp.project.service.NotificationEventsService;
-import com.citerneApp.project.service.UserProfileNotificationEventService;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import javax.mail.internet.AddressException;
 import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -29,12 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/users")
 public class UserProfileController extends AbstractController {
-
-    @Autowired
-    UserProfileNotificationEventService userProfileNotificationEventService;
-
-    @Autowired
-    NotificationEventsService notificationEventsService;
 
     @GetMapping
     public ResponseEntity getUsers() {
@@ -61,24 +47,6 @@ public class UserProfileController extends AbstractController {
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                 .addHttpResponseEntityData("users", userService.getUsersPagination(excludeLoggedInUserID, user.getType(), user.getId(), pageNumber, maxResult))
-                .returnClientResponse();
-    }
-
-    @GetMapping("/getUsersNotifications")
-    public ResponseEntity getUsersNotifications() {
-        List<NotificationEvents> notificationEvents = notificationEventsService.getAll();
-        HashMap<Long, List<Long>> notifications = new HashMap<>();
-        for (NotificationEvents notificationEvent : notificationEvents) {
-            List<Long> IDs = new ArrayList<>();
-            for (UserProfileNotificationEvent userProfileNotificationEvent : notificationEvent.getUserProfileNotificationEventCollection()) {
-                IDs.add(userProfileNotificationEvent.getUserProfile().getId());
-            }
-            notifications.put(notificationEvent.getId(), IDs);
-        }
-        return ResponseBuilder.getInstance()
-                .setHttpStatus(HttpStatus.OK)
-                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("notifications", notifications)
                 .returnClientResponse();
     }
 

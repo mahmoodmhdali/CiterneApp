@@ -1,13 +1,17 @@
 package com.citerneApp.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -41,19 +45,26 @@ public class Profile implements Serializable {
     @NotBlank(message = "validation.Profile.nameRequired")
     private String name;
 
+    @JsonIgnore
     @CreationTimestamp
     @Column(name = "CREATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
+    @JsonIgnore
     @UpdateTimestamp
     @Column(name = "UPDATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
 
+    @JsonIgnore
     @Column(name = "DELETED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private Collection<EventClass> eventClasses;
 
     public Date getCreatedDate() {
         return createdDate;
@@ -93,6 +104,14 @@ public class Profile implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Collection<EventClass> getEventClasses() {
+        return eventClasses;
+    }
+
+    public void setEventClasses(Collection<EventClass> eventClasses) {
+        this.eventClasses = eventClasses;
     }
 
     @Override
