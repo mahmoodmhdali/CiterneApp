@@ -35,7 +35,7 @@ public class EventClassCountry implements Serializable {
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "eventClassType", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "eventClassCountry", cascade = CascadeType.ALL)
     private Collection<EventClass> eventClasses;
 
     public Long getId() {

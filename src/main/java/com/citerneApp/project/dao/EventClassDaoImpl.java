@@ -44,7 +44,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                 + "(SELECT @num \\:= 0, @category\\:= '') d\n"
                 + "ORDER BY p.category, p.created_date DESC ) T\n"
                 + "INNER JOIN tbl_event_class_category c ON T.category=c.id\n"
-                + "WHERE row_number<=3\n"
+                + "WHERE row_number<=40\n"
                 + ") a \n"
                 + "INNER JOIN tbl_profile p ON a.author=p.id\n"
                 + "INNER JOIN tbl_event_class_type t ON a.type=t.id\n"

@@ -64,7 +64,7 @@ public class EventClass implements Serializable {
 
     @JoinColumn(name = "COUNTRY", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    private EventClassType eventClassCountry;
+    private EventClassCountry eventClassCountry;
 
     @JoinColumn(name = "AUTHOR", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
@@ -153,11 +153,11 @@ public class EventClass implements Serializable {
         this.eventClassType = eventClassType;
     }
 
-    public EventClassType getEventClassCountry() {
+    public EventClassCountry getEventClassCountry() {
         return eventClassCountry;
     }
 
-    public void setEventClassCountry(EventClassType eventClassCountry) {
+    public void setEventClassCountry(EventClassCountry eventClassCountry) {
         this.eventClassCountry = eventClassCountry;
     }
 
