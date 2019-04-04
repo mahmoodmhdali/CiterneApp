@@ -34,9 +34,9 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
 //                + "WHERE row_number<=3")
 //                .setResultTransformer(Transformers.aliasToBean(EventClass.class));
         Query query = createSqlQuery("SELECT a.id as id, a.title as title, a.ticketingURL as ticketingURL, a.categoryName as categoryName,a.duration as duration, p.name as profileName, t.name as typeName, i.path as mainImage, c.name as countryName,\n"
-                + "s.CLASS_DAY_INDEX as classDayIndex, s.TIME as time, s.SHOW_DATETIME as showDateTime\n"
+                + "s.CLASS_DAY_INDEX as classDayIndex, s.TIME as time, s.SHOW_DATETIME as showDateTime, a.ind as ind\n"
                 + "from (\n"
-                + "SELECT T.ID as id, T.TITLE as title, T.TICKETING_URL as ticketingURL, c.name as categoryName,T.DURATION as duration, T.AUTHOR as author, T.TYPE as type, T.COUNTRY as country\n"
+                + "SELECT T.ID as id, T.TITLE as title, T.TICKETING_URL as ticketingURL, c.name as categoryName,T.DURATION as duration, T.AUTHOR as author, T.TYPE as type, T.COUNTRY as country, T.EVENT_INDEX as ind\n"
                 + "FROM ( SELECT * ,\n"
                 + "@num \\:= IF(@category= p.category, @num + 1, 1) AS row_number,\n"
                 + "@category \\:= p.category AS dummy\n"
@@ -51,7 +51,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                 + "INNER JOIN tbl_event_class_country c ON a.country=c.id\n"
                 + "INNER JOIN tbl_event_class_image i ON a.id=i.event_class and i.image_index = 1 \n"
                 + "INNER JOIN tbl_event_class_schedule s ON a.id=s.event_class\n"
-                + "order by categoryName,title")
+                + "order by a.ind")
                 .addScalar("id", new LongType())
                 .addScalar("title", new StringType())
                 .addScalar("ticketingURL", new StringType())
@@ -64,6 +64,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                 .addScalar("classDayIndex", new IntegerType())
                 .addScalar("time", new DateType())
                 .addScalar("showDateTime", new DateType())
+                .addScalar("ind", new IntegerType())
                 .setResultTransformer(Transformers.aliasToBean(HomePageEvents.class));
         return (List<HomePageEvents>) query.list();
     }

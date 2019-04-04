@@ -27,6 +27,9 @@ public class HomePageEvents {
     private String countryName;
 
     @JsonIgnore
+    private Integer ind;
+
+    @JsonIgnore
     private Integer classDayIndex;
 
     @JsonIgnore
@@ -139,6 +142,14 @@ public class HomePageEvents {
 
     public void setTicketingURL(String ticketingURL) {
         this.ticketingURL = ticketingURL;
+    }
+
+    public Integer getInd() {
+        return ind;
+    }
+
+    public void setInd(Integer ind) {
+        this.ind = ind;
     }
 
 }
