@@ -8,6 +8,7 @@ import com.citerneApp.project.model.EventClass;
 import com.citerneApp.project.model.EventClassImage;
 import com.citerneApp.project.service.EventClassService;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -58,9 +59,10 @@ public class EventClassController extends AbstractController {
     public ResponseEntity getHomePageEventClasses() {
         List<HomePageEvents> formatedHomePageEvents = new ArrayList<>();
         List<HomePageEvents> homePageEvents = eventClassService.getHomePageEventClasses();
-
+        HashMap<Long, String> hash = eventClassService.getHomePageEventClassesProfiles();
         for (HomePageEvents homePageEvent : homePageEvents) {
             boolean eventExist = false;
+            homePageEvent.setProfileName(hash.get(homePageEvent.getId()));
             HomePageEventSchedule homePageEventSchedule = new HomePageEventSchedule();
             homePageEventSchedule.setClassDayIndex(homePageEvent.getClassDayIndex());
             homePageEventSchedule.setShowDateTime(homePageEvent.getShowDateTime());

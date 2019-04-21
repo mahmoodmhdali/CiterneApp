@@ -6,12 +6,14 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,7 +40,7 @@ public class Profile implements Serializable {
     private Long id;
 
     @Basic(optional = false)
-    @Column(name = "NAME")    
+    @Column(name = "NAME")
     @Size(max = 20, message = "validation.Profile.nameRange")
     @NotBlank(message = "validation.Profile.nameRequired")
     private String name;
@@ -60,9 +62,11 @@ public class Profile implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-    private Collection<EventClass> eventClasses;
+    @JoinTable(name = "TBL_EVENT_CLASS_PROFILES", joinColumns = {
+        @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
+        @JoinColumn(name = "EVENT_CLASS_ID", referencedColumnName = "ID")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Collection<EventClass> eventClassCollection;
 
     public Date getCreatedDate() {
         return createdDate;
@@ -104,12 +108,12 @@ public class Profile implements Serializable {
         this.name = name;
     }
 
-    public Collection<EventClass> getEventClasses() {
-        return eventClasses;
+    public Collection<EventClass> getEventClassCollection() {
+        return eventClassCollection;
     }
 
-    public void setEventClasses(Collection<EventClass> eventClasses) {
-        this.eventClasses = eventClasses;
+    public void setEventClassCollection(Collection<EventClass> eventClassCollection) {
+        this.eventClassCollection = eventClassCollection;
     }
 
     @Override

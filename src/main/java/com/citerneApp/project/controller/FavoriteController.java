@@ -2,6 +2,7 @@ package com.citerneApp.project.controller;
 
 import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
+import com.citerneApp.project.model.UserProfile;
 import com.citerneApp.project.service.FavoriteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,11 +29,47 @@ public class FavoriteController extends AbstractController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getCountersByType(@PathVariable Long id) {
+    public ResponseEntity getFavoritesByID(@PathVariable Long id) {
         return ResponseBuilder.getInstance()
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("Favorite", favoriteService.getFavorite(id))
+                .addHttpResponseEntityData("favorite", favoriteService.getFavorite(id))
+                .returnClientResponse();
+    }
+
+    @GetMapping("/add/{eventId}")
+    public ResponseEntity addNewFavorite(@PathVariable Long eventId) {
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                .addHttpResponseEntityData("favorite", favoriteService.addFavorite(eventId))
+                .returnClientResponse();
+    }
+
+    @GetMapping("/remove/{eventId}")
+    public ResponseEntity removeFavorite(@PathVariable Long eventId) {
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                .addHttpResponseEntityData("favorite", favoriteService.deleteFavorite(eventId))
+                .returnClientResponse();
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity getFavoritesByUser() {
+        UserProfile user = this.getAuthenticatedUser();
+        if (user == null) {
+            return ResponseBuilder.getInstance()
+                    .setHttpStatus(HttpStatus.OK)
+                    .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                    .addHttpResponseEntityData("user", "User not logged In")
+                    .returnClientResponse();
+        }
+        Long userID = user.getId();
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                .addHttpResponseEntityData("favorite", favoriteService.getFavoritesByUserID(userID))
                 .returnClientResponse();
     }
 

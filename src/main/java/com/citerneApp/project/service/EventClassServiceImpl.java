@@ -4,6 +4,7 @@ import com.citerneApp.project.dao.EventClassDao;
 import com.citerneApp.project.helpermodel.EventClassPagination;
 import com.citerneApp.project.helpermodel.HomePageEvents;
 import com.citerneApp.project.model.EventClass;
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,14 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
     @Autowired
     EventClassDao eventClassDao;
 
+    @Override
     public List<HomePageEvents> getHomePageEventClasses() {
         return eventClassDao.getHomePageEventClasses();
+    }
+
+    @Override
+    public HashMap<Long, String> getHomePageEventClassesProfiles() {
+        return eventClassDao.getHomePageEventClassesProfiles();
     }
 
     @Override

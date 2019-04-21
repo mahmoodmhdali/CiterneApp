@@ -1,5 +1,6 @@
 package com.citerneApp.project.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -33,6 +34,7 @@ public class Favorite implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private EventClass eventClass;
 
+    @JsonIgnore
     @JoinColumn(name = "USER", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private UserProfile userProfile;

@@ -14,6 +14,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -65,10 +67,12 @@ public class EventClass implements Serializable {
     @JoinColumn(name = "COUNTRY", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private EventClassCountry eventClassCountry;
-
-    @JoinColumn(name = "AUTHOR", referencedColumnName = "ID")
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    private Profile profile;
+    
+    @JoinTable(name = "TBL_EVENT_CLASS_PROFILES", inverseJoinColumns = {
+        @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID")}, joinColumns = {
+        @JoinColumn(name = "EVENT_CLASS_ID", referencedColumnName = "ID")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Collection<Profile> profileCollection;
 
     @Basic(optional = false)
     @Column(name = "ABOUT")
@@ -161,12 +165,12 @@ public class EventClass implements Serializable {
         this.eventClassCountry = eventClassCountry;
     }
 
-    public Profile getProfile() {
-        return profile;
+    public Collection<Profile> getProfileCollection() {
+        return profileCollection;
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
+    public void setProfileCollection(Collection<Profile> profileCollection) {
+        this.profileCollection = profileCollection;
     }
 
     public String getAbout() {

@@ -2,7 +2,9 @@ package com.citerneApp.project.dao;
 
 import com.citerneApp.project.helpermodel.EventClassPagination;
 import com.citerneApp.project.helpermodel.HomePageEvents;
+import com.citerneApp.project.helpermodel.HomePageEventsProfiles;
 import com.citerneApp.project.model.EventClass;
+import java.util.HashMap;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -13,7 +15,10 @@ import org.hibernate.transform.Transformers;
 import org.hibernate.type.DateType;
 import org.hibernate.type.IntegerType;
 import org.hibernate.type.LongType;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.StringType;
+import org.hibernate.type.TimeType;
+import org.hibernate.type.TimestampType;
 import org.springframework.stereotype.Repository;
 
 @Repository("eventClassDao")
@@ -21,9 +26,10 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
 
     @Override
     public List<HomePageEvents> getHomePageEventClasses() {
-//        Query query = createSqlQuery("SELECT T.ID as id, T.TITLE as title, T.CATEGORY as category,T.TYPE as type,T.AUTHOR as author,"
-//                + "T.ABOUT as about,T.CREATED_DATE as created_date,T.UPDATED_DATE as updated_date,T.DELETED_DATE as deleted_date,"
-//                + "T.DURATION as duration,T.COUNTRY as country\n"
+//        Query query = createSqlQuery("SELECT a.id as id, a.title as title, a.ticketingURL as ticketingURL, a.categoryName as categoryName,a.duration as duration, p.name as profileName, t.name as typeName, i.path as mainImage, c.name as countryName,\n"
+//                + "s.CLASS_DAY_INDEX as classDayIndex, s.TIME as time, s.SHOW_DATETIME as showDateTime, a.ind as ind\n"
+//                + "from (\n"
+//                + "SELECT T.ID as id, T.TITLE as title, T.TICKETING_URL as ticketingURL, c.name as categoryName,T.DURATION as duration, T.AUTHOR as author, T.TYPE as type, T.COUNTRY as country, T.EVENT_INDEX as ind\n"
 //                + "FROM ( SELECT * ,\n"
 //                + "@num \\:= IF(@category= p.category, @num + 1, 1) AS row_number,\n"
 //                + "@category \\:= p.category AS dummy\n"
@@ -31,12 +37,32 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
 //                + "(SELECT @num \\:= 0, @category\\:= '') d\n"
 //                + "ORDER BY p.category, p.created_date DESC ) T\n"
 //                + "INNER JOIN tbl_event_class_category c ON T.category=c.id\n"
-//                + "WHERE row_number<=3")
-//                .setResultTransformer(Transformers.aliasToBean(EventClass.class));
-        Query query = createSqlQuery("SELECT a.id as id, a.title as title, a.ticketingURL as ticketingURL, a.categoryName as categoryName,a.duration as duration, p.name as profileName, t.name as typeName, i.path as mainImage, c.name as countryName,\n"
+//                + "WHERE row_number<=40\n"
+//                + ") a \n"
+//                + "INNER JOIN tbl_profile p ON a.author=p.id\n"
+//                + "INNER JOIN tbl_event_class_type t ON a.type=t.id\n"
+//                + "INNER JOIN tbl_event_class_country c ON a.country=c.id\n"
+//                + "INNER JOIN tbl_event_class_image i ON a.id=i.event_class and i.image_index = 1 \n"
+//                + "INNER JOIN tbl_event_class_schedule s ON a.id=s.event_class\n"
+//                + "order by a.ind")
+//                .addScalar("id", new LongType())
+//                .addScalar("title", new StringType())
+//                .addScalar("ticketingURL", new StringType())
+//                .addScalar("categoryName", new StringType())
+//                .addScalar("duration", new IntegerType())
+//                .addScalar("profileName", new StringType())
+//                .addScalar("typeName", new StringType())
+//                .addScalar("mainImage", new StringType())
+//                .addScalar("countryName", new StringType())
+//                .addScalar("classDayIndex", new IntegerType())
+//                .addScalar("time", new DateType())
+//                .addScalar("showDateTime", StandardBasicTypes.TIMESTAMP)
+//                .addScalar("ind", new IntegerType())
+//                .setResultTransformer(Transformers.aliasToBean(HomePageEvents.class));
+        Query query = createSqlQuery("SELECT a.id as id, a.title as title, a.ticketingURL as ticketingURL, a.categoryName as categoryName,a.duration as duration, t.name as typeName, i.path as mainImage, c.name as countryName,\n"
                 + "s.CLASS_DAY_INDEX as classDayIndex, s.TIME as time, s.SHOW_DATETIME as showDateTime, a.ind as ind\n"
                 + "from (\n"
-                + "SELECT T.ID as id, T.TITLE as title, T.TICKETING_URL as ticketingURL, c.name as categoryName,T.DURATION as duration, T.AUTHOR as author, T.TYPE as type, T.COUNTRY as country, T.EVENT_INDEX as ind\n"
+                + "SELECT T.ID as id, T.TITLE as title, T.TICKETING_URL as ticketingURL, c.name as categoryName,T.DURATION as duration, T.TYPE as type, T.COUNTRY as country, T.EVENT_INDEX as ind\n"
                 + "FROM ( SELECT * ,\n"
                 + "@num \\:= IF(@category= p.category, @num + 1, 1) AS row_number,\n"
                 + "@category \\:= p.category AS dummy\n"
@@ -46,7 +72,6 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                 + "INNER JOIN tbl_event_class_category c ON T.category=c.id\n"
                 + "WHERE row_number<=40\n"
                 + ") a \n"
-                + "INNER JOIN tbl_profile p ON a.author=p.id\n"
                 + "INNER JOIN tbl_event_class_type t ON a.type=t.id\n"
                 + "INNER JOIN tbl_event_class_country c ON a.country=c.id\n"
                 + "INNER JOIN tbl_event_class_image i ON a.id=i.event_class and i.image_index = 1 \n"
@@ -57,16 +82,40 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                 .addScalar("ticketingURL", new StringType())
                 .addScalar("categoryName", new StringType())
                 .addScalar("duration", new IntegerType())
-                .addScalar("profileName", new StringType())
                 .addScalar("typeName", new StringType())
                 .addScalar("mainImage", new StringType())
                 .addScalar("countryName", new StringType())
                 .addScalar("classDayIndex", new IntegerType())
                 .addScalar("time", new DateType())
-                .addScalar("showDateTime", new DateType())
+                .addScalar("showDateTime", StandardBasicTypes.TIMESTAMP)
                 .addScalar("ind", new IntegerType())
                 .setResultTransformer(Transformers.aliasToBean(HomePageEvents.class));
+
         return (List<HomePageEvents>) query.list();
+    }
+
+    @Override
+    public HashMap<Long, String> getHomePageEventClassesProfiles() {
+        HashMap<Long, String> hash = new HashMap<>();
+        Query query = createSqlQuery("SELECT\n"
+                + " tbl_event_class.ID as id,\n"
+                + " GROUP_CONCAT(tbl_profile.name SEPARATOR ' & ') as profiles \n"
+                + "FROM\n"
+                + " tbl_event_class, tbl_profile, tbl_event_class_profiles\n"
+                + "WHERE\n"
+                + " tbl_event_class.ID = tbl_event_class_profiles.EVENT_CLASS_ID\n"
+                + "AND\n"
+                + " tbl_profile.ID = tbl_event_class_profiles.PROFILE_ID\n"
+                + " GROUP BY \n"
+                + "   tbl_event_class.ID")
+                .addScalar("id", new LongType())
+                .addScalar("profiles", new StringType())
+                .setResultTransformer(Transformers.aliasToBean(HomePageEventsProfiles.class));
+        List<HomePageEventsProfiles> homePageEventsProfiles = (List<HomePageEventsProfiles>) query.list();
+        for (HomePageEventsProfiles homePageEventsProfile : homePageEventsProfiles) {
+            hash.put(homePageEventsProfile.getId(), homePageEventsProfile.getProfiles());
+        }
+        return hash;
     }
 
     @Override
@@ -77,6 +126,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         for (EventClass eventClass : eventClasses) {
             Hibernate.initialize(eventClass.getEventClassImages());
             Hibernate.initialize(eventClass.getEventClassSchedules());
+            Hibernate.initialize(eventClass.getProfileCollection());
         }
         return eventClasses;
     }
@@ -96,6 +146,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         for (EventClass eventClass : eventClasses) {
             Hibernate.initialize(eventClass.getEventClassImages());
             Hibernate.initialize(eventClass.getEventClassSchedules());
+            Hibernate.initialize(eventClass.getProfileCollection());
         }
         int currentPage = pageNumber;
         int maxPages = (int) Math.ceil((double) ((double) totalResults.intValue() / (double) maxRes));
@@ -113,6 +164,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         for (EventClass eventClass : eventClasses) {
             Hibernate.initialize(eventClass.getEventClassImages());
             Hibernate.initialize(eventClass.getEventClassSchedules());
+            Hibernate.initialize(eventClass.getProfileCollection());
         }
         return eventClasses;
     }
@@ -134,6 +186,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         for (EventClass eventClass : eventClasses) {
             Hibernate.initialize(eventClass.getEventClassImages());
             Hibernate.initialize(eventClass.getEventClassSchedules());
+            Hibernate.initialize(eventClass.getProfileCollection());
         }
         int currentPage = pageNumber;
         int maxPages = (int) Math.ceil((double) ((double) totalResults.intValue() / (double) maxRes));
@@ -145,12 +198,13 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
     public List<EventClass> getEventClassesByProfile(Long profileID) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.isNull("deletedDate"));
-        criteria.createAlias("profile", "profile");
+        criteria.createAlias("profileCollection", "profile");
         criteria.add(Restrictions.eq("profile.id", profileID));
         List<EventClass> eventClasses = (List<EventClass>) criteria.list();
         for (EventClass eventClass : eventClasses) {
             Hibernate.initialize(eventClass.getEventClassImages());
             Hibernate.initialize(eventClass.getEventClassSchedules());
+            Hibernate.initialize(eventClass.getProfileCollection());
         }
         return eventClasses;
     }
@@ -159,7 +213,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
     public EventClassPagination getEventClassesPaginationByProfile(Long profileID, int pageNumber, int maxRes) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.isNull("deletedDate"));
-        criteria.createAlias("profile", "profile");
+        criteria.createAlias("profileCollection", "profile");
         criteria.add(Restrictions.eq("profile.id", profileID));
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);  // To avoid duplicates.
         criteria.setProjection(Projections.rowCount());
@@ -172,6 +226,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         for (EventClass eventClass : eventClasses) {
             Hibernate.initialize(eventClass.getEventClassImages());
             Hibernate.initialize(eventClass.getEventClassSchedules());
+            Hibernate.initialize(eventClass.getProfileCollection());
         }
         int currentPage = pageNumber;
         int maxPages = (int) Math.ceil((double) ((double) totalResults.intValue() / (double) maxRes));
@@ -189,6 +244,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         for (EventClass eventClass : eventClasses) {
             Hibernate.initialize(eventClass.getEventClassImages());
             Hibernate.initialize(eventClass.getEventClassSchedules());
+            Hibernate.initialize(eventClass.getProfileCollection());
         }
         return eventClasses;
     }
@@ -210,6 +266,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         for (EventClass eventClass : eventClasses) {
             Hibernate.initialize(eventClass.getEventClassImages());
             Hibernate.initialize(eventClass.getEventClassSchedules());
+            Hibernate.initialize(eventClass.getProfileCollection());
         }
         int currentPage = pageNumber;
         int maxPages = (int) Math.ceil((double) ((double) totalResults.intValue() / (double) maxRes));
@@ -227,6 +284,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         Hibernate.initialize(eventClass.getEventClassSchedules());
         Hibernate.initialize(eventClass.getEventClassCastAndCredits());
         Hibernate.initialize(eventClass.getEventClassMedias());
+        Hibernate.initialize(eventClass.getProfileCollection());
         return eventClass;
     }
 

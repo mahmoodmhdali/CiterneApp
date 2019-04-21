@@ -9,4 +9,12 @@ public interface FavoriteDao {
 
     Favorite getFavorite(Long id);
 
+    Favorite addFavorite(Favorite favorite);
+
+    void removeFavorite(Favorite favorite);
+
+    List<Favorite> getFavoritesByUserID(Long userID);
+
+    Favorite getFavoriteByUserAndEventID(Long userID, Long eventID);
+
 }

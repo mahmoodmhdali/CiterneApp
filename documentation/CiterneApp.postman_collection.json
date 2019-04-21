@@ -18,7 +18,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8084/CiterneApp/eventClasses/1",
+							"raw": "http://127.0.0.1:8084/CiterneApp/eventClasses/21",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -30,7 +30,7 @@
 							"path": [
 								"CiterneApp",
 								"eventClasses",
-								"1"
+								"21"
 							]
 						}
 					},
@@ -73,7 +73,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8080/CiterneApp/eventClasses/paging/1/1",
+							"raw": "http://127.0.0.1:8084/CiterneApp/eventClasses/paging/1/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -81,7 +81,7 @@
 								"0",
 								"1"
 							],
-							"port": "8080",
+							"port": "8084",
 							"path": [
 								"CiterneApp",
 								"eventClasses",
@@ -1361,6 +1361,110 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Add new favorite",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Token",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI5YmQ4YWFjZi05MWNkLTRkYTMtOWM0ZS0wMzFhYzU2NjcxN2YiLCJzdWIiOiJzeXN1c2VyQGFwbGltYW4uY29tIiwiaWF0IjoxNTU1ODYzMTg3LCJleHAiOjE1NTU5OTI3ODd9.Sd5rUy0dwN-wCGtc5iJ8vrnXEKY6of9Kw6mxdYYqcopHWzOcKxQnQMlCxscOJLuT27A05FDpw9R8fS027OnoKQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/favorites/add/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"favorites",
+								"add",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove favorite",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Token",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI5YmQ4YWFjZi05MWNkLTRkYTMtOWM0ZS0wMzFhYzU2NjcxN2YiLCJzdWIiOiJzeXN1c2VyQGFwbGltYW4uY29tIiwiaWF0IjoxNTU1ODYzMTg3LCJleHAiOjE1NTU5OTI3ODd9.Sd5rUy0dwN-wCGtc5iJ8vrnXEKY6of9Kw6mxdYYqcopHWzOcKxQnQMlCxscOJLuT27A05FDpw9R8fS027OnoKQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/favorites/remove/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"favorites",
+								"remove",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All favorites for user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Token",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI5YmQ4YWFjZi05MWNkLTRkYTMtOWM0ZS0wMzFhYzU2NjcxN2YiLCJzdWIiOiJzeXN1c2VyQGFwbGltYW4uY29tIiwiaWF0IjoxNTU1ODYzMTg3LCJleHAiOjE1NTU5OTI3ODd9.Sd5rUy0dwN-wCGtc5iJ8vrnXEKY6of9Kw6mxdYYqcopHWzOcKxQnQMlCxscOJLuT27A05FDpw9R8fS027OnoKQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/favorites/user",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"favorites",
+								"user"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -1376,7 +1480,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"email\": \"admin@CiterneApp.com\", \"password\": \"Admin123\"}"
+					"raw": "{\"email\": \"sysuser@apliman.com\", \"password\": \"Admin123\"}"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:8084/CiterneApp/login",
