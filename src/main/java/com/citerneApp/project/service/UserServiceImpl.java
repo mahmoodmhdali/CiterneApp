@@ -144,62 +144,34 @@ public class UserServiceImpl extends AbstractService implements UserService {
         user.setCreatedDate(new Date());
         UserProfile persistantUser = userDao.getUser(user.getEmail());
         if (persistantUser != null) {
-            if (user.getType() == 3 && (persistantUser.getType() == 3 || persistantUser.getType() == 4)) {
-                return ResponseBuilder.getInstance().
-                        setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                        .addHttpResponseEntityData("user", persistantUser)
-                        .getResponse();
-            } else {
-                return ResponseBuilder.getInstance()
-                        .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                        .addHttpResponseEntityData("email", "Email already taken")
-                        .getResponse();
-            }
+            return ResponseBuilder.getInstance()
+                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
+                    .addHttpResponseEntityData("email", "Email already taken")
+                    .getResponse();
         }
 
         user.setEmail(user.getEmail().trim().toLowerCase());
         user.setName(user.getName().trim().toLowerCase());
-
         /* Set UserLoginAttemps */
         UserAttempt userAttempt = new UserAttempt();
         userAttempt.setAttempt(0);
         userAttempt.setLastModified(new Date());
         user.setUserAttempt(userAttempt);
         userAttempt.setUserProfileId(user);
-
         user.setLanguage(languageService.getLanguage(Long.parseLong("1")));
-
         Collection<Group> groupCollection = new ArrayList<>();
         if (null != user.getType()) {
             switch (user.getType()) {
-                case 0: {
-                    Group group = groupService.toGroupForAdd(8L);
-                    groupCollection.add(group);
-                    user.setJobTitle("System User");
-                    break;
-                }
                 case 1: {
-                    Group group = groupService.toGroupForAdd(4L);
+                    Group group = groupService.toGroupForAdd(9L);
                     groupCollection.add(group);
-                    user.setJobTitle("Company Admin");
+                    user.setJobTitle("Citerne Admin");
                     break;
                 }
                 case 2: {
-                    Group group = groupService.toGroupForAdd(5L);
+                    Group group = groupService.toGroupForAdd(10L);
                     groupCollection.add(group);
-                    user.setJobTitle("Outlet Admin");
-                    break;
-                }
-                case 3: {
-                    Group group = groupService.toGroupForAdd(6L);
-                    groupCollection.add(group);
-                    user.setJobTitle("Company User");
-                    break;
-                }
-                case 4: {
-                    Group group = groupService.toGroupForAdd(7L);
-                    groupCollection.add(group);
-                    user.setJobTitle("User");
+                    user.setJobTitle("Citerne User");
                     break;
                 }
                 case 99: {
@@ -229,7 +201,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
         try {
             String[] email = {user.getEmail()};
             String webURL = (String) settingsEngine.getFirstLevelSetting("WEB_URL");
-            sendEmail("Enter this pin in citerne App app to activate your account\nPIN: " + token + "\nOr follow the below link\n" + webURL + token, email, "Account Created");
+            sendEmail("Enter this pin in Citerne App app to activate your account\nPIN: " + token + "\nOr follow the below link\n" + webURL + token, email, "Account Created");
         } catch (Exception ex) {
             Logger.ERROR("1- Error addUser 2 on API [" + ex.getMessage() + "]", user.getEmail(), "");
         }
@@ -454,5 +426,5 @@ public class UserServiceImpl extends AbstractService implements UserService {
                 .addHttpResponseEntityData("user", persistantUser)
                 .getResponse();
     }
-    
+
 }

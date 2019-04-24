@@ -84,10 +84,10 @@ public class UserProfileController extends AbstractController {
                     .setHttpResponseEntity(responseBodyEntity)
                     .returnClientResponse();
         }
-
+        userProfile.setType(1);
         UserProfile loggedInUser = this.getAuthenticatedUser();
         if (loggedInUser != null) {
-            if (loggedInUser.getType() != 0 && loggedInUser.getType() != 1 && loggedInUser.getType() != 99) {
+            if (loggedInUser.getType() != 1 && loggedInUser.getType() != 99) {
                 responseBodyEntity = ResponseBuilder.getInstance()
                         .setHttpResponseEntityResultCode(ResponseCode.UNAUTHORIZED_USER_ACTION)
                         .setHttpResponseEntityResultDescription("Access denied for this resource. Contact your service provider for more help")
@@ -97,58 +97,16 @@ public class UserProfileController extends AbstractController {
                         .setHttpResponseEntity(responseBodyEntity)
                         .returnClientResponse();
             }
-            if (loggedInUser.getType() == 1) {
-                userProfile.setType(3);
-            }
-            if ((loggedInUser.getType() == 0 || loggedInUser.getType() == 99) && userProfile.getType() == null) {
-                responseBodyEntity = ResponseBuilder.getInstance()
-                        .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                        .addHttpResponseEntityData("type", "Type is required")
-                        .getResponse();
-                return ResponseBuilder.getInstance()
-                        .setHttpStatus(HttpStatus.OK)
-                        .setHttpResponseEntity(responseBodyEntity)
-                        .returnClientResponse();
-            }
-            if (loggedInUser.getType() == 0 && userProfile.getType() != 0 && userProfile.getType() != 1 && userProfile.getType() != 2 && userProfile.getType() != 3) {
-                responseBodyEntity = ResponseBuilder.getInstance()
-                        .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                        .addHttpResponseEntityData("type", "Type not exist")
-                        .getResponse();
-                return ResponseBuilder.getInstance()
-                        .setHttpStatus(HttpStatus.OK)
-                        .setHttpResponseEntity(responseBodyEntity)
-                        .returnClientResponse();
-            }
         } else {
-            userProfile.setType(4);
+            responseBodyEntity = ResponseBuilder.getInstance()
+                    .setHttpResponseEntityResultCode(ResponseCode.UNAUTHORIZED_USER_ACTION)
+                    .setHttpResponseEntityResultDescription("Access denied for this resource. Contact your service provider for more help")
+                    .getResponse();
+            return ResponseBuilder.getInstance()
+                    .setHttpStatus(HttpStatus.OK)
+                    .setHttpResponseEntity(responseBodyEntity)
+                    .returnClientResponse();
         }
-
-        if (null != userProfile.getType()) {
-            switch (userProfile.getType()) {
-                case 0: {
-                    break;
-                }
-                case 1: {
-                    break;
-                }
-                case 2: {
-                    break;
-                }
-                case 3: {
-                    break;
-                }
-                case 4: {
-                    break;
-                }
-                case 99: {
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-
         return ResponseBuilder.getInstance()
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntity(userService.addUser(userProfile))

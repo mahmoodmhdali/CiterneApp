@@ -82,4 +82,21 @@ public class UserNotAuthController extends AbstractController {
         }
     }
 
+    @PostMapping("/createAccount")
+    public ResponseEntity addUser(@ModelAttribute @Valid UserProfile userProfile, BindingResult userProfileBindingResults) throws AddressException {
+        // Validate User Inputs
+        ResponseBodyEntity responseBodyEntity = super.checkValidationResults(userProfileBindingResults, null);
+        if (responseBodyEntity != null) {
+            return ResponseBuilder.getInstance()
+                    .setHttpStatus(HttpStatus.OK)
+                    .setHttpResponseEntity(responseBodyEntity)
+                    .returnClientResponse();
+        }
+        userProfile.setType(2);
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntity(userService.addUser(userProfile))
+                .returnClientResponse();
+    }
+
 }
