@@ -103,7 +103,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8080/CiterneApp/eventClasses/paging/category/1/1/1",
+							"raw": "http://127.0.0.1:8084/CiterneApp/eventClasses/paging/category/1/1/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -111,7 +111,7 @@
 								"0",
 								"1"
 							],
-							"port": "8080",
+							"port": "8084",
 							"path": [
 								"CiterneApp",
 								"eventClasses",
@@ -135,7 +135,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8080/CiterneApp/eventClasses/paging/profile/1/1/1",
+							"raw": "http://127.0.0.1:8084/CiterneApp/eventClasses/paging/profile/1/1/1",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -143,7 +143,7 @@
 								"0",
 								"1"
 							],
-							"port": "8080",
+							"port": "8084",
 							"path": [
 								"CiterneApp",
 								"eventClasses",
@@ -805,78 +805,10 @@
 			]
 		},
 		{
-			"name": "Users",
+			"name": "Citerne Admin Users",
 			"item": [
 				{
-					"name": "Add New User Purchased Directly",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/x-www-form-urlencoded",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "postman-01",
-									"type": "text"
-								},
-								{
-									"key": "lastName",
-									"value": "postman-01",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "postman-01@apliman.com",
-									"type": "text"
-								},
-								{
-									"key": "newPassword",
-									"value": "Admin@124",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "confirmPassword",
-									"value": "Admin@124",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "mobileNumber",
-									"value": "12345678",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8084/CiterneApp/newUser/add",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8084",
-							"path": [
-								"CiterneApp",
-								"newUser",
-								"add"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Add By System User",
+					"name": "Add Citerne Admin User",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -987,110 +919,6 @@
 							"path": [
 								"CiterneApp",
 								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get User By Token",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8084/CiterneApp/guest/auth/token/{token}",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8084",
-							"path": [
-								"CiterneApp",
-								"guest",
-								"auth",
-								"token",
-								"{token}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Password By Token",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "newPassword",
-									"value": "Admin123",
-									"type": "text"
-								},
-								{
-									"key": "confirmPassword",
-									"value": "Admin123",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8084/CiterneApp/guest/updatePassword/{token}",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8084",
-							"path": [
-								"CiterneApp",
-								"guest",
-								"updatePassword",
-								"{token}"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Reset Password",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "email",
-									"value": "mahmoudmhdali@gmail.com",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://127.0.0.1:8084/CiterneApp/guest/resetPassword",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8084",
-							"path": [
-								"CiterneApp",
-								"guest",
-								"resetPassword"
 							]
 						}
 					},
@@ -1461,6 +1289,173 @@
 								"CiterneApp",
 								"favorites",
 								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Citerne User",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "postman-01",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "mahmoudmhdali@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "newPassword",
+									"value": "Admin@124",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "confirmPassword",
+									"value": "Admin@124",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/guest/createAccount",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"guest",
+								"createAccount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password By Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "newPassword",
+									"value": "Admin123",
+									"type": "text"
+								},
+								{
+									"key": "confirmPassword",
+									"value": "Admin123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/guest/updatePassword/{token}",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"guest",
+								"updatePassword",
+								"{token}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "email",
+									"value": "mahmoudmhdali@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/guest/resetPassword",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"guest",
+								"resetPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By Token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/guest/auth/token/{token}",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"guest",
+								"auth",
+								"token",
+								"{token}"
 							]
 						}
 					},

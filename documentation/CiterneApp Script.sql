@@ -181,7 +181,7 @@ CREATE TABLE `tbl_event_class_media` (
   PRIMARY KEY (`ID`),
   KEY `FK_143564352347567235_idx` (`EVENT_CLASS`),
   CONSTRAINT `FK_143564352347567235` FOREIGN KEY (`EVENT_CLASS`) REFERENCES `tbl_event_class` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -298,7 +298,6 @@ CREATE TABLE `tbl_favorite` (
 
 LOCK TABLES `tbl_favorite` WRITE;
 /*!40000 ALTER TABLE `tbl_favorite` DISABLE KEYS */;
-INSERT INTO `tbl_favorite` VALUES (1555864691338343,1553268669117922,1),(1555865044470179,1,2);
 /*!40000 ALTER TABLE `tbl_favorite` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,7 +347,7 @@ CREATE TABLE `tbl_groups` (
   `DELETED_DATE` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `NAME` (`NAME`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -357,7 +356,7 @@ CREATE TABLE `tbl_groups` (
 
 LOCK TABLES `tbl_groups` WRITE;
 /*!40000 ALTER TABLE `tbl_groups` DISABLE KEYS */;
-INSERT INTO `tbl_groups` VALUES (1,'Installer Group','2018-01-22 10:26:16',NULL,'installer group',NULL),(2,'Support Group','2018-01-22 10:25:16',NULL,NULL,NULL),(3,'All Administrator Groups','2018-01-22 10:30:16','2018-09-25 15:43:07','admin group',NULL),(4,'Company Group','2019-02-19 10:30:16',NULL,'Company Group',NULL),(5,'Outlet Group','2019-02-19 10:30:16',NULL,'Outlet Group',NULL),(6,'User Under Company Group','2019-02-19 10:30:16',NULL,'User Under Company Group',NULL),(7,'User Purchased Directly Group','2019-02-19 10:30:16',NULL,'User Purchased Directly Group',NULL),(8,'Admin Group','2019-02-19 10:30:16',NULL,'Admin Group',NULL);
+INSERT INTO `tbl_groups` VALUES (1,'Installer Group','2018-01-22 10:26:16',NULL,'installer group',NULL),(2,'Support Group','2018-01-22 10:25:16',NULL,NULL,NULL),(3,'All Administrator Groups','2018-01-22 10:30:16','2018-09-25 15:43:07','admin group',NULL),(9,'Citerne Admin','2018-01-22 10:30:16',NULL,'citerne admin group',NULL),(10,'Citerne User','2018-01-22 10:30:16',NULL,'citerne user group',NULL);
 /*!40000 ALTER TABLE `tbl_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -410,7 +409,7 @@ CREATE TABLE `tbl_groups_roles` (
 
 LOCK TABLES `tbl_groups_roles` WRITE;
 /*!40000 ALTER TABLE `tbl_groups_roles` DISABLE KEYS */;
-INSERT INTO `tbl_groups_roles` VALUES (1,1),(1,2),(2,2),(1,3),(3,3),(1,4),(3,4),(1,5),(3,5),(1,6),(3,6),(1,7),(3,7),(1,8),(3,8),(1,9),(3,9),(1,10),(3,10),(1,11),(3,11),(1,12),(3,12),(1,13),(3,13),(1,14),(3,14),(1,15),(3,15),(1,16),(3,16),(1,17),(3,17),(1,18),(3,18),(1,19),(3,19),(8,20),(4,21),(3,22),(5,23),(6,24),(7,25);
+INSERT INTO `tbl_groups_roles` VALUES (1,1),(1,2),(2,2),(1,3),(3,3),(1,4),(3,4),(1,5),(3,5),(1,6),(3,6),(1,7),(3,7),(1,8),(3,8),(1,9),(3,9),(1,10),(3,10),(1,11),(3,11),(1,12),(3,12),(1,13),(3,13),(1,14),(3,14),(1,15),(3,15),(1,16),(3,16),(1,17),(3,17),(1,18),(3,18),(1,19),(3,19),(9,20),(10,21),(3,22);
 /*!40000 ALTER TABLE `tbl_groups_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -733,7 +732,7 @@ CREATE TABLE `tbl_roles` (
 
 LOCK TABLES `tbl_roles` WRITE;
 /*!40000 ALTER TABLE `tbl_roles` DISABLE KEYS */;
-INSERT INTO `tbl_roles` VALUES (1,'INSTALLER',0,'Installer role. This role is hidden to the user.'),(2,'SUPPORT',0,'Support role. This role is hidden to the user.'),(3,'VIEW_REPORTS',1,'View Reports'),(4,'VIEW_USERS',1,'View System Users'),(5,'ADD_USERS',1,'Add System Users'),(6,'EDIT_USERS',1,'Edit System Users'),(7,'DELETE_USERS',1,'Delete System Users'),(8,'VIEW_DASHBOARD',1,'View Dashboard'),(9,'VIEW_GROUPS',1,'View Groups'),(10,'ADD_GROUPS',1,'Add Groups'),(11,'EDIT_GROUPS',1,'Edit Groups'),(12,'DELETE_GROUPS',1,'Delete Groups'),(13,'VIEW_SETTINGS',1,'View Settings'),(14,'ADD_SETTINGS',1,'Add Settings'),(15,'EDIT_SETTINGS',1,'Edit Settings'),(16,'DELETE_SETTINGS',1,'Delete Settings'),(17,'VIEW_BLACKLISTS',1,'View Blacklist'),(18,'ADD_BLACKLISTS',1,'Add Blacklist'),(19,'DELETE_BLACKLISTS',1,'Delete Blacklist'),(20,'SYSTEM',1,'SYSTEM'),(21,'COMPANY',1,'COMPANY'),(22,'OUR_SYSTEM_USER',1,'OUR_SYSTEM_USER'),(23,'OUTLET',1,'OUTLET'),(24,'USER_UNDER_COMPANY',1,'USER_UNDER_COMPANY'),(25,'USER_PURCHASE_ALONE',1,'USER_PURCHASE_ALONE');
+INSERT INTO `tbl_roles` VALUES (1,'INSTALLER',0,'Installer role. This role is hidden to the user.'),(2,'SUPPORT',0,'Support role. This role is hidden to the user.'),(3,'VIEW_REPORTS',1,'View Reports'),(4,'VIEW_USERS',1,'View System Users'),(5,'ADD_USERS',1,'Add System Users'),(6,'EDIT_USERS',1,'Edit System Users'),(7,'DELETE_USERS',1,'Delete System Users'),(8,'VIEW_DASHBOARD',1,'View Dashboard'),(9,'VIEW_GROUPS',1,'View Groups'),(10,'ADD_GROUPS',1,'Add Groups'),(11,'EDIT_GROUPS',1,'Edit Groups'),(12,'DELETE_GROUPS',1,'Delete Groups'),(13,'VIEW_SETTINGS',1,'View Settings'),(14,'ADD_SETTINGS',1,'Add Settings'),(15,'EDIT_SETTINGS',1,'Edit Settings'),(16,'DELETE_SETTINGS',1,'Delete Settings'),(17,'VIEW_BLACKLISTS',1,'View Blacklist'),(18,'ADD_BLACKLISTS',1,'Add Blacklist'),(19,'DELETE_BLACKLISTS',1,'Delete Blacklist'),(20,'SYSTEM',1,'SYSTEM'),(21,'USER',1,'COMPANY'),(22,'OUR_SYSTEM_USER',1,'OUR_SYSTEM_USER');
 /*!40000 ALTER TABLE `tbl_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -871,7 +870,7 @@ CREATE TABLE `tbl_user_attempts` (
   PRIMARY KEY (`ID`),
   KEY `USER_ATTEMPTS_FK1` (`USER_PROFILE_ID`),
   CONSTRAINT `USER_ATTEMPTS_FK1` FOREIGN KEY (`USER_PROFILE_ID`) REFERENCES `tbl_user_profiles` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1553458785777694 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1556125680309203 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -880,7 +879,7 @@ CREATE TABLE `tbl_user_attempts` (
 
 LOCK TABLES `tbl_user_attempts` WRITE;
 /*!40000 ALTER TABLE `tbl_user_attempts` DISABLE KEYS */;
-INSERT INTO `tbl_user_attempts` VALUES (1,1,0,'2018-09-27 12:43:24'),(1553270004087714,1553270223057177,0,'2019-03-22 15:46:32'),(1553270156503998,1553268669117922,0,'2019-03-22 15:22:49'),(1553270574830411,1553269839044933,0,'2019-03-22 15:29:09'),(1553271394076758,1553269936491984,0,'2019-03-22 15:48:46'),(1553456044890361,1553455486333726,0,'2019-03-24 21:10:26'),(1553458785777693,1553457076394831,0,'2019-03-24 19:45:52');
+INSERT INTO `tbl_user_attempts` VALUES (1,1,0,'2018-09-27 12:43:24');
 /*!40000 ALTER TABLE `tbl_user_attempts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -907,7 +906,7 @@ CREATE TABLE `tbl_user_profile_groups` (
 
 LOCK TABLES `tbl_user_profile_groups` WRITE;
 /*!40000 ALTER TABLE `tbl_user_profile_groups` DISABLE KEYS */;
-INSERT INTO `tbl_user_profile_groups` VALUES (1,3),(1553268669117922,8),(1553269839044933,5),(1553270223057177,5),(1553269936491984,4),(1553455486333726,6),(1553457076394831,6);
+INSERT INTO `tbl_user_profile_groups` VALUES (1,3);
 /*!40000 ALTER TABLE `tbl_user_profile_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -947,7 +946,7 @@ CREATE TABLE `tbl_user_profiles` (
 
 LOCK TABLES `tbl_user_profiles` WRITE;
 /*!40000 ALTER TABLE `tbl_user_profiles` DISABLE KEYS */;
-INSERT INTO `tbl_user_profiles` VALUES (1,'System User','sysuser@apliman.com','$2a$10$Wet4W6yJnVM6bU8QFX75kuNoxGXnbx/kk5oJI05FAWTIYEpS.Ufc2',1,1,1,1,'2018-01-22 12:53:01',NULL,NULL,'2018-09-27 12:44:25',NULL,'System',1,'',99),(1553268669117922,'system admin','admin@freedompass.com','$2a$10$NtXTYCsKGypFnqBSaQP9r.RE6ELZMSmRGWa53rl69lKMW0cOkO1Ri',1,1,1,1,'2019-03-22 15:22:49',NULL,NULL,'2019-03-22 15:23:07',NULL,'System User',1,NULL,0),(1553269839044933,'ferrari world','ferrari.world@freedompass.com','$2a$10$./DDc8eC4ALysSUHnI2GxehYyXWhOYElhPCKOzl6bMnXyq129NTYa',1,1,1,1,'2019-03-22 15:29:09',NULL,NULL,'2019-03-22 15:29:35',NULL,'Outlet Admin',1,NULL,2),(1553269936491984,'company 1','company1@freedompass.com','$2a$10$CpPQm9oe8xIe0LmmraQg2.8gHMxibopA3iOfA7aiautzOgLv9p0hy',1,1,1,1,'2019-03-22 15:48:46',NULL,NULL,'2019-03-22 15:49:02',NULL,'Company Admin',1,NULL,1),(1553270223057177,'lego land','lego.land@freedompass.com','$2a$10$X0KNsF1Qg4UgFU.ZABjRrOYE52jwTW3y0mW6ATt9PP7fnLtbpjFza',1,1,1,1,'2019-03-22 15:46:32',NULL,NULL,'2019-03-22 15:46:50',NULL,'Outlet Admin',1,NULL,2),(1553455486333726,'mahmoud mhdali','mahmoudmhdali@gmail.com','NewUserCreated',0,1,1,1,'2019-03-24 21:10:20','20G2a5N','2019-03-27 21:10:38','2019-03-24 21:11:29',NULL,'Company User',1,NULL,3),(1553457076394831,'rawad khalil','rawad2k@gmail.com','$2a$10$/fZq4F/r9ZM5iBYKD4gDyeJvbOs3dLpIikxQQby2mE.3Tbz3xO.2.',1,1,1,1,'2019-03-24 19:45:52',NULL,NULL,'2019-03-24 20:21:17',NULL,'Company User',1,NULL,3);
+INSERT INTO `tbl_user_profiles` VALUES (1,'System User','sysuser@apliman.com','$2a$10$Wet4W6yJnVM6bU8QFX75kuNoxGXnbx/kk5oJI05FAWTIYEpS.Ufc2',1,1,1,1,'2018-01-22 12:53:01',NULL,NULL,'2018-09-27 12:44:25',NULL,'System',1,'',99);
 /*!40000 ALTER TABLE `tbl_user_profiles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1396,4 +1395,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-21 20:55:06
+-- Dump completed on 2019-04-24 19:38:23
