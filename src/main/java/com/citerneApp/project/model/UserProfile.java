@@ -108,7 +108,6 @@ public class UserProfile implements Serializable, UserDetails {
     @Temporal(TemporalType.TIMESTAMP)
     private Date resetPasswordTokenValidity;
 
-    @JsonIgnore
     @CreationTimestamp
     @Column(name = "CREATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)

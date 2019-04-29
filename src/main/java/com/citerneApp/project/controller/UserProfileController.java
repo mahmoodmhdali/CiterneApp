@@ -36,9 +36,8 @@ public class UserProfileController extends AbstractController {
                 .returnClientResponse();
     }
 
-    @GetMapping("/{pageNumber}/{maxResult}")
-    public ResponseEntity getUsersPagination(@PathVariable Integer pageNumber, @PathVariable Integer maxResult) {
-        UserProfile user = super.getAuthenticatedUser();
+    @GetMapping("/{pageNumber}/{maxResult}/{type}")
+    public ResponseEntity getUsersPagination(@PathVariable Integer pageNumber, @PathVariable Integer maxResult, @PathVariable Integer type) {
         Long excludeLoggedInUserID = -999999L; // in case you need to include logged in user to the list its set to his ID
         if (super.getAuthenticatedUser() != null) {
             excludeLoggedInUserID = super.getAuthenticatedUser().getId();
@@ -46,7 +45,7 @@ public class UserProfileController extends AbstractController {
         return ResponseBuilder.getInstance()
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("users", userService.getUsersPagination(excludeLoggedInUserID, user.getType(), user.getId(), pageNumber, maxResult))
+                .addHttpResponseEntityData("users", userService.getUsersPagination(excludeLoggedInUserID, type, pageNumber, maxResult))
                 .returnClientResponse();
     }
 

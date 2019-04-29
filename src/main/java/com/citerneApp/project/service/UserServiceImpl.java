@@ -74,8 +74,8 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     @Override
-    public UsersPagination getUsersPagination(Long excludeLoggedInUserID, Integer type, Long headID, int pageNumber, int maxRes) {
-        return userDao.getUsersPagination(excludeLoggedInUserID, type, headID, pageNumber, maxRes);
+    public UsersPagination getUsersPagination(Long excludeLoggedInUserID, Integer type, int pageNumber, int maxRes) {
+        return userDao.getUsersPagination(excludeLoggedInUserID, type, pageNumber, maxRes);
     }
 
     @Override

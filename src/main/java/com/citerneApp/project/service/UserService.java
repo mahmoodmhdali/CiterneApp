@@ -16,7 +16,7 @@ public interface UserService {
 
     List<UserProfile> getCompanyUsers();
 
-    UsersPagination getUsersPagination(Long excludeLoggedInUserID, Integer type, Long headID, int pageNumber, int maxRes);
+    UsersPagination getUsersPagination(Long excludeLoggedInUserID, Integer type, int pageNumber, int maxRes);
 
     ResponseBodyEntity getUser(Long id);
 

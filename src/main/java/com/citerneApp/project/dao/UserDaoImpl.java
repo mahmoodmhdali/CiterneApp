@@ -75,18 +75,16 @@ public class UserDaoImpl extends AbstractDao<Long, UserProfile> implements UserD
     }
 
     @Override
-    public UsersPagination getUsersPagination(Long excludeLoggedInUserID, Integer type, Long headID, int pageNumber, int maxRes) {
+    public UsersPagination getUsersPagination(Long excludeLoggedInUserID, Integer type, int pageNumber, int maxRes) {
         try {
             Criteria criteria = createEntityCriteria();
             if (type == 1) {
-                criteria.add(Restrictions.eq("parentId", headID));
-            }
-            if (type == 2 || type == 3 || type == 4) {
-                return null;
+                criteria.add(Restrictions.eq("type", 1));
+            } else {
+                criteria.add(Restrictions.eq("type", 2));
             }
             criteria.addOrder(Order.asc("name"));
             criteria.add(Restrictions.ne("id", excludeLoggedInUserID)); // To avoid including logged in user
-            criteria.add(Restrictions.ne("type", 99));
             criteria.add(Restrictions.isNull("deletedDate"));
             criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);  // To avoid duplicates.
             criteria.setProjection(Projections.rowCount());
@@ -101,7 +99,7 @@ public class UserDaoImpl extends AbstractDao<Long, UserProfile> implements UserD
             UsersPagination usersPagination = new UsersPagination(maxPages, currentPage, totalResults.intValue(), users);
             return usersPagination;
         } catch (Exception ex) {
-            Logger.ERROR("1- Error UserDao 4 on API [" + ex.getMessage() + "]", "Exclued: " + excludeLoggedInUserID + ". Type: " + type + ". Head: " + headID + ". Page number: " + pageNumber + ". Max result: " + maxRes, "");
+            Logger.ERROR("1- Error UserDao 4 on API [" + ex.getMessage() + "]", "Exclued: " + excludeLoggedInUserID + ". Type: " + type + ". Page number: " + pageNumber + ". Max result: " + maxRes, "");
         }
         return null;
     }
