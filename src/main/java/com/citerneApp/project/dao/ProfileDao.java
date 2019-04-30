@@ -11,4 +11,6 @@ public interface ProfileDao {
 
     Profile getProfile(String name);
 
+    Profile addProfile(Profile profile);
+
 }

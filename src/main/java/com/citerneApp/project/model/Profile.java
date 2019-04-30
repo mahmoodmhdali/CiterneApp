@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.CreationTimestamp;
@@ -80,6 +81,13 @@ public class Profile implements Serializable {
     @Basic(optional = false)
     @Column(name = "IMAGE_PATH")
     private String imagePath;
+
+    @Transient
+    private String imageName1;
+
+    @Basic(optional = false)
+    @Column(name = "FILE_NAME")
+    private String fileName;
 
     public Date getCreatedDate() {
         return createdDate;
@@ -151,6 +159,22 @@ public class Profile implements Serializable {
 
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    public String getImageName1() {
+        return imageName1;
+    }
+
+    public void setImageName1(String imageName1) {
+        this.imageName1 = imageName1;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     @Override

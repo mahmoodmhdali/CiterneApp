@@ -1,5 +1,6 @@
 package com.citerneApp.project.dao;
 
+import com.citerneApp.api.commons.Logger;
 import com.citerneApp.project.model.Profile;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -32,9 +33,19 @@ public class ProfileDaoImpl extends AbstractDao<Long, Profile> implements Profil
     public Profile getProfile(String name) {
         Criteria criteria = createEntityCriteria();
         criteria.add(Restrictions.isNull("deletedDate"));
-        criteria.add(Restrictions.eq("name", name));
+        criteria.add(Restrictions.eq("name", name).ignoreCase());
         Profile profile = (Profile) criteria.uniqueResult();
         Hibernate.initialize(profile.getProfileMedias());
+        return profile;
+    }
+
+    @Override
+    public Profile addProfile(Profile profile) {
+        try {
+            save(profile);
+        } catch (Exception ex) {
+            Logger.ERROR("1- Error AdminPassesDao 4 on API [" + ex.getMessage() + "]", profile, "");
+        }
         return profile;
     }
 
