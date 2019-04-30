@@ -9,4 +9,6 @@ public interface ProfileService {
 
     Profile getProfile(Long id);
 
+    Profile getProfile(String name);
+
 }

@@ -26,10 +26,10 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
 
     @Override
     public List<HomePageEvents> getHomePageEventClasses() {
-//        Query query = createSqlQuery("SELECT a.id as id, a.title as title, a.ticketingURL as ticketingURL, a.categoryName as categoryName,a.duration as duration, p.name as profileName, t.name as typeName, i.path as mainImage, c.name as countryName,\n"
+//        Query query = createSqlQuery("SELECT a.id as id, a.title as title, a.ticketingURL as ticketingURL, a.categoryName as categoryName,a.duration as duration, t.name as typeName, i.path as mainImage, c.name as countryName,\n"
 //                + "s.CLASS_DAY_INDEX as classDayIndex, s.TIME as time, s.SHOW_DATETIME as showDateTime, a.ind as ind\n"
 //                + "from (\n"
-//                + "SELECT T.ID as id, T.TITLE as title, T.TICKETING_URL as ticketingURL, c.name as categoryName,T.DURATION as duration, T.AUTHOR as author, T.TYPE as type, T.COUNTRY as country, T.EVENT_INDEX as ind\n"
+//                + "SELECT T.ID as id, T.TITLE as title, T.TICKETING_URL as ticketingURL, c.name as categoryName,T.DURATION as duration, T.TYPE as type, T.COUNTRY as country, T.EVENT_INDEX as ind\n"
 //                + "FROM ( SELECT * ,\n"
 //                + "@num \\:= IF(@category= p.category, @num + 1, 1) AS row_number,\n"
 //                + "@category \\:= p.category AS dummy\n"
@@ -37,9 +37,8 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
 //                + "(SELECT @num \\:= 0, @category\\:= '') d\n"
 //                + "ORDER BY p.category, p.created_date DESC ) T\n"
 //                + "INNER JOIN tbl_event_class_category c ON T.category=c.id\n"
-//                + "WHERE row_number<=40\n"
+//                + "WHERE row_number<=80\n"
 //                + ") a \n"
-//                + "INNER JOIN tbl_profile p ON a.author=p.id\n"
 //                + "INNER JOIN tbl_event_class_type t ON a.type=t.id\n"
 //                + "INNER JOIN tbl_event_class_country c ON a.country=c.id\n"
 //                + "INNER JOIN tbl_event_class_image i ON a.id=i.event_class and i.image_index = 1 \n"
@@ -50,7 +49,6 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
 //                .addScalar("ticketingURL", new StringType())
 //                .addScalar("categoryName", new StringType())
 //                .addScalar("duration", new IntegerType())
-//                .addScalar("profileName", new StringType())
 //                .addScalar("typeName", new StringType())
 //                .addScalar("mainImage", new StringType())
 //                .addScalar("countryName", new StringType())
@@ -59,24 +57,15 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
 //                .addScalar("showDateTime", StandardBasicTypes.TIMESTAMP)
 //                .addScalar("ind", new IntegerType())
 //                .setResultTransformer(Transformers.aliasToBean(HomePageEvents.class));
-        Query query = createSqlQuery("SELECT a.id as id, a.title as title, a.ticketingURL as ticketingURL, a.categoryName as categoryName,a.duration as duration, t.name as typeName, i.path as mainImage, c.name as countryName,\n"
-                + "s.CLASS_DAY_INDEX as classDayIndex, s.TIME as time, s.SHOW_DATETIME as showDateTime, a.ind as ind\n"
-                + "from (\n"
-                + "SELECT T.ID as id, T.TITLE as title, T.TICKETING_URL as ticketingURL, c.name as categoryName,T.DURATION as duration, T.TYPE as type, T.COUNTRY as country, T.EVENT_INDEX as ind\n"
-                + "FROM ( SELECT * ,\n"
-                + "@num \\:= IF(@category= p.category, @num + 1, 1) AS row_number,\n"
-                + "@category \\:= p.category AS dummy\n"
-                + "FROM tbl_event_class p,\n"
-                + "(SELECT @num \\:= 0, @category\\:= '') d\n"
-                + "ORDER BY p.category, p.created_date DESC ) T\n"
-                + "INNER JOIN tbl_event_class_category c ON T.category=c.id\n"
-                + "WHERE row_number<=40\n"
-                + ") a \n"
-                + "INNER JOIN tbl_event_class_type t ON a.type=t.id\n"
-                + "INNER JOIN tbl_event_class_country c ON a.country=c.id\n"
-                + "INNER JOIN tbl_event_class_image i ON a.id=i.event_class and i.image_index = 1 \n"
-                + "INNER JOIN tbl_event_class_schedule s ON a.id=s.event_class\n"
-                + "order by a.ind")
+        Query query = createSqlQuery("SELECT a.id as id, a.title as title, a.ticketing_URL as ticketingURL, cat.name as categoryName,a.duration as duration, t.name as typeName, i.path as mainImage, c.name as countryName,\n"
+                + " s.CLASS_DAY_INDEX as classDayIndex, s.TIME as time, s.SHOW_DATETIME as showDateTime, a.event_index as ind\n"
+                + " from tbl_event_class as a\n"
+                + " INNER JOIN tbl_event_class_category cat ON a.category=cat.id\n"
+                + " INNER JOIN tbl_event_class_type t ON a.type=t.id\n"
+                + " INNER JOIN tbl_event_class_country c ON a.country=c.id\n"
+                + " INNER JOIN tbl_event_class_image i ON a.id=i.event_class and i.image_index = 1 \n"
+                + " INNER JOIN tbl_event_class_schedule s ON a.id=s.event_class\n"
+                + " order by a.event_index")
                 .addScalar("id", new LongType())
                 .addScalar("title", new StringType())
                 .addScalar("ticketingURL", new StringType())
@@ -90,7 +79,6 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                 .addScalar("showDateTime", StandardBasicTypes.TIMESTAMP)
                 .addScalar("ind", new IntegerType())
                 .setResultTransformer(Transformers.aliasToBean(HomePageEvents.class));
-
         return (List<HomePageEvents>) query.list();
     }
 
@@ -116,6 +104,37 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
             hash.put(homePageEventsProfile.getId(), homePageEventsProfile.getProfiles());
         }
         return hash;
+    }
+
+    @Override
+    public List<HomePageEvents> getHomePageEventClasses(String profileName) {
+        Query query = createSqlQuery("SELECT a.id as id, a.title as title, a.ticketing_URL as ticketingURL, cat.name as categoryName,a.duration as duration, t.name as typeName, i.path as mainImage, c.name as countryName,\n"
+                + " s.CLASS_DAY_INDEX as classDayIndex, s.TIME as time, s.SHOW_DATETIME as showDateTime, a.event_index as ind\n"
+                + " from tbl_event_class as a\n"
+                + " INNER JOIN tbl_event_class_category cat ON a.category=cat.id\n"
+                + " INNER JOIN tbl_event_class_type t ON a.type=t.id\n"
+                + " INNER JOIN tbl_event_class_country c ON a.country=c.id\n"
+                + " INNER JOIN tbl_event_class_image i ON a.id=i.event_class and i.image_index = 1 \n"
+                + " INNER JOIN tbl_event_class_schedule s ON a.id=s.event_class\n"
+                + " INNER JOIN tbl_event_class_cast_and_credit cac ON a.id=cac.event_class\n"
+                + " where cac.description LIKE ?\n"
+                + " group by a.id,s.SHOW_DATETIME\n"
+                + " order by a.event_index")
+                .addScalar("id", new LongType())
+                .addScalar("title", new StringType())
+                .addScalar("ticketingURL", new StringType())
+                .addScalar("categoryName", new StringType())
+                .addScalar("duration", new IntegerType())
+                .addScalar("typeName", new StringType())
+                .addScalar("mainImage", new StringType())
+                .addScalar("countryName", new StringType())
+                .addScalar("classDayIndex", new IntegerType())
+                .addScalar("time", new DateType())
+                .addScalar("showDateTime", StandardBasicTypes.TIMESTAMP)
+                .addScalar("ind", new IntegerType())
+                .setResultTransformer(Transformers.aliasToBean(HomePageEvents.class))
+                .setParameter(0, "%" + profileName + "%");
+        return (List<HomePageEvents>) query.list();
     }
 
     @Override

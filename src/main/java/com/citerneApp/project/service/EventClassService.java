@@ -11,6 +11,8 @@ public interface EventClassService {
     List<HomePageEvents> getHomePageEventClasses();
 
     HashMap<Long,String> getHomePageEventClassesProfiles();
+    
+    List<HomePageEvents> getHomePageEventClasses(String profileName);
 
     List<EventClass> getEventClasses();
 

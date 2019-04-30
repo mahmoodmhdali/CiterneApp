@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3ff921d8-7199-4cd0-85f0-eeadc4955c2f",
+		"_postman_id": "ff17f622-8877-4bab-b64c-6bbfc30549ed",
 		"name": "CiterneApp",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1104,6 +1104,35 @@
 					"response": []
 				},
 				{
+					"name": "Get By Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/CiterneApp/profiles/name/Omar Rajeh",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"CiterneApp",
+								"profiles",
+								"name",
+								"Omar Rajeh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get All",
 					"request": {
 						"method": "GET",
@@ -1113,7 +1142,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8084/CiterneApp/profiles",
+							"raw": "http://127.0.0.1:8080/CiterneApp/profiles",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -1121,10 +1150,39 @@
 								"0",
 								"1"
 							],
-							"port": "8084",
+							"port": "8080",
 							"path": [
 								"CiterneApp",
 								"profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Performances",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/CiterneApp/eventClasses/home/Omar Rajeh",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"CiterneApp",
+								"eventClasses",
+								"home",
+								"Omar Rajeh"
 							]
 						}
 					},

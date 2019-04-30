@@ -28,6 +28,11 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
     }
 
     @Override
+    public List<HomePageEvents> getHomePageEventClasses(String profileName) {
+        return eventClassDao.getHomePageEventClasses(profileName);
+    }
+
+    @Override
     public List<EventClass> getEventClasses() {
         return eventClassDao.getEventClasses();
     }

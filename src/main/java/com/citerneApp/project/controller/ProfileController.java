@@ -36,4 +36,13 @@ public class ProfileController extends AbstractController {
                 .returnClientResponse();
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity getCountersByType(@PathVariable String name) {
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                .addHttpResponseEntityData("Profile", profileService.getProfile(name))
+                .returnClientResponse();
+    }
+
 }

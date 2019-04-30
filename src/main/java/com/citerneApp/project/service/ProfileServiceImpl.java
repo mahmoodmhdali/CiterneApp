@@ -24,4 +24,9 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
         return profileDao.getProfile(id);
     }
 
+    @Override
+    public Profile getProfile(String name) {
+        return profileDao.getProfile(name);
+    }
+
 }

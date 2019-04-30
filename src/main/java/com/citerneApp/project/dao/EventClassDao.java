@@ -12,6 +12,8 @@ public interface EventClassDao {
 
     HashMap<Long,String> getHomePageEventClassesProfiles();
 
+    List<HomePageEvents> getHomePageEventClasses(String profileName);
+
     List<EventClass> getEventClasses();
 
     EventClassPagination getEventClassesPagination(int pageNumber, int maxRes);

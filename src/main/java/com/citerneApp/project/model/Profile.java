@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -68,6 +70,17 @@ public class Profile implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY)
     private Collection<EventClass> eventClassCollection;
 
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private Collection<ProfileMedia> profileMedias;
+
+    @Basic(optional = false)
+    @Column(name = "ABOUT")
+    private String about;
+
+    @Basic(optional = false)
+    @Column(name = "IMAGE_PATH")
+    private String imagePath;
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -114,6 +127,30 @@ public class Profile implements Serializable {
 
     public void setEventClassCollection(Collection<EventClass> eventClassCollection) {
         this.eventClassCollection = eventClassCollection;
+    }
+
+    public Collection<ProfileMedia> getProfileMedias() {
+        return profileMedias;
+    }
+
+    public void setProfileMedias(Collection<ProfileMedia> profileMedias) {
+        this.profileMedias = profileMedias;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Override

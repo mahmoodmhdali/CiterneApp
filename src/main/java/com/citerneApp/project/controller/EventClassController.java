@@ -90,6 +90,41 @@ public class EventClassController extends AbstractController {
                 .returnClientResponse();
     }
 
+    @GetMapping("/home/{profileName}")
+    public ResponseEntity getHomePageEventClasses(@PathVariable String profileName) {
+        List<HomePageEvents> formatedHomePageEvents = new ArrayList<>();
+        List<HomePageEvents> homePageEvents = eventClassService.getHomePageEventClasses(profileName);
+        HashMap<Long, String> hash = eventClassService.getHomePageEventClassesProfiles();
+        for (HomePageEvents homePageEvent : homePageEvents) {
+            boolean eventExist = false;
+            homePageEvent.setProfileName(hash.get(homePageEvent.getId()));
+            HomePageEventSchedule homePageEventSchedule = new HomePageEventSchedule();
+            homePageEventSchedule.setClassDayIndex(homePageEvent.getClassDayIndex());
+            homePageEventSchedule.setShowDateTime(homePageEvent.getShowDateTime());
+            homePageEventSchedule.setTime(homePageEvent.getTime());
+            for (HomePageEvents formatedHomePageEvent : formatedHomePageEvents) {
+                if (formatedHomePageEvent.getId().longValue() == homePageEvent.getId().longValue()) {
+                    List<HomePageEventSchedule> homePageEventSchedules = formatedHomePageEvent.getEventSchedule();
+                    homePageEventSchedules.add(homePageEventSchedule);
+                    formatedHomePageEvent.setEventSchedule(homePageEventSchedules);
+                    eventExist = true;
+                }
+            }
+            if (!eventExist) {
+                List<HomePageEventSchedule> homePageEventSchedules = new ArrayList<>();
+                homePageEventSchedules.add(homePageEventSchedule);
+                homePageEvent.setEventSchedule(homePageEventSchedules);
+                formatedHomePageEvents.add(homePageEvent);
+            }
+        }
+
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                .addHttpResponseEntityData("eventClasses", formatedHomePageEvents)
+                .returnClientResponse();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity getCountersByType(@PathVariable Long id) {
         return ResponseBuilder.getInstance()

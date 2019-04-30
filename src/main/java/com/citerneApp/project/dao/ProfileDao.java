@@ -9,4 +9,6 @@ public interface ProfileDao {
 
     Profile getProfile(Long id);
 
+    Profile getProfile(String name);
+
 }
