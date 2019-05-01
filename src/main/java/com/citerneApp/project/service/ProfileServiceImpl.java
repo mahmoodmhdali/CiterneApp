@@ -3,10 +3,13 @@ package com.citerneApp.project.service;
 import com.citerneApp.api.commons.ContextHolder;
 import com.citerneApp.api.commons.Logger;
 import com.citerneApp.project.dao.ProfileDao;
+import com.citerneApp.project.dao.ProfileMediaDao;
+import com.citerneApp.project.helpermodel.ProfilesPagination;
 import com.citerneApp.project.helpermodel.ResponseBodyEntity;
 import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
 import com.citerneApp.project.model.Profile;
+import com.citerneApp.project.model.ProfileMedia;
 import com.citerneApp.project.model.UserProfile;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -28,6 +31,9 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
 
     @Autowired
     ProfileDao profileDao;
+    
+    @Autowired
+    ProfileMediaDao profileMediaDao;
 
     @Autowired
     ContextHolder context;
@@ -35,6 +41,11 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
     @Override
     public List<Profile> getProfilees() {
         return profileDao.getProfilees();
+    }
+
+    @Override
+    public ProfilesPagination getProfilesPagination(int pageNumber, int maxRes) {
+        return profileDao.getProfilesPagination(pageNumber, maxRes);
     }
 
     @Override
@@ -95,7 +106,7 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
         profileDao.addProfile(profile);
         return ResponseBuilder.getInstance().
                 setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("package", "Success adding package")
+                .addHttpResponseEntityData("profile", "Success adding profile")
                 .getResponse();
     }
 
@@ -104,7 +115,6 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
         Profile persistantProfile = profileDao.getProfile(profile.getId());
         if (persistantProfile != null) {
             UserProfile loggedInUser = getAuthenticatedUser();
-            persistantProfile.setAbout(profile.getAbout());
             if (image1 != null) {
                 String extension = FilenameUtils.getExtension(image1.getOriginalFilename()).toLowerCase();
                 if (!extension.equals("jpg") && !extension.equals("jpeg") && !extension.equals("png")) {
@@ -129,20 +139,17 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
                     Files.delete(oldFile);
                 }
             } else if (image1 == null && profile.getImageName1().equals("")) {
-                String toRemoveImage = persistantProfile.getImagePath();
-                if (toRemoveImage != null) {
-                    Path oldFile = dir.resolve(toRemoveImage.replace("/ProfilesImages/", ""));
-                    try {
-                        Files.delete(oldFile);
-                    } catch (Exception ex) {
-                        Logger.ERROR("1- Error editPass 1 on API [" + ex.getMessage() + "]", oldFile, "");
-                    }
-                }
                 return ResponseBuilder.getInstance()
                         .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
                         .addHttpResponseEntityData("imageName1", "Image is required.")
                         .getResponse();
             }
+            for(ProfileMedia profileMedia: profile.getProfileMedias()){
+                profileMedia.setProfile(profile);
+            }
+            persistantProfile.setAbout(profile.getAbout());
+            profileMediaDao.deleteProfileMediasForProfile(persistantProfile.getId());
+            persistantProfile.setProfileMedias(profile.getProfileMedias());
             return ResponseBuilder.getInstance().
                     setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                     .addHttpResponseEntityData("Profile", "Success editing profile")

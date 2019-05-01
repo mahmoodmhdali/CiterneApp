@@ -48,7 +48,6 @@ public class Profile implements Serializable {
     @NotBlank(message = "validation.Profile.nameRequired")
     private String name;
 
-    @JsonIgnore
     @CreationTimestamp
     @Column(name = "CREATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)

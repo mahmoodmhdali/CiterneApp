@@ -36,6 +36,15 @@ public class ProfileController extends AbstractController {
                 .returnClientResponse();
     }
 
+    @GetMapping("/{pageNumber}/{maxResult}")
+    public ResponseEntity getAdminPassesPagination(@PathVariable Integer pageNumber, @PathVariable Integer maxResult) {
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
+                .addHttpResponseEntityData("profiles", profileService.getProfilesPagination(pageNumber, maxResult))
+                .returnClientResponse();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity getCountersByType(@PathVariable Long id) {
         return ResponseBuilder.getInstance()
@@ -75,7 +84,9 @@ public class ProfileController extends AbstractController {
     public ResponseEntity editPass(@RequestPart("info") @Valid Profile profile, BindingResult adminPassesBindingResults,
             @RequestPart(value = "uploadFile1", required = false) MultipartFile file1) throws AddressException, IOException {
         // Validate User Inputs
-        ResponseBodyEntity responseBodyEntity = super.checkValidationResults(adminPassesBindingResults, null);
+        String[] byPassFields = new String[1];
+        byPassFields[0] = "name";
+        ResponseBodyEntity responseBodyEntity = super.checkValidationResults(adminPassesBindingResults, byPassFields);
         if (responseBodyEntity != null) {
             return ResponseBuilder.getInstance()
                     .setHttpStatus(HttpStatus.OK)
