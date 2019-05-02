@@ -2,6 +2,7 @@ package com.citerneApp.project.controller;
 
 import com.citerneApp.project.helpermodel.HomePageEventSchedule;
 import com.citerneApp.project.helpermodel.HomePageEvents;
+import com.citerneApp.project.helpermodel.ResponseBodyEntity;
 import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
 import com.citerneApp.project.model.EventClass;
@@ -12,11 +13,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.mail.internet.AddressException;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -215,6 +221,40 @@ public class EventClassController extends AbstractController {
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                 .addHttpResponseEntityData("passes", eventClassService.getEventClassesPaginationByType(id, pageNumber, maxResult))
+                .returnClientResponse();
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity addEventClass(@ModelAttribute @Valid EventClass eventClass, BindingResult eventClassBindingResults) {
+        // Validate User Inputs
+        ResponseBodyEntity responseBodyEntity = super.checkValidationResults(eventClassBindingResults, null);
+        if (responseBodyEntity != null) {
+            return ResponseBuilder.getInstance()
+                    .setHttpStatus(HttpStatus.OK)
+                    .setHttpResponseEntity(responseBodyEntity)
+                    .returnClientResponse();
+        }
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntity(eventClassService.addEventClass(eventClass))
+                .returnClientResponse();
+    }
+
+    @PostMapping("/edit")
+    public ResponseEntity editEventClass(@ModelAttribute @Valid EventClass eventClass, BindingResult eventClassBindingResults) {
+        // Validate User Inputs
+//        String[] byPassFields = new String[1];
+//        byPassFields[0] = "name";
+        ResponseBodyEntity responseBodyEntity = super.checkValidationResults(eventClassBindingResults, null);
+        if (responseBodyEntity != null) {
+            return ResponseBuilder.getInstance()
+                    .setHttpStatus(HttpStatus.OK)
+                    .setHttpResponseEntity(responseBodyEntity)
+                    .returnClientResponse();
+        }
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntity(eventClassService.editEventClass(eventClass))
                 .returnClientResponse();
     }
 

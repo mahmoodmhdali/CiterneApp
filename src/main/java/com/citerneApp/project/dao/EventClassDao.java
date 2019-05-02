@@ -32,4 +32,6 @@ public interface EventClassDao {
 
     EventClass getEventClass(Long id);
 
+    EventClass addEventClass(EventClass eventClass);
+
 }

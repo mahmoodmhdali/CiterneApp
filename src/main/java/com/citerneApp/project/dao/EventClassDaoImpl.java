@@ -1,5 +1,6 @@
 package com.citerneApp.project.dao;
 
+import com.citerneApp.api.commons.Logger;
 import com.citerneApp.project.helpermodel.EventClassPagination;
 import com.citerneApp.project.helpermodel.HomePageEvents;
 import com.citerneApp.project.helpermodel.HomePageEventsProfiles;
@@ -304,6 +305,16 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
         Hibernate.initialize(eventClass.getEventClassCastAndCredits());
         Hibernate.initialize(eventClass.getEventClassMedias());
         Hibernate.initialize(eventClass.getProfileCollection());
+        return eventClass;
+    }
+
+    @Override
+    public EventClass addEventClass(EventClass eventClass) {
+        try {
+            persist(eventClass);
+        } catch (Exception ex) {
+            Logger.ERROR("1- Error AdminPassesDao 4 on API [" + ex.getMessage() + "]", eventClass, "");
+        }
         return eventClass;
     }
 
