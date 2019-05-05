@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -68,7 +69,7 @@ public class EventClass implements Serializable {
     @JoinColumn(name = "COUNTRY", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private EventClassCountry eventClassCountry;
-    
+
     @JoinTable(name = "TBL_EVENT_CLASS_PROFILES", inverseJoinColumns = {
         @JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID")}, joinColumns = {
         @JoinColumn(name = "EVENT_CLASS_ID", referencedColumnName = "ID")})
@@ -81,7 +82,6 @@ public class EventClass implements Serializable {
     @NotBlank(message = "validation.userProfile.aboutRequired")
     private String about;
 
-    @JsonIgnore
     @CreationTimestamp
     @Column(name = "CREATED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
@@ -112,13 +112,13 @@ public class EventClass implements Serializable {
     private Collection<EventClassImage> eventClassImages;
 
     @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
-    private Collection<EventClassCastAndCredit> eventClassCastAndCredits;
+    private List<EventClassCastAndCredit> eventClassCastAndCredits;
 
     @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
-    private Collection<EventClassMedia> eventClassMedias;
+    private List<EventClassMedia> eventClassMedias;
 
     @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
-    private Collection<EventClassSchedule> eventClassSchedules;
+    private List<EventClassSchedule> eventClassSchedules;
 
     @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
     private Collection<Favorite> favorites;
@@ -134,7 +134,7 @@ public class EventClass implements Serializable {
 
     @Transient
     private String imageName4;
-    
+
     public EventClass() {
     }
 
@@ -242,27 +242,27 @@ public class EventClass implements Serializable {
         this.eventClassImages = eventClassImages;
     }
 
-    public Collection<EventClassCastAndCredit> getEventClassCastAndCredits() {
+    public List<EventClassCastAndCredit> getEventClassCastAndCredits() {
         return eventClassCastAndCredits;
     }
 
-    public void setEventClassCastAndCredits(Collection<EventClassCastAndCredit> eventClassCastAndCredits) {
+    public void setEventClassCastAndCredits(List<EventClassCastAndCredit> eventClassCastAndCredits) {
         this.eventClassCastAndCredits = eventClassCastAndCredits;
     }
 
-    public Collection<EventClassMedia> getEventClassMedias() {
+    public List<EventClassMedia> getEventClassMedias() {
         return eventClassMedias;
     }
 
-    public void setEventClassMedias(Collection<EventClassMedia> eventClassMedias) {
+    public void setEventClassMedias(List<EventClassMedia> eventClassMedias) {
         this.eventClassMedias = eventClassMedias;
     }
 
-    public Collection<EventClassSchedule> getEventClassSchedules() {
+    public List<EventClassSchedule> getEventClassSchedules() {
         return eventClassSchedules;
     }
 
-    public void setEventClassSchedules(Collection<EventClassSchedule> eventClassSchedules) {
+    public void setEventClassSchedules(List<EventClassSchedule> eventClassSchedules) {
         this.eventClassSchedules = eventClassSchedules;
     }
 

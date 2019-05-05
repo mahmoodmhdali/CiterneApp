@@ -57,7 +57,7 @@ public class EventClassController extends AbstractController {
         return ResponseBuilder.getInstance()
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("passes", eventClassService.getEventClassesPagination(pageNumber, maxResult))
+                .addHttpResponseEntityData("eventClasses", eventClassService.getEventClassesPagination(pageNumber, maxResult))
                 .returnClientResponse();
     }
 
@@ -164,7 +164,7 @@ public class EventClassController extends AbstractController {
         return ResponseBuilder.getInstance()
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("passes", eventClassService.getEventClassesPaginationByCategory(id, pageNumber, maxResult))
+                .addHttpResponseEntityData("eventClasses", eventClassService.getEventClassesPaginationByCategory(id, pageNumber, maxResult))
                 .returnClientResponse();
     }
 
@@ -192,7 +192,7 @@ public class EventClassController extends AbstractController {
         return ResponseBuilder.getInstance()
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("passes", eventClassService.getEventClassesPaginationByProfile(id, pageNumber, maxResult))
+                .addHttpResponseEntityData("eventClasses", eventClassService.getEventClassesPaginationByProfile(id, pageNumber, maxResult))
                 .returnClientResponse();
     }
 
@@ -220,7 +220,7 @@ public class EventClassController extends AbstractController {
         return ResponseBuilder.getInstance()
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("passes", eventClassService.getEventClassesPaginationByType(id, pageNumber, maxResult))
+                .addHttpResponseEntityData("eventClasses", eventClassService.getEventClassesPaginationByType(id, pageNumber, maxResult))
                 .returnClientResponse();
     }
 

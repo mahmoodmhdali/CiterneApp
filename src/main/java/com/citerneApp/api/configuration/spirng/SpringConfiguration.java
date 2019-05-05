@@ -1,8 +1,11 @@
 package com.citerneApp.api.configuration.spirng;
 
 import com.citerneApp.api.commons.ContextHolder;
+import com.citerneApp.api.configuration.converter.EventClassCategoryConverter;
+import com.citerneApp.api.configuration.converter.EventClassTypeConverter;
 import com.citerneApp.api.configuration.converter.GroupConverter;
 import com.citerneApp.api.configuration.converter.LanguageConverter;
+import com.citerneApp.api.configuration.converter.ProfileConverter;
 import com.citerneApp.api.configuration.converter.ReportConverter;
 import com.citerneApp.api.configuration.converter.ReportStyleConverter;
 import com.citerneApp.api.configuration.converter.RoleConverter;
@@ -93,6 +96,18 @@ public class SpringConfiguration extends WebMvcConfigurerAdapter {
     LanguageConverter languageConverter;
 
     @Autowired
+    @Lazy
+    EventClassCategoryConverter eventClassCategoryConverter;
+
+    @Autowired
+    @Lazy
+    EventClassTypeConverter eventClassTypeConverter;
+
+    @Autowired
+    @Lazy
+    ProfileConverter profileConverter;
+
+    @Autowired
     private ContextHolder context;
 
     /**
@@ -124,6 +139,9 @@ public class SpringConfiguration extends WebMvcConfigurerAdapter {
         registry.addConverter(reportStyleConverter);
         registry.addConverter(reportConverter);
         registry.addConverter(languageConverter);
+        registry.addConverter(eventClassCategoryConverter);
+        registry.addConverter(eventClassTypeConverter);
+        registry.addConverter(profileConverter);
     }
 
     /**

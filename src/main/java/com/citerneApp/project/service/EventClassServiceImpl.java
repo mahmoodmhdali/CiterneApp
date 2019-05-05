@@ -2,6 +2,7 @@ package com.citerneApp.project.service;
 
 import com.citerneApp.api.commons.ContextHolder;
 import com.citerneApp.api.commons.Logger;
+import com.citerneApp.project.dao.EventClassCountryDao;
 import com.citerneApp.project.dao.EventClassDao;
 import com.citerneApp.project.helpermodel.EventClassPagination;
 import com.citerneApp.project.helpermodel.HomePageEvents;
@@ -32,6 +33,9 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
 
     @Autowired
     EventClassDao eventClassDao;
+
+    @Autowired
+    EventClassCountryDao eventClassCountryDao;
 
     @Autowired
     ContextHolder context;
@@ -139,6 +143,7 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
                     .addHttpResponseEntityData("eventClassSchedules", "At least one schedule should be added.")
                     .getResponse();
         }
+        eventClass.setEventClassCountry(eventClassCountryDao.getEventClassCountry(1L));
         eventClassDao.addEventClass(eventClass);
         return ResponseBuilder.getInstance().
                 setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
