@@ -88,6 +88,9 @@ public class Profile implements Serializable {
     @Column(name = "FILE_NAME")
     private String fileName;
 
+    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
+    private Collection<ProfileFavorite> favorites;
+
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -174,6 +177,14 @@ public class Profile implements Serializable {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public Collection<ProfileFavorite> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(Collection<ProfileFavorite> favorites) {
+        this.favorites = favorites;
     }
 
     @Override

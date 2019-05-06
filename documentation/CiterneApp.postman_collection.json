@@ -1355,6 +1355,170 @@
 			]
 		},
 		{
+			"name": "Profile Favorites",
+			"item": [
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/profileFavorites/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"profileFavorites",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/profileFavorites",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"profileFavorites"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add new profile favorite",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Token",
+								"type": "text",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI5YmQ4YWFjZi05MWNkLTRkYTMtOWM0ZS0wMzFhYzU2NjcxN2YiLCJzdWIiOiJzeXN1c2VyQGFwbGltYW4uY29tIiwiaWF0IjoxNTU1ODYzMTg3LCJleHAiOjE1NTU5OTI3ODd9.Sd5rUy0dwN-wCGtc5iJ8vrnXEKY6of9Kw6mxdYYqcopHWzOcKxQnQMlCxscOJLuT27A05FDpw9R8fS027OnoKQ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/profileFavorites/add/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"profileFavorites",
+								"add",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove profile favorite",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Token",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI5YmQ4YWFjZi05MWNkLTRkYTMtOWM0ZS0wMzFhYzU2NjcxN2YiLCJzdWIiOiJzeXN1c2VyQGFwbGltYW4uY29tIiwiaWF0IjoxNTU1ODYzMTg3LCJleHAiOjE1NTU5OTI3ODd9.Sd5rUy0dwN-wCGtc5iJ8vrnXEKY6of9Kw6mxdYYqcopHWzOcKxQnQMlCxscOJLuT27A05FDpw9R8fS027OnoKQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/profileFavorites/remove/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"profileFavorites",
+								"remove",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All profile favorites for user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Token",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI5YmQ4YWFjZi05MWNkLTRkYTMtOWM0ZS0wMzFhYzU2NjcxN2YiLCJzdWIiOiJzeXN1c2VyQGFwbGltYW4uY29tIiwiaWF0IjoxNTU1ODYzMTg3LCJleHAiOjE1NTU5OTI3ODd9.Sd5rUy0dwN-wCGtc5iJ8vrnXEKY6of9Kw6mxdYYqcopHWzOcKxQnQMlCxscOJLuT27A05FDpw9R8fS027OnoKQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8084/CiterneApp/profileFavorites/user",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8084",
+							"path": [
+								"CiterneApp",
+								"profileFavorites",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Citerne User",
 			"item": [
 				{

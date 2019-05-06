@@ -12,7 +12,6 @@ public class EventClassCountryDaoImpl extends AbstractDao<Long, EventClassCountr
     @Override
     public List<EventClassCountry> getEventClassCountryes() {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.isNull("deletedDate"));
         List<EventClassCountry> eventClassCountryes = (List<EventClassCountry>) criteria.list();
         return eventClassCountryes;
     }
@@ -20,7 +19,6 @@ public class EventClassCountryDaoImpl extends AbstractDao<Long, EventClassCountr
     @Override
     public EventClassCountry getEventClassCountry(Long id) {
         Criteria criteria = createEntityCriteria();
-        criteria.add(Restrictions.isNull("deletedDate"));
         criteria.add(Restrictions.eq("id", id));
         EventClassCountry eventClassCountry = (EventClassCountry) criteria.uniqueResult();
         return eventClassCountry;
