@@ -154,7 +154,7 @@ CREATE TABLE `tbl_event_class_image` (
   PRIMARY KEY (`ID`),
   KEY `FK_875468756287364872_idx` (`EVENT_CLASS`),
   CONSTRAINT `FK_875468756287364872` FOREIGN KEY (`EVENT_CLASS`) REFERENCES `tbl_event_class` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `tbl_event_class_image` (
 
 LOCK TABLES `tbl_event_class_image` WRITE;
 /*!40000 ALTER TABLE `tbl_event_class_image` DISABLE KEYS */;
-INSERT INTO `tbl_event_class_image` VALUES (25,'Image 1','ghida.png',1,2),(27,'Image 1','event3.png',1,3),(28,'Image 1','event4.png',1,4),(29,'Image 1','event5.png',1,5),(30,'Image 1','event6.png',1,6),(31,'Image 1','event7.png',1,7),(32,'Image 1','event8.png',1,8),(33,'Image 1','event9.png',1,9),(34,'Image 1','event10.png',1,10),(36,'Image 1','guy.png',2,5),(37,'Image 1','parker.png',2,6),(38,'Image 1','parker2.png',3,6),(39,'Image 1','samuel.png',2,10),(40,'Image 1','samuel2.png',3,10),(41,'Image 1','yara.png',1,14),(42,'Image 1','hamdi.png',1,15),(43,'Image 1','stephanie.png',1,16),(44,'Image 1','jadd.png',1,17),(45,'Image 1','jadd2.png',2,17),(46,'Image 1','jadd3.png',3,17),(47,'Image 1','nivine.png',1,18),(48,'Image 1','hiva.png',1,19),(49,'Image 1','mitra.png',1,20),(50,'Image 1','charlie.png',1,21),(51,'Image 1','charlie2.png',2,21),(52,'Image 1','bassam.png',1,22),(53,'Image 1','gacia.png',1,23),(54,'Image 1','cynthia.png',1,24),(55,'Image 1','ramz.png',1,25),(56,'Image 1','neimar.png',1,13),(57,'Image 1','marco.png',1,11),(58,'Image 1','guy2.png',1,12),(59,'Image 1','general.png',1,26);
+INSERT INTO `tbl_event_class_image` VALUES (25,'Image 1','ghida.png',1,2),(27,'Image 1','event3.png',1,3),(28,'Image 1','event4.png',1,4),(29,'Image 1','event5.png',1,5),(30,'Image 1','event6.png',1,6),(31,'Image 1','event7.png',1,7),(32,'Image 1','event8.png',1,8),(33,'Image 1','event9.png',1,9),(34,'Image 1','event10.png',1,10),(36,'Image 1','guy.png',2,5),(37,'Image 1','parker.png',2,6),(38,'Image 1','parker2.png',3,6),(39,'Image 1','samuel.png',2,10),(40,'Image 1','samuel2.png',3,10),(41,'Image 1','yara.png',1,14),(42,'Image 1','hamdi.png',1,15),(43,'Image 1','stephanie.png',1,16),(44,'Image 1','jadd.png',1,17),(45,'Image 1','jadd2.png',2,17),(46,'Image 1','jadd3.png',3,17),(47,'Image 1','nivine.png',1,18),(48,'Image 1','hiva.png',1,19),(49,'Image 1','mitra.png',1,20),(50,'Image 1','charlie.png',1,21),(51,'Image 1','charlie2.png',2,21),(52,'Image 1','bassam.png',1,22),(53,'Image 1','gacia.png',1,23),(54,'Image 1','cynthia.png',1,24),(55,'Image 1','ramz.png',1,25),(56,'Image 1','neimar.png',1,13),(57,'Image 1','marco.png',1,11),(58,'Image 1','guy2.png',1,12),(59,'Image 1','general.png',1,26),(60,'Image 1','general.png',1,1557344261502450),(61,'Image 1','general.png',1,1557344983290190);
 /*!40000 ALTER TABLE `tbl_event_class_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1455,4 +1455,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-05-08 22:34:16
+-- Dump completed on 2019-05-08 22:39:46
