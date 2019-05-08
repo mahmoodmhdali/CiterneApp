@@ -244,7 +244,8 @@ public class EventClassController extends AbstractController {
                 .returnClientResponse();
     }
 
-    @PostMapping(value = {"/edit"}, produces = "application/json;charset=UTF-8")
+//    @PostMapping(value = {"/edit"}, produces = "application/json;charset=UTF-8")
+    @PostMapping("/edit")
     public ResponseEntity editEventClass(@ModelAttribute @Valid EventClass eventClass, BindingResult eventClassBindingResults) {
         // Validate User Inputs
         String[] byPassFields = new String[2];

@@ -34,14 +34,10 @@ public class EventClassCastAndCredit implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "TITLE")
-    @Size(max = 20, message = "validation.CastAndCredit.titleRange")
-    @NotBlank(message = "validation.CastAndCredit.titleRequired")
     private String title;
 
     @Basic(optional = false)
     @Column(name = "DESCRIPTION")
-    @Size(max = 1000, message = "validation.CastAndCredit.descriptionRange")
-    @NotBlank(message = "validation.CastAndCredit.descriptionRequired")
     private String description;
 
     @JsonIgnore

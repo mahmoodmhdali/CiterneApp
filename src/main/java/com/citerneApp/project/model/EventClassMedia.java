@@ -34,14 +34,10 @@ public class EventClassMedia implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "NAME")
-    @Size(max = 20, message = "validation.EventClassMedia.nameRange")
-    @NotBlank(message = "validation.EventClassMedia.nameRequired")
     private String name;
 
     @Basic(optional = false)
     @Column(name = "PATH")
-    @Size(max = 1000, message = "validation.EventClassMedia.pathRange")
-    @NotBlank(message = "validation.EventClassMedia.pathRequired")
     private String path;
 
     @JsonIgnore
