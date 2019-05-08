@@ -2,15 +2,21 @@ package com.citerneApp.project.service;
 
 import com.citerneApp.api.commons.ContextHolder;
 import com.citerneApp.api.commons.Logger;
+import com.citerneApp.project.dao.EventClassCastAndCreditDao;
 import com.citerneApp.project.dao.EventClassCountryDao;
 import com.citerneApp.project.dao.EventClassDao;
+import com.citerneApp.project.dao.EventClassMediaDao;
+import com.citerneApp.project.dao.EventClassScheduleDao;
 import com.citerneApp.project.helpermodel.EventClassPagination;
 import com.citerneApp.project.helpermodel.HomePageEvents;
 import com.citerneApp.project.helpermodel.ResponseBodyEntity;
 import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
 import com.citerneApp.project.model.EventClass;
+import com.citerneApp.project.model.EventClassCastAndCredit;
 import com.citerneApp.project.model.EventClassImage;
+import com.citerneApp.project.model.EventClassMedia;
+import com.citerneApp.project.model.EventClassSchedule;
 import com.citerneApp.project.model.UserProfile;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,6 +42,15 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
 
     @Autowired
     EventClassCountryDao eventClassCountryDao;
+
+    @Autowired
+    EventClassMediaDao eventClassMediaDao;
+
+    @Autowired
+    EventClassScheduleDao eventClassScheduleDao;
+
+    @Autowired
+    EventClassCastAndCreditDao eventClassCastAndCreditDao;
 
     @Autowired
     ContextHolder context;
@@ -123,20 +138,6 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
                     .getResponse();
         }
 
-        if (eventClass.getEventClassCastAndCredits() == null) {
-            return ResponseBuilder.getInstance()
-                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                    .addHttpResponseEntityData("eventClassCastAndCredits", "At least one cast and credit should be added.")
-                    .getResponse();
-        }
-
-        if (eventClass.getEventClassMedias() == null) {
-            return ResponseBuilder.getInstance()
-                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                    .addHttpResponseEntityData("eventClassMedias", "At least one media should be added.")
-                    .getResponse();
-        }
-
         if (eventClass.getEventClassSchedules() == null) {
             return ResponseBuilder.getInstance()
                     .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
@@ -153,19 +154,57 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
 
     @Override
     public ResponseBodyEntity editEventClass(EventClass eventClass) {
+        if (eventClass.getEventClassCategory() == null) {
+            return ResponseBuilder.getInstance()
+                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
+                    .addHttpResponseEntityData("eventClassCategory", "Category is required.")
+                    .getResponse();
+        }
+
+        if (eventClass.getProfileCollection() == null) {
+            return ResponseBuilder.getInstance()
+                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
+                    .addHttpResponseEntityData("profileCollection", "At least one profile should be selected.")
+                    .getResponse();
+        }
+
+        if (eventClass.getEventClassSchedules() == null) {
+            return ResponseBuilder.getInstance()
+                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
+                    .addHttpResponseEntityData("eventClassSchedules", "At least one schedule should be added.")
+                    .getResponse();
+        }
         EventClass persistantEventClass = eventClassDao.getEventClass(eventClass.getId());
         if (persistantEventClass != null) {
+            if (persistantEventClass.getEventClassType().getId() == 1L) {
+                eventClassMediaDao.deleteEventClassMedia(eventClass.getId());
+                eventClassCastAndCreditDao.deleteEventClassCastAndCredit(eventClass.getId());
+            }
+            eventClassScheduleDao.deleteEventClassSchedule(eventClass.getId());
+            if (eventClass.getEventClassSchedules() != null) {
+                for (EventClassSchedule eventClassSchedule : eventClass.getEventClassSchedules()) {
+                    eventClassSchedule.setEventClass(persistantEventClass);
+                }
+            }
+            if (eventClass.getEventClassCastAndCredits() != null) {
+                for (EventClassCastAndCredit eventClassCastAndCredit : eventClass.getEventClassCastAndCredits()) {
+                    eventClassCastAndCredit.setEventClass(persistantEventClass);
+                }
+            }
+            if (eventClass.getEventClassMedias() != null) {
+                for (EventClassMedia eventClassMedia : eventClass.getEventClassMedias()) {
+                    eventClassMedia.setEventClass(persistantEventClass);
+                }
+            }
             persistantEventClass.setTitle(eventClass.getTitle());
-            persistantEventClass.setEventClassCategory(eventClass.getEventClassCategory());
-            persistantEventClass.setDuration(eventClass.getDuration());
-            persistantEventClass.setTicketingURL(eventClass.getTicketingURL());
-            persistantEventClass.setAbout(eventClass.getAbout());
-            persistantEventClass.setEventClassType(eventClass.getEventClassType());
             persistantEventClass.setProfileCollection(eventClass.getProfileCollection());
+            persistantEventClass.setEventClassCategory(eventClass.getEventClassCategory());
+            persistantEventClass.setTicketingURL(eventClass.getTicketingURL());
+            persistantEventClass.setDuration(eventClass.getDuration());
+            persistantEventClass.setAbout(eventClass.getAbout());
             persistantEventClass.setEventClassCastAndCredits(eventClass.getEventClassCastAndCredits());
             persistantEventClass.setEventClassMedias(eventClass.getEventClassMedias());
             persistantEventClass.setEventClassSchedules(eventClass.getEventClassSchedules());
-//            profileMediaDao.deleteProfileMediasForProfile(persistantProfile.getId());
             return ResponseBuilder.getInstance().
                     setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                     .addHttpResponseEntityData("EventClass", "Success editing event/class")

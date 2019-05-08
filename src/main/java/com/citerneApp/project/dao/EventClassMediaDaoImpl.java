@@ -24,4 +24,9 @@ public class EventClassMediaDaoImpl extends AbstractDao<Long, EventClassMedia> i
         return eventClassMedia;
     }
 
+    @Override
+    public void deleteEventClassMedia(Long eventID) {
+        Integer total = createSqlQuery("delete from tbl_event_class_media where event_class = " + eventID + "").executeUpdate();
+    }
+
 }

@@ -24,4 +24,9 @@ public class EventClassCastAndCreditDaoImpl extends AbstractDao<Long, EventClass
         return eventClassCastAndCredit;
     }
 
+    @Override
+    public void deleteEventClassCastAndCredit(Long eventID) {
+        Integer total = createSqlQuery("delete from tbl_event_class_cast_and_credit where event_class = " + eventID + "").executeUpdate();
+    }
+
 }

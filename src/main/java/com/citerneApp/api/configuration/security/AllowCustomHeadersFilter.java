@@ -20,6 +20,8 @@ public class AllowCustomHeadersFilter extends GenericFilterBean {
     public void doFilter(final ServletRequest req, final ServletResponse res, final FilterChain chain) throws IOException, ServletException {
         final HttpServletRequest request = (HttpServletRequest) req;
         final HttpServletResponse response = (HttpServletResponse) res;
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
@@ -32,5 +34,5 @@ public class AllowCustomHeadersFilter extends GenericFilterBean {
             chain.doFilter(request, response);
         }
     }
-    
+
 }

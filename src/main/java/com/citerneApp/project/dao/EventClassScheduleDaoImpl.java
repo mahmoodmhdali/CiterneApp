@@ -24,4 +24,9 @@ public class EventClassScheduleDaoImpl extends AbstractDao<Long, EventClassSched
         return eventClassSchedule;
     }
 
+    @Override
+    public void deleteEventClassSchedule(Long eventID) {
+        Integer total = createSqlQuery("delete from tbl_event_class_schedule where event_class = " + eventID + "").executeUpdate();
+    }
+
 }

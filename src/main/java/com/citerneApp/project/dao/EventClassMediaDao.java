@@ -9,4 +9,6 @@ public interface EventClassMediaDao {
 
     EventClassMedia getEventClassMedia(Long id);
 
+    void deleteEventClassMedia(Long eventID);
+
 }

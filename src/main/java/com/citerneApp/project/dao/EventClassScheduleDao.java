@@ -9,4 +9,6 @@ public interface EventClassScheduleDao {
 
     EventClassSchedule getEventClassSchedule(Long id);
 
+    void deleteEventClassSchedule(Long eventID);
+
 }

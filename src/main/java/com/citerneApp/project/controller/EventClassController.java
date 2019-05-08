@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -227,7 +228,10 @@ public class EventClassController extends AbstractController {
     @PostMapping("/add")
     public ResponseEntity addEventClass(@ModelAttribute @Valid EventClass eventClass, BindingResult eventClassBindingResults) {
         // Validate User Inputs
-        ResponseBodyEntity responseBodyEntity = super.checkValidationResults(eventClassBindingResults, null);
+        String[] byPassFields = new String[2];
+        byPassFields[0] = "eventClassCastAndCredits";
+        byPassFields[1] = "eventClassMedias";
+        ResponseBodyEntity responseBodyEntity = super.checkValidationResults(eventClassBindingResults, byPassFields);
         if (responseBodyEntity != null) {
             return ResponseBuilder.getInstance()
                     .setHttpStatus(HttpStatus.OK)
@@ -240,12 +244,13 @@ public class EventClassController extends AbstractController {
                 .returnClientResponse();
     }
 
-    @PostMapping("/edit")
+    @PostMapping(value = {"/edit"}, produces = "application/json;charset=UTF-8")
     public ResponseEntity editEventClass(@ModelAttribute @Valid EventClass eventClass, BindingResult eventClassBindingResults) {
         // Validate User Inputs
-//        String[] byPassFields = new String[1];
-//        byPassFields[0] = "name";
-        ResponseBodyEntity responseBodyEntity = super.checkValidationResults(eventClassBindingResults, null);
+        String[] byPassFields = new String[2];
+        byPassFields[0] = "eventClassCastAndCredits";
+        byPassFields[1] = "eventClassMedias";
+        ResponseBodyEntity responseBodyEntity = super.checkValidationResults(eventClassBindingResults, byPassFields);
         if (responseBodyEntity != null) {
             return ResponseBuilder.getInstance()
                     .setHttpStatus(HttpStatus.OK)

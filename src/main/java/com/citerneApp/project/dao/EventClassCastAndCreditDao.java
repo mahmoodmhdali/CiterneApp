@@ -9,4 +9,6 @@ public interface EventClassCastAndCreditDao {
 
     EventClassCastAndCredit getEventClassCastAndCredit(Long id);
 
+    void deleteEventClassCastAndCredit(Long eventID);
+
 }

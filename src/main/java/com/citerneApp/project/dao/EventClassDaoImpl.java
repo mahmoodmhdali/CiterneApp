@@ -314,14 +314,20 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
     @Override
     public EventClass addEventClass(EventClass eventClass) {
         try {
-            for (EventClassSchedule eventClassSchedule : eventClass.getEventClassSchedules()) {
-                eventClassSchedule.setEventClass(eventClass);
+            if (eventClass.getEventClassSchedules() != null) {
+                for (EventClassSchedule eventClassSchedule : eventClass.getEventClassSchedules()) {
+                    eventClassSchedule.setEventClass(eventClass);
+                }
             }
-            for (EventClassCastAndCredit eventClassCastAndCredit : eventClass.getEventClassCastAndCredits()) {
-                eventClassCastAndCredit.setEventClass(eventClass);
+            if (eventClass.getEventClassCastAndCredits() != null) {
+                for (EventClassCastAndCredit eventClassCastAndCredit : eventClass.getEventClassCastAndCredits()) {
+                    eventClassCastAndCredit.setEventClass(eventClass);
+                }
             }
-            for (EventClassMedia eventClassMedia : eventClass.getEventClassMedias()) {
-                eventClassMedia.setEventClass(eventClass);
+            if (eventClass.getEventClassMedias() != null) {
+                for (EventClassMedia eventClassMedia : eventClass.getEventClassMedias()) {
+                    eventClassMedia.setEventClass(eventClass);
+                }
             }
             persist(eventClass);
         } catch (Exception ex) {

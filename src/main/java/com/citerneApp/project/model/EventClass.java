@@ -48,14 +48,14 @@ public class EventClass implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "TITLE")
-    @Size(min = 5, max = 20, message = "validation.userProfile.titleRange")
-    @NotBlank(message = "validation.userProfile.titleRequired")
+    @Size(min = 3, max = 60, message = "Title must be between 3 and 60 characters")
+    @NotBlank(message = "Title is required")
     @ValidName
     private String title;
 
     @Basic(optional = false)
     @Column(name = "TICKETING_URL")
-    @Size(max = 200, message = "validation.userProfile.ticketingURLRange")
+    @Size(max = 200, message = "Ticketing URL must be maximum 200 characters")
     private String ticketingURL;
 
     @JoinColumn(name = "CATEGORY", referencedColumnName = "ID")
@@ -78,8 +78,8 @@ public class EventClass implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "ABOUT")
-    @Size(min = 20, message = "validation.userProfile.aboutRange")
-    @NotBlank(message = "validation.userProfile.aboutRequired")
+    @Size(min = 10, message = "About should be minimum 10 characters")
+    @NotBlank(message = "About is required")
     private String about;
 
     @CreationTimestamp
@@ -107,6 +107,10 @@ public class EventClass implements Serializable {
     @Basic(optional = false)
     @Column(name = "DURATION")
     private Integer duration;
+
+    @Basic(optional = false)
+    @Column(name = "NUMBER_OF_PARTICIPANTS")
+    private Integer numberOfParticipants;
 
     @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
     private Collection<EventClassImage> eventClassImages;
@@ -312,6 +316,14 @@ public class EventClass implements Serializable {
 
     public void setImageName4(String imageName4) {
         this.imageName4 = imageName4;
+    }
+
+    public Integer getNumberOfParticipants() {
+        return numberOfParticipants;
+    }
+
+    public void setNumberOfParticipants(Integer numberOfParticipants) {
+        this.numberOfParticipants = numberOfParticipants;
     }
 
     @Override
