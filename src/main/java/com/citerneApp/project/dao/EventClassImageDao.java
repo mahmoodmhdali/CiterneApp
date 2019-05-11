@@ -9,4 +9,6 @@ public interface EventClassImageDao {
 
     EventClassImage getEventClassImage(Long id);
 
+    EventClassImage addEventClassImage(EventClassImage eventClassImage);
+
 }

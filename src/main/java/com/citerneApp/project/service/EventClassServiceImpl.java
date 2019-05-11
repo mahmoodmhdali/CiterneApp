@@ -5,6 +5,7 @@ import com.citerneApp.api.commons.Logger;
 import com.citerneApp.project.dao.EventClassCastAndCreditDao;
 import com.citerneApp.project.dao.EventClassCountryDao;
 import com.citerneApp.project.dao.EventClassDao;
+import com.citerneApp.project.dao.EventClassImageDao;
 import com.citerneApp.project.dao.EventClassMediaDao;
 import com.citerneApp.project.dao.EventClassScheduleDao;
 import com.citerneApp.project.helpermodel.EventClassPagination;
@@ -25,6 +26,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import org.apache.commons.io.FilenameUtils;
@@ -39,6 +41,9 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
 
     @Autowired
     EventClassDao eventClassDao;
+
+    @Autowired
+    EventClassImageDao eventClassImageDao;
 
     @Autowired
     EventClassCountryDao eventClassCountryDao;
@@ -73,6 +78,22 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
     @Override
     public List<EventClass> getEventClasses() {
         return eventClassDao.getEventClasses();
+    }
+
+    @Override
+    public void getEventClassesForMidnightCheck() {
+        List<EventClass> eventClasses = eventClassDao.getEventClassesForMidnightCheck();
+        for (EventClass eventClasse : eventClasses) {
+            boolean toRemove = true;
+            for (EventClassSchedule eventClassSchedule : eventClasse.getEventClassSchedules()) {
+                if (eventClassSchedule.getShowDateTime().compareTo(new Date()) > 0) {
+                    toRemove = false;
+                }
+            }
+            if (toRemove) {
+                eventClasse.setDeletedDate(new Date());
+            }
+        }
     }
 
     @Override
@@ -148,7 +169,7 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
         eventClassDao.addEventClass(eventClass);
         return ResponseBuilder.getInstance().
                 setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                .addHttpResponseEntityData("eventClass", "Success adding event/class")
+                .addHttpResponseEntityData("eventClass", eventClass)
                 .getResponse();
     }
 
@@ -218,153 +239,18 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
     }
 
     @Override
-    public ResponseBodyEntity addEventClassImages(EventClass eventClass,
-            MultipartFile image1, MultipartFile image2, MultipartFile image3, MultipartFile image4) throws IOException {
-        UserProfile loggedInUser = getAuthenticatedUser();
-        if (eventClass == null) {
-            return ResponseBuilder.getInstance()
-                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                    .addHttpResponseEntityData("eventClass", "Event/Class does not exist.")
-                    .getResponse();
-        }
-        EventClass persistantEventClass = eventClassDao.getEventClass(eventClass.getId());
-        if (persistantEventClass == null) {
-            return ResponseBuilder.getInstance()
-                    .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                    .addHttpResponseEntityData("eventClass", "Event/Class does not exist.")
-                    .getResponse();
-        }
-        Collection<EventClassImage> eventClassImages = new ArrayList<>();
-        if (image1 != null) {
-            String extension = FilenameUtils.getExtension(image1.getOriginalFilename()).toLowerCase();
-            if (!extension.equals("jpg") && !extension.equals("jpeg") && !extension.equals("png")) {
-                return ResponseBuilder.getInstance()
-                        .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                        .addHttpResponseEntityData("imageName1", "Please upload .jpg .jpeg or png images only.")
-                        .getResponse();
-            }
-        }
-        if (image2 != null) {
-            String extension = FilenameUtils.getExtension(image2.getOriginalFilename()).toLowerCase();
-            if (!extension.equals("jpg") && !extension.equals("jpeg") && !extension.equals("png")) {
-                return ResponseBuilder.getInstance()
-                        .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                        .addHttpResponseEntityData("imageName2", "Please upload .jpg .jpeg or png images only.")
-                        .getResponse();
-            }
-        }
-        if (image3 != null) {
-            String extension = FilenameUtils.getExtension(image3.getOriginalFilename()).toLowerCase();
-            if (!extension.equals("jpg") && !extension.equals("jpeg") && !extension.equals("png")) {
-                return ResponseBuilder.getInstance()
-                        .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                        .addHttpResponseEntityData("imageName3", "Please upload .jpg .jpeg or png images only.")
-                        .getResponse();
-            }
-        }
-        if (image4 != null) {
-            String extension = FilenameUtils.getExtension(image4.getOriginalFilename()).toLowerCase();
-            if (!extension.equals("jpg") && !extension.equals("jpeg") && !extension.equals("png")) {
-                return ResponseBuilder.getInstance()
-                        .setHttpResponseEntityResultCode(ResponseCode.PARAMETERS_VALIDATION_ERROR)
-                        .addHttpResponseEntityData("imageName4", "Please upload .jpg .jpeg or png images only.")
-                        .getResponse();
-            }
-        }
-        String locationfile = context.getCatalina().getCatalinaWorkInstanceDir() + "/EventClasseImages";
-        Path dir = Paths.get(locationfile);
-        int numberOfNotAlLowed = 0;
-        if (image1 != null) {
-            String imageExtension = FilenameUtils.getExtension(image1.getOriginalFilename());
-            if (imageExtension.toLowerCase().equals("jpg") || imageExtension.toLowerCase().equals("jpeg") || imageExtension.toLowerCase().equals("png")) {
-                try {
-                    String fileName = loggedInUser.getId() + "-" + System.currentTimeMillis() + "-1." + imageExtension;
-                    Path originalFile = dir.resolve(fileName);
-                    Files.copy(image1.getInputStream(), originalFile, StandardCopyOption.REPLACE_EXISTING);
-                    EventClassImage eventClassImage = new EventClassImage();
-                    eventClassImage.setFileName(image1.getOriginalFilename().replace("." + FilenameUtils.getExtension(image1.getOriginalFilename()), ""));
-                    eventClassImage.setImageIndex(1);
-                    eventClassImage.setPath("/EventClasseImages/" + fileName);
-                    eventClassImage.setEventClass(persistantEventClass);
-                    eventClassImages.add(eventClassImage);
-                } catch (Exception ex) {
-                    Logger.ERROR("1- Error addOffer 1 on API [" + ex.getMessage() + "]", "", "");
-                }
-            } else {
-                numberOfNotAlLowed++;
-            }
-        }
-        if (image2 != null) {
-            String imageExtension = FilenameUtils.getExtension(image2.getOriginalFilename());
-            if (imageExtension.toLowerCase().equals("jpg") || imageExtension.toLowerCase().equals("jpeg") || imageExtension.toLowerCase().equals("png")) {
-                try {
-                    String fileName = loggedInUser.getId() + "-" + System.currentTimeMillis() + "-2." + imageExtension;
-                    Path originalFile = dir.resolve(fileName);
-                    Files.copy(image2.getInputStream(), originalFile, StandardCopyOption.REPLACE_EXISTING);
-                    EventClassImage eventClassImage = new EventClassImage();
-                    eventClassImage.setFileName(image2.getOriginalFilename().replace("." + FilenameUtils.getExtension(image2.getOriginalFilename()), ""));
-                    eventClassImage.setImageIndex(2);
-                    eventClassImage.setPath("/EventClasseImages/" + fileName);
-                    eventClassImage.setEventClass(persistantEventClass);
-                    eventClassImages.add(eventClassImage);
-                } catch (Exception ex) {
-                    Logger.ERROR("1- Error addOffer 2 on API [" + ex.getMessage() + "]", "", "");
-                }
-            } else {
-                numberOfNotAlLowed++;
-            }
-        }
-        if (image3 != null) {
-            String imageExtension = FilenameUtils.getExtension(image3.getOriginalFilename());
-            if (imageExtension.toLowerCase().equals("jpg") || imageExtension.toLowerCase().equals("jpeg") || imageExtension.toLowerCase().equals("png")) {
-                try {
-                    String fileName = loggedInUser.getId() + "-" + System.currentTimeMillis() + "-3." + imageExtension;
-                    Path originalFile = dir.resolve(fileName);
-                    Files.copy(image3.getInputStream(), originalFile, StandardCopyOption.REPLACE_EXISTING);
-                    EventClassImage eventClassImage = new EventClassImage();
-                    eventClassImage.setFileName(image3.getOriginalFilename().replace("." + FilenameUtils.getExtension(image3.getOriginalFilename()), ""));
-                    eventClassImage.setImageIndex(3);
-                    eventClassImage.setPath("/EventClasseImages/" + fileName);
-                    eventClassImage.setEventClass(persistantEventClass);
-                    eventClassImages.add(eventClassImage);
-                } catch (Exception ex) {
-                    Logger.ERROR("1- Error addOffer 3 on API [" + ex.getMessage() + "]", "", "");
-                }
-            } else {
-                numberOfNotAlLowed++;
-            }
-        }
-        if (image4 != null) {
-            String imageExtension = FilenameUtils.getExtension(image4.getOriginalFilename());
-            if (imageExtension.toLowerCase().equals("jpg") || imageExtension.toLowerCase().equals("jpeg") || imageExtension.toLowerCase().equals("png")) {
-                try {
-                    String fileName = loggedInUser.getId() + "-" + System.currentTimeMillis() + "-4." + imageExtension;
-                    Path originalFile = dir.resolve(fileName);
-                    Files.copy(image4.getInputStream(), originalFile, StandardCopyOption.REPLACE_EXISTING);
-                    EventClassImage eventClassImage = new EventClassImage();
-                    eventClassImage.setFileName(image4.getOriginalFilename().replace("." + FilenameUtils.getExtension(image4.getOriginalFilename()), ""));
-                    eventClassImage.setImageIndex(4);
-                    eventClassImage.setPath("/EventClasseImages/" + fileName);
-                    eventClassImage.setEventClass(persistantEventClass);
-                    eventClassImages.add(eventClassImage);
-                } catch (Exception ex) {
-                    Logger.ERROR("1- Error addOffer 4 on API [" + ex.getMessage() + "]", "", "");
-                }
-            } else {
-                numberOfNotAlLowed++;
-            }
-        }
-        persistantEventClass.setEventClassImages(eventClassImages);
-        if (numberOfNotAlLowed > 0) {
+    public ResponseBodyEntity deleteEventClass(Long eventClassID) {
+        EventClass persistantEventClass = eventClassDao.getEventClass(eventClassID);
+        if (persistantEventClass != null) {
+            persistantEventClass.setDeletedDate(new Date());
             return ResponseBuilder.getInstance().
                     setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                    .addHttpResponseEntityData("eventClass", persistantEventClass)
-                    .addHttpResponseEntityData("validation", numberOfNotAlLowed + " not uploaded images. Reason: extension not valid.")
+                    .addHttpResponseEntityData("EventClass", "Success removing event/class")
                     .getResponse();
         } else {
             return ResponseBuilder.getInstance().
-                    setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
-                    .addHttpResponseEntityData("eventClass", persistantEventClass)
+                    setHttpResponseEntityResultCode(ResponseCode.SOURCE_NOT_FOUND)
+                    .addHttpResponseEntityData("Message", "Event/Class not found")
                     .getResponse();
         }
     }
@@ -539,8 +425,10 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
                     }
                 }
             }
-
-            persistantEventClass.setEventClassImages(eventClassImages);
+            eventClassDao.deleteEventClassImages(persistantEventClass.getId());
+            for (EventClassImage eventClassImage : eventClassImages) {
+                eventClassImageDao.addEventClassImage(eventClassImage);
+            }
             if (numberOfNotAlLowed > 0) {
                 return ResponseBuilder.getInstance().
                         setHttpResponseEntityResultCode(ResponseCode.SUCCESS)

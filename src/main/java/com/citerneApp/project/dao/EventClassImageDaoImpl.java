@@ -24,4 +24,15 @@ public class EventClassImageDaoImpl extends AbstractDao<Long, EventClassImage> i
         return eventClassImage;
     }
 
+    @Override
+    public EventClassImage addEventClassImage(EventClassImage eventClassImage) {
+        Integer total = createSqlQuery("insert into tbl_event_class_image (name, path, image_index, event_class) values (:name, :path, :imageIndex, :eventID)")
+                .setParameter("name", eventClassImage.getFileName())
+                .setParameter("path", eventClassImage.getPath())
+                .setParameter("imageIndex", eventClassImage.getImageIndex())
+                .setParameter("eventID", eventClassImage.getEventClass().getId())
+                .executeUpdate();
+        return eventClassImage;
+    }
+
 }

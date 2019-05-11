@@ -10,11 +10,13 @@ public interface EventClassDao {
 
     List<HomePageEvents> getHomePageEventClasses();
 
-    HashMap<Long,String> getHomePageEventClassesProfiles();
+    HashMap<Long, String> getHomePageEventClassesProfiles();
 
     List<HomePageEvents> getHomePageEventClasses(String profileName);
 
     List<EventClass> getEventClasses();
+
+    List<EventClass> getEventClassesForMidnightCheck();
 
     EventClassPagination getEventClassesPagination(int pageNumber, int maxRes);
 
@@ -34,4 +36,5 @@ public interface EventClassDao {
 
     EventClass addEventClass(EventClass eventClass);
 
+    void deleteEventClassImages(Long eventID);
 }

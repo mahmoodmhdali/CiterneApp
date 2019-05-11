@@ -20,6 +20,8 @@ public interface EventClassService {
 
     List<EventClass> getEventClasses();
 
+    void getEventClassesForMidnightCheck();
+
     EventClassPagination getEventClassesPagination(int pageNumber, int maxRes);
 
     List<EventClass> getEventClassesByCategory(Long categoryID);
@@ -38,9 +40,9 @@ public interface EventClassService {
 
     ResponseBodyEntity addEventClass(EventClass eventClass);
 
-    ResponseBodyEntity editEventClass(EventClass eventClass);
+    ResponseBodyEntity deleteEventClass(Long eventClassID);
 
-    ResponseBodyEntity addEventClassImages(EventClass eventClass, MultipartFile image1, MultipartFile image2, MultipartFile image3, MultipartFile image4) throws IOException;
+    ResponseBodyEntity editEventClass(EventClass eventClass);
 
     ResponseBodyEntity editEventClassImages(EventClass eventClass, MultipartFile image1, MultipartFile image2, MultipartFile image3, MultipartFile image4) throws IOException;
 

@@ -69,6 +69,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                 + " INNER JOIN tbl_event_class_country c ON a.country=c.id\n"
                 + " INNER JOIN tbl_event_class_image i ON a.id=i.event_class and i.image_index = 1 \n"
                 + " INNER JOIN tbl_event_class_schedule s ON a.id=s.event_class\n"
+                + " WHERE a.DELETED_DATE IS NULL\n"
                 + " order by a.event_index")
                 .addScalar("id", new LongType())
                 .addScalar("title", new StringType())
@@ -98,6 +99,8 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                 + " tbl_event_class.ID = tbl_event_class_profiles.EVENT_CLASS_ID\n"
                 + "AND\n"
                 + " tbl_profile.ID = tbl_event_class_profiles.PROFILE_ID\n"
+                + "AND\n"
+                + " tbl_event_class.DELETED_DATE IS NULL\n"
                 + " GROUP BY \n"
                 + "   tbl_event_class.ID")
                 .addScalar("id", new LongType())
@@ -122,6 +125,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                 + " INNER JOIN tbl_event_class_schedule s ON a.id=s.event_class\n"
                 + " INNER JOIN tbl_event_class_cast_and_credit cac ON a.id=cac.event_class\n"
                 + " where cac.description LIKE ?\n"
+                + " AND a.DELETED_DATE IS NULL\n"
                 + " group by a.id,s.SHOW_DATETIME\n"
                 + " order by a.event_index")
                 .addScalar("id", new LongType())
@@ -151,6 +155,16 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
             Hibernate.initialize(eventClass.getEventClassSchedules());
             Hibernate.initialize(eventClass.getProfileCollection());
         }
+        return eventClasses;
+    }
+
+    @Override
+    public List<EventClass> getEventClassesForMidnightCheck() {
+        Criteria criteria = createEntityCriteria();
+        criteria.add(Restrictions.isNull("deletedDate"));
+        criteria.createAlias("eventClassType", "type");
+        criteria.add(Restrictions.eq("type.id", 1L));
+        List<EventClass> eventClasses = (List<EventClass>) criteria.list();
         return eventClasses;
     }
 
@@ -334,6 +348,11 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
             Logger.ERROR("1- Error AdminPassesDao 4 on API [" + ex.getMessage() + "]", eventClass, "");
         }
         return eventClass;
+    }
+
+    @Override
+    public void deleteEventClassImages(Long eventID) {
+        Integer total = createSqlQuery("delete from tbl_event_class_image where event_class = " + eventID + "").executeUpdate();
     }
 
 }

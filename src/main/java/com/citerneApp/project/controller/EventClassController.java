@@ -8,6 +8,7 @@ import com.citerneApp.project.helpermodel.ResponseCode;
 import com.citerneApp.project.model.EventClass;
 import com.citerneApp.project.model.EventClassImage;
 import com.citerneApp.project.service.EventClassService;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/eventClasses")
@@ -50,6 +53,15 @@ public class EventClassController extends AbstractController {
                 .setHttpStatus(HttpStatus.OK)
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                 .addHttpResponseEntityData("eventClasses", eventClasses)
+                .returnClientResponse();
+    }
+
+    @GetMapping("midnightCheck")
+    public ResponseEntity getMidnightCheck() {
+        eventClassService.getEventClassesForMidnightCheck();
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                 .returnClientResponse();
     }
 
@@ -263,5 +275,27 @@ public class EventClassController extends AbstractController {
                 .setHttpResponseEntity(eventClassService.editEventClass(eventClass))
                 .returnClientResponse();
     }
+
+    @PostMapping("/delete/{id}")
+    public ResponseEntity deleteEventClass(@PathVariable Long id) {
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntity(eventClassService.deleteEventClass(id))
+                .returnClientResponse();
+    }
+
+    @PostMapping(value = "/images/edit", consumes = "multipart/form-data")
+    public ResponseEntity editOffer(@RequestPart("info") EventClass eventClass,
+            @RequestPart(value = "uploadFile1", required = false) MultipartFile file1,
+            @RequestPart(value = "uploadFile2", required = false) MultipartFile file2,
+            @RequestPart(value = "uploadFile3", required = false) MultipartFile file3,
+            @RequestPart(value = "uploadFile4", required = false) MultipartFile file4) throws AddressException, IOException {
+        return ResponseBuilder.getInstance()
+                .setHttpStatus(HttpStatus.OK)
+                .setHttpResponseEntity(eventClassService.editEventClassImages(eventClass, file1, file2, file3, file4))
+                .returnClientResponse();
+    }
+    
+    
 
 }
