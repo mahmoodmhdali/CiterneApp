@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "TBL_FAVORITE")
+@Table(name = "TBL_PROFILE_FAVORITE")
 @XmlRootElement
 @JsonInclude(JsonInclude.Include.ALWAYS)
 public class ProfileFavorite implements Serializable {
