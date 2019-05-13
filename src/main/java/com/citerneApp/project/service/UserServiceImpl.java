@@ -5,12 +5,14 @@ import com.citerneApp.api.commons.utils.QRCodeGenerator;
 import com.citerneApp.api.commons.utils.SessionUtils;
 import com.citerneApp.api.commons.utils.Utils;
 import com.citerneApp.api.engine.SettingsEngine;
+import com.citerneApp.project.dao.AuditTrailDao;
 import com.citerneApp.project.dao.UserDao;
 import com.citerneApp.project.helpermodel.ResponseBodyEntity;
 import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
 import com.citerneApp.project.helpermodel.UserProfilePasswordValidator;
 import com.citerneApp.project.helpermodel.UsersPagination;
+import com.citerneApp.project.model.AuditTrail;
 import com.citerneApp.project.model.Group;
 import com.citerneApp.project.model.Language;
 import com.citerneApp.project.model.UserAttempt;
@@ -57,6 +59,9 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
     @Autowired
     QRCodeGenerator qRCodeGenerator;
+
+    @Autowired
+    AuditTrailDao auditTrailDao;
 
     @Override
     public List<UserProfile> getUsers(Long excludeLoggedInUserID, Integer type) {
@@ -194,6 +199,15 @@ public class UserServiceImpl extends AbstractService implements UserService {
         c.add(Calendar.DATE, 3);
         user.setResetPasswordTokenValidity(c.getTime());
         try {
+            UserProfile loggedInUser = this.getAuthenticatedUser();
+            if (loggedInUser != null) {
+                AuditTrail auditTrail = new AuditTrail();
+                auditTrail.setActionDate(new Date());
+                auditTrail.setActionID(1L);
+                auditTrail.setDescription("Add User with email email=" + user.getEmail());
+                auditTrail.setUserProfile(loggedInUser);
+                auditTrailDao.addAuditTrail(auditTrail);
+            }
             userDao.addUser(user);
         } catch (Exception ex) {
             Logger.ERROR("1- Error addUser 1 on API [" + ex.getMessage() + "]", user, "");
@@ -322,6 +336,15 @@ public class UserServiceImpl extends AbstractService implements UserService {
         }
         persistantUser.setDeletedDate(new Date());
 
+        UserProfile loggedInUser = this.getAuthenticatedUser();
+        if (loggedInUser != null) {
+            AuditTrail auditTrail = new AuditTrail();
+            auditTrail.setActionDate(new Date());
+            auditTrail.setActionID(2L);
+            auditTrail.setDescription("Delete User with email email=" + persistantUser.getEmail());
+            auditTrail.setUserProfile(loggedInUser);
+            auditTrailDao.addAuditTrail(auditTrail);
+        }
         return ResponseBuilder.getInstance()
                 .setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                 .setHttpResponseEntityResultDescription(this.getMessageBasedOnLanguage("user.deletedSuccess", null))

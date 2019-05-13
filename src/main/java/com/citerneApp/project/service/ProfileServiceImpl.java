@@ -2,12 +2,14 @@ package com.citerneApp.project.service;
 
 import com.citerneApp.api.commons.ContextHolder;
 import com.citerneApp.api.commons.Logger;
+import com.citerneApp.project.dao.AuditTrailDao;
 import com.citerneApp.project.dao.ProfileDao;
 import com.citerneApp.project.dao.ProfileMediaDao;
 import com.citerneApp.project.helpermodel.ProfilesPagination;
 import com.citerneApp.project.helpermodel.ResponseBodyEntity;
 import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
+import com.citerneApp.project.model.AuditTrail;
 import com.citerneApp.project.model.Profile;
 import com.citerneApp.project.model.ProfileMedia;
 import com.citerneApp.project.model.UserProfile;
@@ -18,6 +20,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +34,15 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
 
     @Autowired
     ProfileDao profileDao;
-    
+
     @Autowired
     ProfileMediaDao profileMediaDao;
 
     @Autowired
     ContextHolder context;
+
+    @Autowired
+    AuditTrailDao auditTrailDao;
 
     @Override
     public List<Profile> getProfilees() {
@@ -104,6 +110,14 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
             }
         }
         profileDao.addProfile(profile);
+        if (loggedInUser != null) {
+            AuditTrail auditTrail = new AuditTrail();
+            auditTrail.setActionDate(new Date());
+            auditTrail.setActionID(11L);
+            auditTrail.setDescription("Add profile with name = " + profile.getName());
+            auditTrail.setUserProfile(loggedInUser);
+            auditTrailDao.addAuditTrail(auditTrail);
+        }
         return ResponseBuilder.getInstance().
                 setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                 .addHttpResponseEntityData("profile", "Success adding profile")
@@ -144,12 +158,20 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
                         .addHttpResponseEntityData("imageName1", "Image is required.")
                         .getResponse();
             }
-            for(ProfileMedia profileMedia: profile.getProfileMedias()){
+            for (ProfileMedia profileMedia : profile.getProfileMedias()) {
                 profileMedia.setProfile(profile);
             }
             persistantProfile.setAbout(profile.getAbout());
             profileMediaDao.deleteProfileMediasForProfile(persistantProfile.getId());
             persistantProfile.setProfileMedias(profile.getProfileMedias());
+            if (loggedInUser != null) {
+                AuditTrail auditTrail = new AuditTrail();
+                auditTrail.setActionDate(new Date());
+                auditTrail.setActionID(12L);
+                auditTrail.setDescription("Edit profile with name = " + persistantProfile.getName());
+                auditTrail.setUserProfile(loggedInUser);
+                auditTrailDao.addAuditTrail(auditTrail);
+            }
             return ResponseBuilder.getInstance().
                     setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                     .addHttpResponseEntityData("Profile", "Success editing profile")

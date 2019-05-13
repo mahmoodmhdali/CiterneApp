@@ -78,7 +78,7 @@ public class EventClass implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "ABOUT")
-    @Size(min = 10, message = "About should be minimum 10 characters")
+    @Size(min = 3, message = "About should be more than 3 characters")
     @NotBlank(message = "About is required")
     private String about;
 

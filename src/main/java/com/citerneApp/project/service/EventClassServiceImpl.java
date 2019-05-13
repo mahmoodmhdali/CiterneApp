@@ -2,6 +2,7 @@ package com.citerneApp.project.service;
 
 import com.citerneApp.api.commons.ContextHolder;
 import com.citerneApp.api.commons.Logger;
+import com.citerneApp.project.dao.AuditTrailDao;
 import com.citerneApp.project.dao.EventClassCastAndCreditDao;
 import com.citerneApp.project.dao.EventClassCountryDao;
 import com.citerneApp.project.dao.EventClassDao;
@@ -13,6 +14,7 @@ import com.citerneApp.project.helpermodel.HomePageEvents;
 import com.citerneApp.project.helpermodel.ResponseBodyEntity;
 import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
+import com.citerneApp.project.model.AuditTrail;
 import com.citerneApp.project.model.EventClass;
 import com.citerneApp.project.model.EventClassCastAndCredit;
 import com.citerneApp.project.model.EventClassImage;
@@ -59,6 +61,9 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
 
     @Autowired
     ContextHolder context;
+
+    @Autowired
+    AuditTrailDao auditTrailDao;
 
     @Override
     public List<HomePageEvents> getHomePageEventClasses() {
@@ -167,6 +172,22 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
         }
         eventClass.setEventClassCountry(eventClassCountryDao.getEventClassCountry(1L));
         eventClassDao.addEventClass(eventClass);
+
+        UserProfile loggedInUser = this.getAuthenticatedUser();
+        if (loggedInUser != null) {
+            AuditTrail auditTrail = new AuditTrail();
+            auditTrail.setActionDate(new Date());
+            if (eventClass.getEventClassType().getId() == (1L)) {
+                auditTrail.setActionID(3L);
+                auditTrail.setDescription("Add Event with title = " + eventClass.getTitle());
+            }
+            if (eventClass.getEventClassType().getId() == (2L)) {
+                auditTrail.setActionID(6L);
+                auditTrail.setDescription("Add Class with title = " + eventClass.getTitle());
+            }
+            auditTrail.setUserProfile(loggedInUser);
+            auditTrailDao.addAuditTrail(auditTrail);
+        }
         return ResponseBuilder.getInstance().
                 setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                 .addHttpResponseEntityData("eventClass", eventClass)
@@ -226,6 +247,21 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
             persistantEventClass.setEventClassCastAndCredits(eventClass.getEventClassCastAndCredits());
             persistantEventClass.setEventClassMedias(eventClass.getEventClassMedias());
             persistantEventClass.setEventClassSchedules(eventClass.getEventClassSchedules());
+            UserProfile loggedInUser = this.getAuthenticatedUser();
+            if (loggedInUser != null) {
+                AuditTrail auditTrail = new AuditTrail();
+                auditTrail.setActionDate(new Date());
+                if (eventClass.getEventClassType().getId() == (1L)) {
+                    auditTrail.setActionID(4L);
+                    auditTrail.setDescription("Edit Event with title = " + eventClass.getTitle());
+                }
+                if (eventClass.getEventClassType().getId() == (2L)) {
+                    auditTrail.setActionID(7L);
+                    auditTrail.setDescription("Edit Class with title = " + eventClass.getTitle());
+                }
+                auditTrail.setUserProfile(loggedInUser);
+                auditTrailDao.addAuditTrail(auditTrail);
+            }
             return ResponseBuilder.getInstance().
                     setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                     .addHttpResponseEntityData("EventClass", "Success editing event/class")
@@ -243,6 +279,21 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
         EventClass persistantEventClass = eventClassDao.getEventClass(eventClassID);
         if (persistantEventClass != null) {
             persistantEventClass.setDeletedDate(new Date());
+            UserProfile loggedInUser = this.getAuthenticatedUser();
+            if (loggedInUser != null) {
+                AuditTrail auditTrail = new AuditTrail();
+                auditTrail.setActionDate(new Date());
+                if (persistantEventClass.getEventClassType().getId() == (1L)) {
+                    auditTrail.setActionID(5L);
+                    auditTrail.setDescription("Delete Event with title = " + persistantEventClass.getTitle());
+                }
+                if (persistantEventClass.getEventClassType().getId() == (2L)) {
+                    auditTrail.setActionID(8L);
+                    auditTrail.setDescription("Delete Class with title = " + persistantEventClass.getTitle());
+                }
+                auditTrail.setUserProfile(loggedInUser);
+                auditTrailDao.addAuditTrail(auditTrail);
+            }
             return ResponseBuilder.getInstance().
                     setHttpResponseEntityResultCode(ResponseCode.SUCCESS)
                     .addHttpResponseEntityData("EventClass", "Success removing event/class")
@@ -428,6 +479,20 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
             eventClassDao.deleteEventClassImages(persistantEventClass.getId());
             for (EventClassImage eventClassImage : eventClassImages) {
                 eventClassImageDao.addEventClassImage(eventClassImage);
+            }
+            if (loggedInUser != null) {
+                AuditTrail auditTrail = new AuditTrail();
+                auditTrail.setActionDate(new Date());
+                if (persistantEventClass.getEventClassType().getId() == (1L)) {
+                    auditTrail.setActionID(9L);
+                    auditTrail.setDescription("Edit Event images with title = " + persistantEventClass.getTitle());
+                }
+                if (persistantEventClass.getEventClassType().getId() == (2L)) {
+                    auditTrail.setActionID(10L);
+                    auditTrail.setDescription("Edit Class images with title = " + persistantEventClass.getTitle());
+                }
+                auditTrail.setUserProfile(loggedInUser);
+                auditTrailDao.addAuditTrail(auditTrail);
             }
             if (numberOfNotAlLowed > 0) {
                 return ResponseBuilder.getInstance().
