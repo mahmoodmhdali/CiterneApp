@@ -46,7 +46,7 @@ public class ProfileDaoImpl extends AbstractDao<Long, Profile> implements Profil
             ProfilesPagination adminPassesPagination = new ProfilesPagination(maxPages, currentPage, totalResults.intValue(), profiles);
             return adminPassesPagination;
         } catch (Exception ex) {
-            Logger.ERROR("1- Error AdminPassesDao 2 on API [" + ex.getMessage() + "]", "", "");
+            Logger.ERROR("1- Error ProfileDaoImpl 1 on API [" + ex.getMessage() + "]", "", "");
         }
         return null;
     }
@@ -78,12 +78,12 @@ public class ProfileDaoImpl extends AbstractDao<Long, Profile> implements Profil
     @Override
     public Profile addProfile(Profile profile) {
         try {
-            for(ProfileMedia profileMedia: profile.getProfileMedias()){
+            for (ProfileMedia profileMedia : profile.getProfileMedias()) {
                 profileMedia.setProfile(profile);
             }
             persist(profile);
         } catch (Exception ex) {
-            Logger.ERROR("1- Error AdminPassesDao 4 on API [" + ex.getMessage() + "]", profile, "");
+            Logger.ERROR("1- Error ProfileDaoImpl 2 on API [" + ex.getMessage() + "]", "", "");
         }
         return profile;
     }

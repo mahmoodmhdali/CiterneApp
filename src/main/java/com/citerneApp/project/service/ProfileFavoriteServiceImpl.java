@@ -1,12 +1,10 @@
 package com.citerneApp.project.service;
 
-import com.citerneApp.project.dao.EventClassDao;
 import com.citerneApp.project.dao.ProfileDao;
 import com.citerneApp.project.dao.ProfileFavoriteDao;
 import com.citerneApp.project.helpermodel.ResponseBodyEntity;
 import com.citerneApp.project.helpermodel.ResponseBuilder;
 import com.citerneApp.project.helpermodel.ResponseCode;
-import com.citerneApp.project.model.EventClass;
 import com.citerneApp.project.model.Profile;
 import com.citerneApp.project.model.ProfileFavorite;
 import com.citerneApp.project.model.UserProfile;

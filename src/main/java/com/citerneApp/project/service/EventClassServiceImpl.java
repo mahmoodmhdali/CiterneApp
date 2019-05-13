@@ -368,7 +368,7 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
                         eventClassImage.setEventClass(persistantEventClass);
                         eventClassImages.add(eventClassImage);
                     } catch (Exception ex) {
-                        Logger.ERROR("1- Error editOffer 1 on API [" + ex.getMessage() + "]", "", "");
+                        Logger.ERROR("1- Error EventClassServiceImpl 1 on API [" + ex.getMessage() + "]", "", "");
                     }
                 } else {
                     numberOfNotAlLowed++;
@@ -396,7 +396,7 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
                         eventClassImage.setEventClass(persistantEventClass);
                         eventClassImages.add(eventClassImage);
                     } catch (Exception ex) {
-                        Logger.ERROR("1- Error editOffer 2 on API [" + ex.getMessage() + "]", "", "");
+                        Logger.ERROR("1- Error EventClassServiceImpl 2 on API [" + ex.getMessage() + "]", "", "");
                     }
                 } else {
                     numberOfNotAlLowed++;
@@ -424,7 +424,7 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
                         eventClassImage.setEventClass(persistantEventClass);
                         eventClassImages.add(eventClassImage);
                     } catch (Exception ex) {
-                        Logger.ERROR("1- Error editOffer 3 on API [" + ex.getMessage() + "]", "", "");
+                        Logger.ERROR("1- Error EventClassServiceImpl 3 on API [" + ex.getMessage() + "]", "", "");
                     }
                 } else {
                     numberOfNotAlLowed++;
@@ -451,7 +451,7 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
                         eventClassImage.setEventClass(persistantEventClass);
                         eventClassImages.add(eventClassImage);
                     } catch (Exception ex) {
-                        Logger.ERROR("1- Error editOffer 4 on API [" + ex.getMessage() + "]", "", "");
+                        Logger.ERROR("1- Error EventClassServiceImpl 4 on API [" + ex.getMessage() + "]", "", "");
                     }
                 } else {
                     numberOfNotAlLowed++;
@@ -470,9 +470,8 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
                     Path originalFile = dir.resolve(image.getPath().replace("/EventClasseImages/", ""));
                     try {
                         Files.delete(originalFile);
-//                        userOutletOfferImagesDao.deleteImage(image);
                     } catch (Exception ex) {
-                        Logger.ERROR("1- Error editOffer 5 on API [" + ex.getMessage() + "]", image, "");
+                        Logger.ERROR("1- Error EventClassServiceImpl 5 on API [" + ex.getMessage() + "]", image, "");
                     }
                 }
             }

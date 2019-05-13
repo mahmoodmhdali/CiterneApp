@@ -6,9 +6,7 @@
 package com.citerneApp.api.configuration.converter;
 
 import com.citerneApp.project.model.EventClassType;
-import com.citerneApp.project.model.Role;
 import com.citerneApp.project.service.EventClassTypeService;
-import com.citerneApp.project.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;

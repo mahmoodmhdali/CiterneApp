@@ -113,6 +113,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users/delete").hasAnyRole("SYSTEM", "OUR_SYSTEM_USER", "DELETE_USERS")
                 .antMatchers("/eventClasses/add").hasAnyRole("SYSTEM", "OUR_SYSTEM_USER")
                 .antMatchers("/eventClasses/edit").hasAnyRole("SYSTEM", "OUR_SYSTEM_USER")
+                .antMatchers("/eventClasses/delete/{id}").hasAnyRole("SYSTEM", "OUR_SYSTEM_USER")
+                .antMatchers("/images/edit").hasAnyRole("SYSTEM", "OUR_SYSTEM_USER")
                 .antMatchers("/profiles/add").hasAnyRole("SYSTEM", "OUR_SYSTEM_USER")
                 .antMatchers("/profiles/edit").hasAnyRole("SYSTEM", "OUR_SYSTEM_USER")
                 // Allow anonymous access to "/" path

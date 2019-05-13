@@ -1,5 +1,6 @@
 package com.citerneApp.project.dao;
 
+import com.citerneApp.api.commons.Logger;
 import com.citerneApp.project.model.EventClassMedia;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -26,7 +27,11 @@ public class EventClassMediaDaoImpl extends AbstractDao<Long, EventClassMedia> i
 
     @Override
     public void deleteEventClassMedia(Long eventID) {
-        Integer total = createSqlQuery("delete from tbl_event_class_media where event_class = " + eventID + "").executeUpdate();
+        try {
+            Integer total = createSqlQuery("delete from tbl_event_class_media where event_class = " + eventID + "").executeUpdate();
+        } catch (Exception ex) {
+            Logger.ERROR("1- Error EventClassMediaDaoImpl 1 on API [" + ex.getMessage() + "]", "eventID= " + eventID, "");
+        }
     }
 
 }

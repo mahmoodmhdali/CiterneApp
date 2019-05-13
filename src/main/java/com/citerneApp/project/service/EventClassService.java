@@ -4,7 +4,6 @@ import com.citerneApp.project.helpermodel.EventClassPagination;
 import com.citerneApp.project.helpermodel.HomePageEvents;
 import com.citerneApp.project.helpermodel.ResponseBodyEntity;
 import com.citerneApp.project.model.EventClass;
-import com.citerneApp.project.model.Profile;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
