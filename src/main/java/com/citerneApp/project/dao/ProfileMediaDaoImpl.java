@@ -1,14 +1,8 @@
 package com.citerneApp.project.dao;
 
-import com.citerneApp.api.commons.Logger;
-import com.citerneApp.project.helpermodel.ProfilesPagination;
-import com.citerneApp.project.model.Profile;
 import com.citerneApp.project.model.ProfileMedia;
 import java.util.List;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 

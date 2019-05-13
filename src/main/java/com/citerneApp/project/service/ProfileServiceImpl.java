@@ -16,8 +16,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,7 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
 
     @Autowired
     ProfileDao profileDao;
-    
+
     @Autowired
     ProfileMediaDao profileMediaDao;
 
@@ -94,7 +92,7 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
                     profile.setFileName(image1.getOriginalFilename().replace("." + FilenameUtils.getExtension(image1.getOriginalFilename()), ""));
                     profile.setImagePath("/ProfilesImages/" + fileName);
                 } catch (Exception ex) {
-                    Logger.ERROR("1- Error addPass 1 on API [" + ex.getMessage() + "]", "", "");
+                    Logger.ERROR("1- Error ProfileServiceImpl 1 on API [" + ex.getMessage() + "]", "", "");
                 }
             } else {
                 return ResponseBuilder.getInstance()
@@ -136,7 +134,11 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
                 persistantProfile.setImagePath("/ProfilesImages/" + fileName);
                 if (toRemoveImage != null) {
                     Path oldFile = dir.resolve(toRemoveImage.replace("/ProfilesImages/", ""));
-                    Files.delete(oldFile);
+                    try {
+                        Files.delete(oldFile);
+                    } catch (Exception ex) {
+                        Logger.ERROR("1- Error ProfileServiceImpl 2 on API [" + ex.getMessage() + "]", "", "");
+                    }
                 }
             } else if (image1 == null && profile.getImageName1().equals("")) {
                 return ResponseBuilder.getInstance()
@@ -144,7 +146,7 @@ public class ProfileServiceImpl extends AbstractService implements ProfileServic
                         .addHttpResponseEntityData("imageName1", "Image is required.")
                         .getResponse();
             }
-            for(ProfileMedia profileMedia: profile.getProfileMedias()){
+            for (ProfileMedia profileMedia : profile.getProfileMedias()) {
                 profileMedia.setProfile(profile);
             }
             persistantProfile.setAbout(profile.getAbout());

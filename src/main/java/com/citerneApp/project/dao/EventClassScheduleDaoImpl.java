@@ -1,5 +1,6 @@
 package com.citerneApp.project.dao;
 
+import com.citerneApp.api.commons.Logger;
 import com.citerneApp.project.model.EventClassSchedule;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -26,7 +27,11 @@ public class EventClassScheduleDaoImpl extends AbstractDao<Long, EventClassSched
 
     @Override
     public void deleteEventClassSchedule(Long eventID) {
-        Integer total = createSqlQuery("delete from tbl_event_class_schedule where event_class = " + eventID + "").executeUpdate();
+        try {
+            Integer total = createSqlQuery("delete from tbl_event_class_schedule where event_class = " + eventID + "").executeUpdate();
+        } catch (Exception ex) {
+            Logger.ERROR("1- Error EventClassScheduleDaoImpl 1 on API [" + ex.getMessage() + "]", "eventID= " + eventID, "");
+        }
     }
 
 }

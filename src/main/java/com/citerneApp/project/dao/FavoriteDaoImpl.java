@@ -1,6 +1,6 @@
 package com.citerneApp.project.dao;
 
-import com.citerneApp.project.model.EventClass;
+import com.citerneApp.api.commons.Logger;
 import com.citerneApp.project.model.Favorite;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -28,40 +28,59 @@ public class FavoriteDaoImpl extends AbstractDao<Long, Favorite> implements Favo
 
     @Override
     public Favorite addFavorite(Favorite favorite) {
-        save(favorite);
-        return favorite;
+        try {
+            save(favorite);
+            return favorite;
+        } catch (Exception ex) {
+            Logger.ERROR("1- Error FavoriteDaoImpl 1 on API [" + ex.getMessage() + "]", "favorite= " + favorite, "");
+        }
+        return null;
     }
 
     @Override
     public void removeFavorite(Favorite favorite) {
-        delete(favorite);
+        try {
+            delete(favorite);
+        } catch (Exception ex) {
+            Logger.ERROR("1- Error FavoriteDaoImpl 2 on API [" + ex.getMessage() + "]", "favorite= " + favorite, "");
+        }
     }
 
     @Override
     public List<Favorite> getFavoritesByUserID(Long userID) {
-        Criteria criteria = createEntityCriteria();
-        criteria.createAlias("userProfile", "user");
-        criteria.add(Restrictions.eq("user.id", userID));
-        List<Favorite> favorites = (List<Favorite>) criteria.list();
-        for (Favorite favorite : favorites) {
-            Hibernate.initialize(favorite.getEventClass());
-            Hibernate.initialize(favorite.getEventClass().getEventClassCastAndCredits());
-            Hibernate.initialize(favorite.getEventClass().getEventClassImages());
-            Hibernate.initialize(favorite.getEventClass().getEventClassSchedules());
-            Hibernate.initialize(favorite.getEventClass().getProfileCollection());
+        try {
+            Criteria criteria = createEntityCriteria();
+            criteria.createAlias("userProfile", "user");
+            criteria.add(Restrictions.eq("user.id", userID));
+            List<Favorite> favorites = (List<Favorite>) criteria.list();
+            for (Favorite favorite : favorites) {
+                Hibernate.initialize(favorite.getEventClass());
+                Hibernate.initialize(favorite.getEventClass().getEventClassCastAndCredits());
+                Hibernate.initialize(favorite.getEventClass().getEventClassImages());
+                Hibernate.initialize(favorite.getEventClass().getEventClassSchedules());
+                Hibernate.initialize(favorite.getEventClass().getProfileCollection());
+            }
+            return favorites;
+        } catch (Exception ex) {
+            Logger.ERROR("1- Error FavoriteDaoImpl 3 on API [" + ex.getMessage() + "]", "userID= " + userID, "");
         }
-        return favorites;
+        return null;
     }
 
     @Override
     public Favorite getFavoriteByUserAndEventID(Long userID, Long eventID) {
-        Criteria criteria = createEntityCriteria();
-        criteria.createAlias("userProfile", "user");
-        criteria.add(Restrictions.eq("user.id", userID));
-        criteria.createAlias("eventClass", "eventClass");
-        criteria.add(Restrictions.eq("eventClass.id", eventID));
-        Favorite favorite = (Favorite) criteria.uniqueResult();
-        return favorite;
+        try {
+            Criteria criteria = createEntityCriteria();
+            criteria.createAlias("userProfile", "user");
+            criteria.add(Restrictions.eq("user.id", userID));
+            criteria.createAlias("eventClass", "eventClass");
+            criteria.add(Restrictions.eq("eventClass.id", eventID));
+            Favorite favorite = (Favorite) criteria.uniqueResult();
+            return favorite;
+        } catch (Exception ex) {
+            Logger.ERROR("1- Error FavoriteDaoImpl 4 on API [" + ex.getMessage() + "]", "userID= " + userID + " eventID= " + eventID, "");
+        }
+        return null;
     }
 
 }
