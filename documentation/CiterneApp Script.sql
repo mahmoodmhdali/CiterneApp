@@ -1,15 +1,15 @@
 CREATE DATABASE  IF NOT EXISTS `db_citerne_app` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `db_citerne_app`;
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.13, for Win64 (x86_64)
 --
--- Host: localhost    Database: db_citerne_app
+-- Host: 127.0.0.1    Database: db_citerne_app
 -- ------------------------------------------------------
 -- Server version	5.6.14
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+ SET NAMES utf8 ;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -18,12 +18,66 @@ USE `db_citerne_app`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `tbl_audit_trail`
+--
+
+DROP TABLE IF EXISTS `tbl_audit_trail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `tbl_audit_trail` (
+  `ID` bigint(20) NOT NULL,
+  `USER_ID` bigint(20) NOT NULL,
+  `ACTION_ID` bigint(20) NOT NULL,
+  `DESCRIPTION` longtext NOT NULL,
+  `ACTION_DATE` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FK_73547623574273423_idx` (`ACTION_ID`),
+  KEY `FK_876258726342763545_idx` (`USER_ID`),
+  CONSTRAINT `FK_73547623574273423` FOREIGN KEY (`ACTION_ID`) REFERENCES `tbl_audit_trail_action` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_876258726342763545` FOREIGN KEY (`USER_ID`) REFERENCES `tbl_user_profiles` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_audit_trail`
+--
+
+LOCK TABLES `tbl_audit_trail` WRITE;
+/*!40000 ALTER TABLE `tbl_audit_trail` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbl_audit_trail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tbl_audit_trail_action`
+--
+
+DROP TABLE IF EXISTS `tbl_audit_trail_action`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `tbl_audit_trail_action` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ACTION_NAME` varchar(45) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tbl_audit_trail_action`
+--
+
+LOCK TABLES `tbl_audit_trail_action` WRITE;
+/*!40000 ALTER TABLE `tbl_audit_trail_action` DISABLE KEYS */;
+INSERT INTO `tbl_audit_trail_action` VALUES (1,'Add User'),(2,'Delete User'),(3,'Add Event'),(4,'Edit Event'),(5,'Delete Event'),(6,'Add Class'),(7,'Edit Class'),(8,'Delete Class'),(9,'Edit Class Images'),(10,'Edit Event Images'),(11,'Add Profile'),(12,'Edit Profile');
+/*!40000 ALTER TABLE `tbl_audit_trail_action` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tbl_event_class`
 --
 
 DROP TABLE IF EXISTS `tbl_event_class`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_event_class` (
   `ID` bigint(20) NOT NULL,
   `TITLE` varchar(61) NOT NULL,
@@ -64,7 +118,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_event_class_cast_and_credit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_event_class_cast_and_credit` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `TITLE` varchar(41) DEFAULT NULL,
@@ -73,7 +127,7 @@ CREATE TABLE `tbl_event_class_cast_and_credit` (
   PRIMARY KEY (`ID`),
   KEY `FK_43564352347567235_idx` (`EVENT_CLASS`),
   CONSTRAINT `FK_43564352347567235` FOREIGN KEY (`EVENT_CLASS`) REFERENCES `tbl_event_class` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1557346368904469 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +145,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_event_class_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_event_class_category` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(21) NOT NULL,
@@ -118,7 +172,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_event_class_country`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_event_class_country` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(21) NOT NULL,
@@ -142,7 +196,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_event_class_image`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_event_class_image` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(230) DEFAULT NULL,
@@ -152,7 +206,7 @@ CREATE TABLE `tbl_event_class_image` (
   PRIMARY KEY (`ID`),
   KEY `FK_875468756287364872_idx` (`EVENT_CLASS`),
   CONSTRAINT `FK_875468756287364872` FOREIGN KEY (`EVENT_CLASS`) REFERENCES `tbl_event_class` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1557524703693758 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -170,7 +224,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_event_class_media`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_event_class_media` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `EVENT_CLASS` bigint(20) DEFAULT NULL,
@@ -197,7 +251,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_event_class_profiles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_event_class_profiles` (
   `EVENT_CLASS_ID` bigint(20) NOT NULL,
   `PROFILE_ID` bigint(20) NOT NULL,
@@ -223,7 +277,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_event_class_schedule`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_event_class_schedule` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `CLASS_DAY_INDEX` tinyint(1) DEFAULT NULL,
@@ -233,7 +287,7 @@ CREATE TABLE `tbl_event_class_schedule` (
   PRIMARY KEY (`ID`),
   KEY `FK_432542343534241_idx` (`EVENT_CLASS`),
   CONSTRAINT `FK_432542343534241` FOREIGN KEY (`EVENT_CLASS`) REFERENCES `tbl_event_class` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1557528516138565 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1557783839233622 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -251,7 +305,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_event_class_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_event_class_type` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(21) NOT NULL,
@@ -275,7 +329,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_favorite`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_favorite` (
   `ID` bigint(20) NOT NULL,
   `USER` bigint(20) NOT NULL,
@@ -303,7 +357,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_general_dashboard`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_general_dashboard` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `item_key` varchar(45) NOT NULL,
@@ -333,7 +387,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_groups` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(256) NOT NULL,
@@ -362,7 +416,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_groups_reports`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_groups_reports` (
   `GROUP_ID` bigint(20) NOT NULL,
   `REPORT_ID` bigint(20) NOT NULL,
@@ -379,6 +433,7 @@ CREATE TABLE `tbl_groups_reports` (
 
 LOCK TABLES `tbl_groups_reports` WRITE;
 /*!40000 ALTER TABLE `tbl_groups_reports` DISABLE KEYS */;
+INSERT INTO `tbl_groups_reports` VALUES (1,1557778243869215),(2,1557778243869215),(3,1557778243869215),(9,1557778243869215),(1,1557779347091280),(2,1557779347091280),(3,1557779347091280),(9,1557779347091280);
 /*!40000 ALTER TABLE `tbl_groups_reports` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -388,7 +443,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_groups_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_groups_roles` (
   `GROUP_ID` bigint(20) NOT NULL,
   `ROLE_ID` bigint(20) NOT NULL,
@@ -415,7 +470,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_languages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_languages` (
   `ID` int(11) NOT NULL,
   `NAME` varchar(45) NOT NULL,
@@ -440,7 +495,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_notification_events`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_notification_events` (
   `event_id` int(11) NOT NULL AUTO_INCREMENT,
   `event_name` varchar(50) NOT NULL DEFAULT '0',
@@ -467,7 +522,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_notification_texts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_notification_texts` (
   `text_id` int(11) NOT NULL AUTO_INCREMENT,
   `event_id` int(11) NOT NULL DEFAULT '0',
@@ -497,7 +552,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_pages`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
@@ -521,7 +576,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_pages_labels`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_pages_labels` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `page_id` int(11) NOT NULL,
@@ -551,7 +606,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_persistent_login`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_persistent_login` (
   `SERIES` varchar(256) DEFAULT NULL,
   `USERNAME` varchar(256) DEFAULT NULL,
@@ -575,7 +630,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_profile`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_profile` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(51) NOT NULL,
@@ -586,7 +641,7 @@ CREATE TABLE `tbl_profile` (
   `IMAGE_PATH` varchar(300) DEFAULT NULL,
   `FILE_NAME` varchar(230) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1557346283793182 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1557782800767255 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -604,7 +659,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_profile_favorite`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_profile_favorite` (
   `ID` bigint(20) NOT NULL,
   `USER` bigint(20) NOT NULL,
@@ -632,7 +687,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_profile_media`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_profile_media` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `PROFILE` bigint(20) NOT NULL,
@@ -641,7 +696,7 @@ CREATE TABLE `tbl_profile_media` (
   PRIMARY KEY (`ID`),
   KEY `FK_1435643523475672351122_idx` (`PROFILE`),
   CONSTRAINT `FK_1435643523475672351122` FOREIGN KEY (`PROFILE`) REFERENCES `tbl_profile` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1556656522735135 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -659,7 +714,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_reports`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_reports` (
   `id` bigint(20) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
@@ -679,6 +734,7 @@ CREATE TABLE `tbl_reports` (
 
 LOCK TABLES `tbl_reports` WRITE;
 /*!40000 ALTER TABLE `tbl_reports` DISABLE KEYS */;
+INSERT INTO `tbl_reports` VALUES (1557778243869215,'Subscriptions','select email, created_date from tbl_subscription where created_date ?',0,0,0,NULL,NULL),(1557779347091280,'Audit Trail','SELECT u.name as user,a.action_name as \'action\',t.description,t.action_date\n FROM tbl_audit_trail as t, tbl_audit_trail_action as a, tbl_user_profiles as u\n WHERE t.user_id = u.id and t.action_id = a.id and t.action_date ? and u.name ?\nORDER BY t.action_date desc',0,0,0,NULL,NULL);
 /*!40000 ALTER TABLE `tbl_reports` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -688,7 +744,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_reports_filter`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_reports_filter` (
   `id` bigint(20) NOT NULL,
   `report_field` varchar(45) DEFAULT NULL,
@@ -710,6 +766,7 @@ CREATE TABLE `tbl_reports_filter` (
 
 LOCK TABLES `tbl_reports_filter` WRITE;
 /*!40000 ALTER TABLE `tbl_reports_filter` DISABLE KEYS */;
+INSERT INTO `tbl_reports_filter` VALUES (1557779135998297,'created_date','DATE',1557778243869215,'Subscription date',NULL,'0',0),(1557782266951049,'t.action_date','DATE',1557779347091280,'Action Date',NULL,'0',0),(1557783706823728,'u.name','TEXT',1557779347091280,'Name',NULL,'1',0);
 /*!40000 ALTER TABLE `tbl_reports_filter` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -719,7 +776,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_reports_style`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_reports_style` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
@@ -743,7 +800,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_reports_style_join`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_reports_style_join` (
   `report_id` bigint(20) NOT NULL,
   `report_style_id` int(11) NOT NULL,
@@ -760,6 +817,7 @@ CREATE TABLE `tbl_reports_style_join` (
 
 LOCK TABLES `tbl_reports_style_join` WRITE;
 /*!40000 ALTER TABLE `tbl_reports_style_join` DISABLE KEYS */;
+INSERT INTO `tbl_reports_style_join` VALUES (1557778243869215,1),(1557779347091280,1);
 /*!40000 ALTER TABLE `tbl_reports_style_join` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -769,7 +827,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_roles` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `ROLE` varchar(256) DEFAULT NULL,
@@ -795,7 +853,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_settings`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_settings` (
   `setting_id` int(11) NOT NULL AUTO_INCREMENT,
   `MSISDN_LENGTH` int(11) NOT NULL DEFAULT '0',
@@ -813,7 +871,7 @@ CREATE TABLE `tbl_settings` (
 
 LOCK TABLES `tbl_settings` WRITE;
 /*!40000 ALTER TABLE `tbl_settings` DISABLE KEYS */;
-INSERT INTO `tbl_settings` VALUES (1,8,1,10,5,'http://35.229.113.142:8080/CiterneApp_Admin/#/sessions/changePassword?token=');
+INSERT INTO `tbl_settings` VALUES (1,8,1,10,5,'http://35.229.113.142:8080/FreedomPass_Admin/#/sessions/changePassword?token=');
 /*!40000 ALTER TABLE `tbl_settings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -823,7 +881,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_settings_categories`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_settings_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
@@ -848,7 +906,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_settings_mapping`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_settings_mapping` (
   `COLUMNID` int(11) NOT NULL AUTO_INCREMENT,
   `COLUMNNAME` varchar(255) NOT NULL,
@@ -888,7 +946,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_subscription`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_subscription` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `EMAIL` varchar(100) NOT NULL,
@@ -904,7 +962,6 @@ CREATE TABLE `tbl_subscription` (
 
 LOCK TABLES `tbl_subscription` WRITE;
 /*!40000 ALTER TABLE `tbl_subscription` DISABLE KEYS */;
-INSERT INTO `tbl_subscription` VALUES (1,'mahmoudmhdali@gmail.com','2019-03-24 19:45:52',NULL),(2,'rawad2k@gmail.com','2019-03-24 19:45:52',NULL),(3,'alaa@apliman.com','2019-03-24 19:45:52',NULL),(1553769090099093,'mahmoudmhdali@gmail.com1','2019-03-28 09:59:00',NULL),(1554157119642793,'rawad2k@gmail.com1','2019-04-01 21:45:07',NULL),(1554161854184413,'aa@qq','2019-04-01 23:27:48',NULL),(1554162370882194,'aaa@www','2019-04-01 23:30:03',NULL),(1554162475907850,'aaa@aaa','2019-04-01 23:22:36',NULL),(1554196130129515,'alaah.ashkar@gmail.com','2019-04-02 08:46:54',NULL),(1555187301208043,'becharafayad@hotmail.com','2019-04-13 19:57:48',NULL),(1555188130487925,'joe@achkar.com','2019-04-13 20:32:19',NULL),(1555198433754470,'nairiyan@ymail.com','2019-04-13 23:08:21',NULL);
 /*!40000 ALTER TABLE `tbl_subscription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -914,7 +971,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_user_attempts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_user_attempts` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `USER_PROFILE_ID` bigint(20) NOT NULL,
@@ -923,7 +980,7 @@ CREATE TABLE `tbl_user_attempts` (
   PRIMARY KEY (`ID`),
   KEY `USER_ATTEMPTS_FK1` (`USER_PROFILE_ID`),
   CONSTRAINT `USER_ATTEMPTS_FK1` FOREIGN KEY (`USER_PROFILE_ID`) REFERENCES `tbl_user_profiles` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1557732627677513 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1557782176058416 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -932,7 +989,7 @@ CREATE TABLE `tbl_user_attempts` (
 
 LOCK TABLES `tbl_user_attempts` WRITE;
 /*!40000 ALTER TABLE `tbl_user_attempts` DISABLE KEYS */;
-INSERT INTO `tbl_user_attempts` VALUES (1,1,0,'2018-09-27 12:43:24'),(1557731470930067,1557732715304093,0,'2019-05-13 07:09:48'),(1557732072912010,1557731246445998,0,'2019-05-13 07:01:30'),(1557732627677512,1557731556419139,0,'2019-05-13 07:09:06');
+INSERT INTO `tbl_user_attempts` VALUES (1,1,0,'2018-09-27 12:43:24'),(1557780983805801,1557782609654115,0,'2019-05-13 20:56:23'),(1557782176058415,1557782215330604,0,'2019-05-13 21:00:07');
 /*!40000 ALTER TABLE `tbl_user_attempts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -942,7 +999,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_user_profile_groups`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_user_profile_groups` (
   `USER_PROFILE_ID` bigint(20) NOT NULL,
   `GROUP_ID` bigint(20) NOT NULL,
@@ -959,7 +1016,7 @@ CREATE TABLE `tbl_user_profile_groups` (
 
 LOCK TABLES `tbl_user_profile_groups` WRITE;
 /*!40000 ALTER TABLE `tbl_user_profile_groups` DISABLE KEYS */;
-INSERT INTO `tbl_user_profile_groups` VALUES (1,3),(1557731246445998,9),(1557731556419139,9),(1557732715304093,10);
+INSERT INTO `tbl_user_profile_groups` VALUES (1,3),(1557782609654115,9),(1557782215330604,9);
 /*!40000 ALTER TABLE `tbl_user_profile_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -969,7 +1026,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_user_profiles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_user_profiles` (
   `ID` bigint(20) NOT NULL,
   `NAME` varchar(64) NOT NULL,
@@ -999,7 +1056,7 @@ CREATE TABLE `tbl_user_profiles` (
 
 LOCK TABLES `tbl_user_profiles` WRITE;
 /*!40000 ALTER TABLE `tbl_user_profiles` DISABLE KEYS */;
-INSERT INTO `tbl_user_profiles` VALUES (1,'System User','sysuser@apliman.com','$2a$10$Wet4W6yJnVM6bU8QFX75kuNoxGXnbx/kk5oJI05FAWTIYEpS.Ufc2',1,1,1,1,'2018-01-22 12:53:01',NULL,NULL,'2018-09-27 12:44:25',NULL,'System',1,'',99),(1557731246445998,'Admin Citerne','admin@citerne.com','$2a$10$ADGz4BTocmXyLIUvyilADeG6TkVAStzn3bY8/i0yPEAg/22b.KMSC',1,1,1,1,'2019-05-13 07:01:32',NULL,NULL,'2019-05-13 07:02:16',NULL,'Citerne Admin',1,NULL,1),(1557731556419139,'admin citerne 2','support@citerne.com','NewUserCreated',0,1,1,1,'2019-05-13 07:09:07','0tEfivz','2019-05-16 07:09:06','2019-05-13 07:09:07',NULL,'Citerne Admin',1,NULL,1),(1557732715304093,'mahmoud mohamed ali','mahmoudmhdali@gmail.com','$2a$10$VP4jIM.OH6Xg0gKGL1/Jb.PdL3H3LgtVB8Scy5Gs5M8ZS.LYiBNG6',1,1,1,1,'2019-05-13 07:09:50',NULL,NULL,'2019-05-13 07:11:20',NULL,'Citerne User',1,NULL,2);
+INSERT INTO `tbl_user_profiles` VALUES (1,'System User','sysuser@apliman.com','$2a$10$Wet4W6yJnVM6bU8QFX75kuNoxGXnbx/kk5oJI05FAWTIYEpS.Ufc2',1,1,1,1,'2018-01-22 12:53:01',NULL,NULL,'2018-09-27 12:44:25',NULL,'System',1,'',99),(1557782215330604,'Citerne Admin','admin@citerne.com','$2a$10$Wet4W6yJnVM6bU8QFX75kuNoxGXnbx/kk5oJI05FAWTIYEpS.Ufc2',1,1,1,1,'2019-05-13 21:00:09',NULL,'2019-05-16 21:00:07','2019-05-13 21:00:15',NULL,'Citerne Admin',1,NULL,1),(1557782609654115,'Citerne Support','support@citerne.com','$2a$10$Wet4W6yJnVM6bU8QFX75kuNoxGXnbx/kk5oJI05FAWTIYEpS.Ufc2',1,1,1,1,'2019-05-13 20:56:26',NULL,'2019-05-16 20:56:23','2019-05-13 20:56:59',NULL,'Citerne Admin',1,NULL,1);
 /*!40000 ALTER TABLE `tbl_user_profiles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1009,7 +1066,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_userprofile_notification_event`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_userprofile_notification_event` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NOTIFICATION_EVENT_ID` int(11) NOT NULL,
@@ -1038,7 +1095,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tbl_web_notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tbl_web_notifications` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `date_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -1448,4 +1505,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-05-13 10:12:26
+-- Dump completed on 2019-05-14  0:20:11
