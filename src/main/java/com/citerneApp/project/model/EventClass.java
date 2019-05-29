@@ -19,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -109,6 +110,10 @@ public class EventClass implements Serializable {
     private Integer duration;
 
     @Basic(optional = false)
+    @Column(name = "EVENT_INDEX")
+    private Integer eventIndex;
+
+    @Basic(optional = false)
     @Column(name = "NUMBER_OF_PARTICIPANTS")
     private Integer numberOfParticipants;
 
@@ -116,6 +121,7 @@ public class EventClass implements Serializable {
     private Collection<EventClassImage> eventClassImages;
 
     @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
+    @OrderBy("index")
     private List<EventClassCastAndCredit> eventClassCastAndCredits;
 
     @OneToMany(mappedBy = "eventClass", cascade = CascadeType.ALL)
@@ -324,6 +330,14 @@ public class EventClass implements Serializable {
 
     public void setNumberOfParticipants(Integer numberOfParticipants) {
         this.numberOfParticipants = numberOfParticipants;
+    }
+
+    public Integer getEventIndex() {
+        return eventIndex;
+    }
+
+    public void setEventIndex(Integer eventIndex) {
+        this.eventIndex = eventIndex;
     }
 
     @Override

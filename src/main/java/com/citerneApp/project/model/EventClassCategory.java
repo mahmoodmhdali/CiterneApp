@@ -60,6 +60,10 @@ public class EventClassCategory implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
 
+    @Basic(optional = false)
+    @Column(name = "INDEX")
+    private Integer index;
+
     @JsonIgnore
     @OneToMany(mappedBy = "eventClassCategory", cascade = CascadeType.ALL)
     private Collection<EventClass> eventClasses;
@@ -113,6 +117,14 @@ public class EventClassCategory implements Serializable {
 
     public void setEventClasses(Collection<EventClass> eventClasses) {
         this.eventClasses = eventClasses;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 
     @Override

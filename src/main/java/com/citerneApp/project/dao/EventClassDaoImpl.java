@@ -13,6 +13,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -69,7 +70,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                     + " INNER JOIN tbl_event_class_image i ON a.id=i.event_class and i.image_index = 1 \n"
                     + " INNER JOIN tbl_event_class_schedule s ON a.id=s.event_class\n"
                     + " WHERE a.DELETED_DATE IS NULL\n"
-                    + " order by a.event_index")
+                    + " order by cat.index, a.event_index")
                     .addScalar("id", new LongType())
                     .addScalar("title", new StringType())
                     .addScalar("ticketingURL", new StringType())
@@ -136,7 +137,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                     + " where cac.description LIKE ?\n"
                     + " AND a.DELETED_DATE IS NULL\n"
                     + " group by a.id,s.SHOW_DATETIME\n"
-                    + " order by a.event_index")
+                    + " order by cat.index, a.event_index")
                     .addScalar("id", new LongType())
                     .addScalar("title", new StringType())
                     .addScalar("ticketingURL", new StringType())
@@ -375,6 +376,8 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
             Criteria criteria = createEntityCriteria();
             criteria.add(Restrictions.isNull("deletedDate"));
             criteria.add(Restrictions.eq("id", id));
+//            criteria.createAlias("eventClassCastAndCredits", "castAndCredits");
+//            criteria.addOrder(Order.asc("castAndCredits.index"));
             EventClass eventClass = (EventClass) criteria.uniqueResult();
             Hibernate.initialize(eventClass.getEventClassImages());
             Hibernate.initialize(eventClass.getEventClassSchedules());

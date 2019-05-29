@@ -247,6 +247,7 @@ public class EventClassServiceImpl extends AbstractService implements EventClass
             persistantEventClass.setEventClassCastAndCredits(eventClass.getEventClassCastAndCredits());
             persistantEventClass.setEventClassMedias(eventClass.getEventClassMedias());
             persistantEventClass.setEventClassSchedules(eventClass.getEventClassSchedules());
+            persistantEventClass.setEventIndex(eventClass.getEventIndex());
             UserProfile loggedInUser = this.getAuthenticatedUser();
             if (loggedInUser != null) {
                 AuditTrail auditTrail = new AuditTrail();

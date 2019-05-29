@@ -43,6 +43,10 @@ public class EventClassCastAndCredit implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private EventClass eventClass;
 
+    @Basic(optional = false)
+    @Column(name = "INDEX")
+    private Integer index;
+
     public Long getId() {
         return id;
     }
@@ -73,6 +77,14 @@ public class EventClassCastAndCredit implements Serializable {
 
     public void setEventClass(EventClass eventClass) {
         this.eventClass = eventClass;
+    }
+
+    public Integer getIndex() {
+        return index;
+    }
+
+    public void setIndex(Integer index) {
+        this.index = index;
     }
 
     @Override
