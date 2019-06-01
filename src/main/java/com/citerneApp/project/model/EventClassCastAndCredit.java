@@ -44,7 +44,7 @@ public class EventClassCastAndCredit implements Serializable {
     private EventClass eventClass;
 
     @Basic(optional = false)
-    @Column(name = "INDEX")
+    @Column(name = "INDEXX")
     private Integer index;
 
     public Long getId() {

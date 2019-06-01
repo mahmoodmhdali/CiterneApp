@@ -61,7 +61,7 @@ public class EventClassCategory implements Serializable {
     private Date deletedDate;
 
     @Basic(optional = false)
-    @Column(name = "INDEX")
+    @Column(name = "INDEXX")
     private Integer index;
 
     @JsonIgnore
