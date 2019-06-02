@@ -69,7 +69,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                     + " INNER JOIN tbl_event_class_image i ON a.id=i.event_class and i.image_index = 1 \n"
                     + " INNER JOIN tbl_event_class_schedule s ON a.id=s.event_class\n"
                     + " WHERE a.DELETED_DATE IS NULL\n"
-                    + " order by cat.index, a.event_index")
+                    + " order by cat.indexx, a.event_index")
                     .addScalar("id", new LongType())
                     .addScalar("title", new StringType())
                     .addScalar("ticketingURL", new StringType())
@@ -79,7 +79,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                     .addScalar("mainImage", new StringType())
                     .addScalar("countryName", new StringType())
                     .addScalar("classDayIndex", new IntegerType())
-                    .addScalar("time", new DateType())
+                    .addScalar("time", StandardBasicTypes.TIMESTAMP)
                     .addScalar("showDateTime", StandardBasicTypes.TIMESTAMP)
                     .addScalar("ind", new IntegerType())
                     .setResultTransformer(Transformers.aliasToBean(HomePageEvents.class));
@@ -136,7 +136,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                     + " where cac.description LIKE ?\n"
                     + " AND a.DELETED_DATE IS NULL\n"
                     + " group by a.id,s.SHOW_DATETIME\n"
-                    + " order by cat.index, a.event_index")
+                    + " order by cat.indexx, a.event_index")
                     .addScalar("id", new LongType())
                     .addScalar("title", new StringType())
                     .addScalar("ticketingURL", new StringType())
@@ -146,7 +146,7 @@ public class EventClassDaoImpl extends AbstractDao<Long, EventClass> implements 
                     .addScalar("mainImage", new StringType())
                     .addScalar("countryName", new StringType())
                     .addScalar("classDayIndex", new IntegerType())
-                    .addScalar("time", new DateType())
+                    .addScalar("time", StandardBasicTypes.TIMESTAMP)
                     .addScalar("showDateTime", StandardBasicTypes.TIMESTAMP)
                     .addScalar("ind", new IntegerType())
                     .setResultTransformer(Transformers.aliasToBean(HomePageEvents.class))
