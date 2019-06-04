@@ -56,7 +56,7 @@ public class UserProfile implements Serializable, UserDetails {
 
     @Basic(optional = false)
     @Column(name = "NAME")
-    @Size(min = 5, max = 20, message = "validation.userProfile.nameRange")
+    @Size(min = 2, max = 20, message = "validation.userProfile.nameRange")
     @NotBlank(message = "validation.userProfile.nameRequired")
     @ValidName
     private String name;
