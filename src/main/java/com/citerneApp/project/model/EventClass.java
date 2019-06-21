@@ -94,7 +94,6 @@ public class EventClass implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
 
-    @JsonIgnore
     @Column(name = "DELETED_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
